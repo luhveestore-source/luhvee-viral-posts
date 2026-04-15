@@ -15,71 +15,66 @@ st.markdown("""
     }
     h1, h2, h3, p, label { color: #ffffff !important; font-family: 'sans serif'; }
     .stCode { background-color: #1e1e1e !important; border: 1px solid #ff69b4 !important; }
-    .stRadio > label { color: #ff69b4 !important; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- SEUS LINKS OFICIAIS ---
+# --- LINKS OFICIAIS ---
 LINK_SHOPEE = "https://collshp.com/luhveestores"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
 st.title("🔥 LuhVee Viral Machine")
-st.subheader("Sua IA de Postagens de Alta Conversão")
+st.subheader("Gerador de Postagens Grátis com Sua Foto")
 
 # --- BANCO DE DADOS DE PRODUTOS ---
 tendencias = {
-    "Perfumaria e Beleza": ["Perfume Caviar Night", "Body Splash Melancia", "Kit Rapunzel Lola", "Skincare Coreano"],
-    "Achadinhos de Casa/Cozinha": ["Mini Processador Sem Fio", "Organizador de Geladeira", "MOP Limpeza", "Air Fryer Retrô"],
-    "Pets": ["Fonte de Água para Gatos", "Cama Nuvem Relaxante", "Brinquedo Interativo a Laser", "Kit Banho a Seco"],
-    "Ferramentas": ["Parafusadeira Sem Fio", "Jogo de Chaves Completo", "Nível Laser Profissional", "Maleta de Ferramentas Pink"],
-    "Jardinagem": ["Kit Horta Vertical", "Regador Automático", "Mini Estufa de Suculentas", "Tesoura de Poda Ergonômica"],
-    "Eletrônicos": ["Projetor Full HD", "Caixa de Som à Prova D'água", "Power Bank de Carga Rápida", "Fone com Cancelamento de Ruído"],
-    "Móveis": ["Puff Baú Decorativo", "Escrivaninha Compacta", "Mesa de Cabeceira Retrô", "Estante de Livros Minimalista"],
-    "Sapatos e Tênis": ["Tênis Chunky Confort", "Tênis Esportivo Versátil", "Sapatilha Confort Flex", "Bota Cano Curto"],
-    "Saltos e Scarpins": ["Scarpin Clássico Verniz", "Sandália Salto Bloco", "Tamanco Transparente", "Salto Agulha Elegance"],
-    "Acessórios de Celular": ["Capa Anti-Impacto Luxo", "Lente para Foto Pro", "Suporte Veicular Magnético", "Cabo Reforçado 3 metros"],
-    "Informática": ["Teclado Mecânico RGB", "Mouse Gamer Sem Fio", "Hub USB Tipo C", "Suporte Articulado de Monitor"],
-    "Lingerie": ["Conjunto Renda Sem Bojo", "Body Modelador Invisível", "Robê de Seda", "Baby Doll Conforto"],
-    "Sexshop": ["Vibrador de Sucção Viral", "Óleo de Massagem Hot", "Gel Excitante", "Acessórios Sensuais"],
-    "Moda Feminina/Acessórios": ["Vestido Midi Canelado", "Conjunto Linho Verão", "Maxi Colar Dourado", "Cinto Fivela Dupla"]
+    "Perfumaria e Beleza": ["Perfume Caviar Night", "Body Splash Melancia", "Kit Rapunzel Lola"],
+    "Achadinhos de Casa": ["MOP Limpeza Prática", "Organizador de Geladeira", "Mini Processador"],
+    "Moda/Acessórios": ["Conjunto Alfaiataria", "Óculos Retrô", "Bolsa Baguete"],
+    "Eletrônicos": ["Smartwatch Série 9", "Fone Bluetooth Pro", "Projetor Astronauta"]
 }
 
 # --- BOTÃO PESQUISAR ---
-if st.button("🔎 IA: PESQUISAR PRODUTOS VIRAIS DO DIA"):
+if st.button("🔎 IA: SUGERIR PRODUTO DO DIA"):
     cat_sorteada = random.choice(list(tendencias.keys()))
     prod_sorteado = random.choice(tendencias[cat_sorteada])
     st.session_state['produto_sugerido'] = prod_sorteado
     st.session_state['categoria_sugerida'] = cat_sorteada
-    st.success(f"✅ IA Sugere: {prod_sorteado} (Em {cat_sorteada})")
+    st.success(f"✅ Sugestão: {prod_sorteado}")
 
-# --- ESCOLHA DA LOJA ---
+# --- CAMPOS ---
+produto = st.text_input("Nome do Produto:", value=st.session_state.get('produto_sugerido', ""))
+
+# ==========================================
+# 📸 CAMPO DE FOTO (UPLOAD GRÁTIS)
+# ==========================================
 st.write("---")
-loja_escolhida = st.radio("Onde você quer vender esse produto?", ["Shopee", "Mercado Livre", "Outro (Digitar Link)"])
+st.markdown("### 📸 Passo 1: Coloque a foto do produto")
+foto_carregada = st.file_uploader("Arraste ou escolha a foto que você baixou", type=["png", "jpg", "jpeg"])
+
+if foto_carregada:
+    st.image(foto_carregada, caption="Imagem do seu post", width=300)
+
+st.write("---")
+# --- ESCOLHA DA LOJA ---
+st.markdown("### 🔗 Passo 2: Escolha o destino")
+loja_escolhida = st.radio("Onde você vai vender?", ["Shopee", "Mercado Livre", "Outro Link"])
 
 if loja_escolhida == "Shopee":
     link_usar = LINK_SHOPEE
 elif loja_escolhida == "Mercado Livre":
     link_usar = LINK_ML
 else:
-    link_usar = st.text_input("Cole o link específico aqui:", "")
-
-# --- CAMPOS ---
-categoria = st.selectbox("Categoria:", list(tendencias.keys()), 
-                         index=list(tendencias.keys()).index(st.session_state.get('categoria_sugerida', "Perfumaria e Beleza")))
-
-produto = st.text_input("Nome do Produto:", value=st.session_state.get('produto_sugerido', ""))
+    link_usar = st.text_input("Cole o link aqui:", "")
 
 # --- GERADOR ---
-if st.button("🚀 GERAR POSTS DE ALTA CONVERSÃO"):
+if st.button("🚀 Passo 3: GERAR TEXTO PARA O POST"):
     if produto and link_usar:
         st.write("---")
+        st.markdown("#### ✅ SEU POST ESTÁ PRONTO!")
         
-        st.markdown("#### 📲 WHATSAPP / TELEGRAM")
-        copy_whats = f"""🔥 *ALERTA DE TENDÊNCIA!* 🔥\n\nMeninas, olhem o que eu achei para vocês! O *{produto}* que está todo mundo postando! 😱✨\n\n👇 *Garanta o seu aqui na minha vitrine do {loja_escolhida}:*\n{link_usar}\n\nCorre antes que esgote! 🏃‍♀️💨"""
+        copy_whats = f"""🔥 *ACHADINHO DA LUHVEE!* 🔥\n\nMeninas, olhem que perfeição esse *{produto}*! 😱✨\n\nAcabei de subir na minha vitrine do {loja_escolhida} com um preço especial para vocês.\n\n👇 *Garanta o seu aqui:*\n{link_usar}\n\nEntrega rápida e segura! 🏃‍♀️💨"""
         st.code(copy_whats, language="text")
-
-        st.markdown("#### 📸 INSTAGRAM / TIKTOK")
-        copy_insta = f"""POV: Você encontrou o {produto} que precisava! ✨💖\n\nDireto da LuhVee Stores para a sua casa. O item mais desejado de {categoria} agora a um clique de distância. 🚀\n\n🛍️ Link direto na Bio e nos Stories! \n{link_usar}\n\n#luhveestores #achadinhos #viral #shopee #mercadolivre"""
-        st.code(copy_insta, language="text")
+        
+        st.info("💡 Como postar: Copie o texto acima, abra seu WhatsApp, escolha a foto que você baixou e cole o texto na legenda!")
     else:
-        st.error("Luh, escolha a loja ou cole o link para gerar o post! 😉")
+        st.error("Luh, preencha o nome do produto e o link! 😉")
