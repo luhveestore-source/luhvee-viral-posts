@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+from PIL import Image
 
 # --- CONFIGURAÇÃO VISUAL ---
 st.set_page_config(page_title="LuhVee Viral Machine", page_icon="🔥", layout="centered")
@@ -14,9 +15,7 @@ st.markdown("""
         width: 100%; font-weight: bold; height: 50px; margin-top: 10px;
     }
     h1, h2, h3, p, label { color: #ffffff !important; font-family: 'sans serif'; }
-    .stCode { background-color: #1e1e1e !important; border: 1px solid #ff69b4 !important; }
-    /* Estilo para a caixa de upload não sumir */
-    .stFileUploader { background-color: #1e1e1e; border-radius: 10px; padding: 10px; }
+    .stCode { background-color: #1e1e1e !important; border: 1px solid #ff69b4 !important; color: #00ff00 !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -25,54 +24,53 @@ LINK_SHOPEE = "https://collshp.com/luhveestores"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
 st.title("🔥 LuhVee Viral Machine")
-st.subheader("Gerador de Postagens Grátis")
+st.subheader("Copywriting para Todas as Redes")
 
-# --- BANCO DE DADOS ---
-# (Mantive as categorias que você pediu)
+# --- BANCO DE DADOS AMPLIADO ---
 tendencias = {
-    "Perfumaria e Beleza": ["Perfume Caviar Night", "Body Splash Melancia"],
-    "Achadinhos de Casa": ["MOP Limpeza Prática", "Organizador de Geladeira"],
-    "Móveis": ["Escrivaninha Compacta", "Puff Baú"],
-    "Sapatos e Tênis": ["Tênis Chunky", "Salto Scarpin"]
+    "Beleza": ["Perfume Caviar Night", "Body Splash Melancia", "Escova 3 em 1"],
+    "Casa": ["MOP Giratório", "Organizador Luxo", "Mini Processador"],
+    "Moda": ["Conjunto Alfaiataria", "Salto Scarpin", "Lingerie Renda"]
 }
 
-if st.button("🔎 IA: SUGERIR PRODUTO DO DIA"):
-    cat_sorteada = random.choice(list(tendencias.keys()))
-    prod_sorteado = random.choice(tendencias[cat_sorteada])
-    st.session_state['produto_sugerido'] = prod_sorteado
-    st.session_state['categoria_sugerida'] = cat_sorteada
+# Botão de Sugestão
+if st.button("🔎 IA: SUGERIR PRODUTO VIRA"):
+    cat = random.choice(list(tendencias.keys()))
+    st.session_state['prod'] = random.choice(tendencias[cat])
+    st.session_state['cat'] = cat
 
-# --- CAMPOS ---
-produto = st.text_input("Nome do Produto:", value=st.session_state.get('produto_sugerido', ""))
-
-st.write("---")
-st.markdown("### 📸 Passo 1: Coloque a foto do produto")
-
-# AJUSTE AQUI: Aceitando mais formatos e limpando erro
-foto_carregada = st.file_uploader("Arraste a foto ou clique para buscar", type=["png", "jpg", "jpeg", "webp"])
-
-if foto_carregada is not None:
-    try:
-        st.image(foto_carregada, caption="✅ Imagem carregada com sucesso!", use_column_width=True)
-    except:
-        st.error("⚠️ Ops! Essa imagem está com um formato difícil. Tente tirar um PRINT da tela e subir o print!")
+produto = st.text_input("Nome do Produto:", value=st.session_state.get('prod', ""))
 
 st.write("---")
-st.markdown("### 🔗 Passo 2: Escolha o destino")
-loja_escolhida = st.radio("Onde você vai vender?", ["Shopee", "Mercado Livre", "Outro Link"])
+st.markdown("### 📸 Passo 1: Imagem do Produto")
+foto = st.file_uploader("Escolha a foto (Print ou Original)", type=["png", "jpg", "jpeg", "webp"])
 
-if loja_escolhida == "Shopee":
-    link_usar = LINK_SHOPEE
-elif loja_escolhida == "Mercado Livre":
-    link_usar = LINK_ML
-else:
-    link_usar = st.text_input("Cole o link aqui:", "")
+if foto:
+    img = Image.open(foto)
+    # Mostra a imagem centralizada
+    st.image(img, caption="Sua foto pronta para o post!", use_column_width=True)
+    st.info("💡 Dica: Se for print, lembre de cortar as bordas no seu celular para vender mais!")
 
-if st.button("🚀 Passo 3: GERAR TEXTO PARA O POST"):
-    if produto and link_usar:
-        st.write("---")
-        st.markdown("#### ✅ SEU POST ESTÁ PRONTO!")
+st.write("---")
+st.markdown("### 🔗 Passo 2: Escolha o Link")
+loja = st.radio("Destino:", ["Shopee", "Mercado Livre", "Outro"])
+link_final = LINK_SHOPEE if loja == "Shopee" else LINK_ML if loja == "Mercado Livre" else st.text_input("Cole o link:")
+
+# --- GERAÇÃO DOS POSTS ---
+if st.button("🚀 GERAR POSTS PARA TODAS AS REDES"):
+    if produto and link_final:
+        st.success("✅ TEXTOS GERADOS COM SUCESSO! COPIE ABAIXO:")
         
-        copy_whats = f"""🔥 *ACHADINHO DA LUHVEE!* 🔥\n\nMeninas, olhem que perfeição esse *{produto}*! 😱✨\n\nAcabei de subir na minha vitrine do {loja_escolhida} com um preço especial para vocês.\n\n👇 *Garanta o seu aqui:*\n{link_usar}\n\nEntrega rápida e segura! 🏃‍♀️💨"""
-        st.code(copy_whats, language="text")
-        st.success("Copia o texto acima e posta com a foto! 🛍️")
+        # WHATSAPP STATUS / INSTA STORIES (Gatilho de Curiosidade)
+        st.markdown("#### 🟢 WHATSAPP STATUS / STORIES")
+        st.code(f"Apenas CHOCADA com esse {produto}! ✨\n\nQuem mais amou? Restam poucas unidades na promoção. 😱\n\nLink aqui: {link_final}\n\nLuhVee Stores 🛍️", language="text")
+
+        # TIKTOK / REELS (Gatilho POV e Viral)
+        st.markdown("#### 🎬 TIKTOK / REELS / SHORTS")
+        st.code(f"POV: Você encontrou o {produto} que viralizou e não vive mais sem! ✨💖\n\nO segredo das blogueiras agora na LuhVee Stores.\n\n🔗 Link na BIO ou comente 'EU QUERO'!\n#achadinhos #viral #compras #shopee #luhveestores", language="text")
+
+        # TELEGRAM / GRUPOS (Gatilho de Oferta)
+        st.markdown("#### 🔵 TELEGRAM / GRUPOS DE OFERTAS")
+        st.code(f"🔥 OFERTA DO DIA NA LUHVEE STORES! 🔥\n\n✅ {produto}\n\nDeixe sua rotina mais prática e elegante com esse achadinho. 🏆\n\n🛒 Compre agora: {link_final}\nEntrega garantida para todo Brasil! 🏃‍♀️💨", language="text")
+    else:
+        st.error("Luh, preencha o nome do produto e coloque uma foto! 😘")
