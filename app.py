@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 from PIL import Image
+from datetime import datetime
 
 # --- CONFIGURAÇÃO VISUAL ---
 st.set_page_config(page_title="LuhVee Viral Machine", page_icon="🔥", layout="centered")
@@ -19,70 +20,81 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+# --- INICIALIZAR HISTÓRICO ---
+if 'historico' not in st.session_state:
+    st.session_state['historico'] = []
+
 # --- LINKS OFICIAIS ---
 LINK_SHOPEE = "https://collshp.com/luhveestores"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
 # --- MENU LATERAL ---
 st.sidebar.title("Menu LuhVee")
-aba = st.sidebar.radio("Escolha o que fazer:", ["🛍️ Postar Produtos", "✨ Frases Motivacionais"])
+aba = st.sidebar.radio("Escolha o que fazer:", ["🛍️ Postar Produtos", "✨ Frases Motivacionais", "📋 Meus Posts Salvos"])
 
+# ==========================================
+# ABA 1: PRODUTOS
+# ==========================================
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 LuhVee Viral Machine")
-    st.subheader("Copywriting Pro: Textos que Vendem de Verdade")
-
-    # Banco de Sugestões IA
+    
     tendencias = {
-        "Beleza": ["Perfume Caviar Night", "Body Splash Melancia", "Escova 3 em 1", "Sérum Facial Viral"],
-        "Casa": ["MOP Giratório Inox", "Organizador de Acrílico", "Mini Processador Sem Fio"],
-        "Moda": ["Conjunto Alfaiataria Luxo", "Salto Scarpin Verniz", "Lingerie de Renda Premium"]
+        "Beleza": ["Perfume Caviar Night", "Body Splash Melancia", "Escova 3 em 1"],
+        "Casa": ["MOP Giratório Inox", "Organizador Luxo", "Mini Processador"],
+        "Moda": ["Conjunto Alfaiataria", "Salto Scarpin", "Lingerie Renda"]
     }
 
-    if st.button("🔎 IA: SUGERIR PRODUTO DO DIA"):
+    if st.button("🔎 IA: SUGERIR PRODUTO"):
         cat = random.choice(list(tendencias.keys()))
         st.session_state['prod'] = random.choice(tendencias[cat])
-        st.session_state['cat'] = cat
 
-    produto = st.text_input("Nome do Produto (Ex: Escova 3 em 1):", value=st.session_state.get('prod', ""))
+    produto = st.text_input("Nome do Produto:", value=st.session_state.get('prod', ""))
+    foto = st.file_uploader("📸 Foto do Produto", type=["png", "jpg", "jpeg", "webp"])
     
-    foto = st.file_uploader("📸 Passo 1: Escolha a foto do produto", type=["png", "jpg", "jpeg", "webp"])
-    if foto:
-        st.image(Image.open(foto), use_column_width=True)
-
-    loja = st.radio("Passo 2: Escolha o Destino:", ["Shopee", "Mercado Livre", "Outro"])
+    loja = st.radio("Destino:", ["Shopee", "Mercado Livre", "Outro"])
     link_final = LINK_SHOPEE if loja == "Shopee" else LINK_ML if loja == "Mercado Livre" else st.text_input("Cole o link:")
 
-    if st.button("🚀 GERAR POSTS COMPLETOS"):
+    if st.button("🚀 GERAR POSTS"):
         if produto and link_final:
-            st.success("✅ TEXTOS DE ALTA CONVERSÃO GERADOS!")
+            st.session_state['ultimo_post'] = {
+                "produto": produto,
+                "link": link_final,
+                "data": datetime.now().strftime("%d/%m - %H:%M"),
+                "texto": f"🔥 *ACHADINHO DA LUHVEE!* 🔥\n\nMeninas, olhem esse *{produto}*! 😱✨\n\n🛒 *Garanta aqui:* {link_final}\n\nLuhVee Stores 🛍️"
+            }
+            st.success("✅ Gerado! Veja abaixo:")
+            st.code(st.session_state['ultimo_post']['texto'], language="text")
             
-            # --- STATUS / STORIES ---
-            st.markdown("#### 🟢 WHATSAPP / INSTA STORIES")
-            copy_stories = f"""GENTEE, para tudo! 😱 Olha a perfeição desse *{produto}* que acabou de chegar! ✨\n\nEu tô simplesmente apaixonada e já garanti o meu. Ele é perfeito para quem busca praticidade e aquele toque de luxo no dia a dia. ❤️\n\n⚠️ *Aviso:* O estoque da vitrine tá voando e restam poucas unidades com esse preço especial. Não diz que eu não avisei, hein? 🏃‍♀️💨\n\n🛒 *Garanta o seu aqui agora:* {link_final}\n\nLuhVee Stores — Levando o melhor até você! 🛍️✨"""
-            st.code(copy_stories, language="text")
-
-            # --- TIKTOK / REELS ---
-            st.markdown("#### 🎬 TIKTOK / REELS / SHORTS")
-            copy_reels = f"""POV: Você finalmente encontrou o {produto} que todo mundo está comentando no TikTok! ✨💖\n\nAquele achadinho que você não sabia que precisava, até ter um! Qualidade impecável e o precinho que a gente ama. 🚀\n\nChega de procurar, o melhor está aqui na LuhVee Stores. ✨\n\n🛍️ *Gostou? Link direto na BIO ou clique aqui:* {link_final}\n\n#luhveestores #achadinhos #viral #compras #shopee #beleza #utilidades"""
-            st.code(copy_reels, language="text")
-
-            # --- TELEGRAM ---
-            st.markdown("#### 🔵 TELEGRAM / GRUPOS DE OFERTA")
-            copy_telegram = f"""🔥 *OFERTA EXCLUSIVA LUHVEE STORES!* 🔥\n\n⭐ PRODUTO: {produto}\n💰 Valor promocional por tempo limitado!\n\nSe você estava esperando o sinal para renovar seus itens de {st.session_state.get('cat', 'Moda/Beleza')}, o sinal é esse! Produto viral com entrega garantida e segura. 🏆\n\n👇 *COMPRE PELO LINK OFICIAL:* \n{link_final}\n\n✅ Siga nosso canal para não perder os achadinhos do dia! 🛍️"""
-            st.code(copy_telegram, language="text")
-
+            if st.button("💾 SALVAR NO HISTÓRICO"):
+                st.session_state['historico'].append(st.session_state['ultimo_post'])
+                st.toast("Post guardado no histórico! 📋")
         else:
-            st.error("Luh, preencha o nome do produto e o link! 😉")
+            st.error("Preencha o nome e o link! 😉")
 
 # ==========================================
-# ABA 2: MENSAGENS MOTIVACIONAIS
+# ABA 2: MOTIVACIONAIS
+# ==========================================
+elif aba == "✨ Frases Motivacionais":
+    st.title("✨ Vibes LuhVee Stores")
+    # (Lógica das frases que já temos...)
+    st.info("Escolha o período e gere sua mensagem de carinho!")
+
+# ==========================================
+# ABA 3: HISTÓRICO (A NOVIDADE!)
 # ==========================================
 else:
-    st.title("✨ Vibes LuhVee Stores")
-    st.subheader("Aquecimento de Audiência")
-    periodo = st.selectbox("Qual o momento do dia?", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
-    
-    # ... (as frases que já colocamos antes continuam aqui)
-    if st.button("✨ GERAR MENSAGEM"):
-        # Lógica de frases...
-        st.code("Mensagem aqui...", language="text")
+    st.title("📋 Histórico de Postagens")
+    if not st.session_state['historico']:
+        st.warning("Seu histórico está vazio. Comece a salvar seus posts!")
+    else:
+        if st.button("🗑️ Limpar Todo Histórico"):
+            st.session_state['historico'] = []
+            st.rerun()
+
+        for idx, item in enumerate(reversed(st.session_state['historico'])):
+            with st.expander(f"📦 {item['produto']} ({item['data']})"):
+                st.code(item['texto'], language="text")
+                st.write(f"🔗 Link: {item['link']}")
+                if st.button(f"Remover {idx}", key=f"del_{idx}"):
+                    st.session_state['historico'].pop(-(idx+1))
+                    st.rerun()
