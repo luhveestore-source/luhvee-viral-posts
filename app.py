@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v4.0", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v4.5", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -23,11 +23,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- INICIALIZAÇÃO DO HISTÓRICO (Session State) ---
+# --- INICIALIZAÇÃO DO HISTÓRICO ---
 if 'historico' not in st.session_state:
     st.session_state['historico'] = []
 
-# --- BANCO DE DADOS COMPLETO E ATUALIZADO ---
+# --- BANCO DE DADOS DE TENDÊNCIAS (TODOS OS NICHOS) ---
 tendencias_reais = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador de Acrílico Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
@@ -37,130 +37,80 @@ tendencias_reais = {
     "📱 Tecnologia & Gadgets": ["Fone de Ouvido Noise Cancelling", "Carregador Magnético Magsafe", "Mini Projetor Portátil"],
     "🚗 Acessórios Automotivos": ["Suporte de Celular por Gravidade", "Aspirador de Carro Sem Fio", "Luz Interna Neon"],
     "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras", "Sacos de Vácuo"],
-    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Automático Solar", "Vaso de Auto-irrigação", "Cortador de Grama Portátil"],
-    "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento Viral", "Kit Cuecas de Bambu"],
-    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro Ortopédica", "Bota Adventure"],
-    "💪 Produtos de Academia": ["Garrafa de Água Motivacional", "Kit de Faixas Elásticas", "Massageador Muscular Turbo", "Smartwatch Fitness"],
+    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Automático Solar", "Vaso de Auto-irrigação"],
+    "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento Viral"],
+    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro Ortopédica"],
+    "💪 Produtos de Academia": ["Garrafa de Água Motivacional", "Kit de Faixas Elásticas", "Massageador Muscular Turbo"],
     "🌎 Internacional (High Ticket)": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
 }
 
-redes_sociais = ["TikTok Trends 📱", "Pinterest Predicts 📌", "Facebook Ads Library 📢", "YouTube Shorts 🎬"]
+# --- FUNÇÃO DE MENSAGENS LONGAS (VOLTOU!) ---
+def gerar_mensagem_luhvee(tipo, periodo):
+    if tipo == "Profunda/Inspiradora":
+        ganchos = ["Às vezes, a pressa do dia a dia nos faz esquecer de quem realmente somos.", "Pare um segundo. Respire fundo. Olhe ao seu redor."]
+        reflexoes = [
+            "A vida não é uma corrida desenfreada contra o tempo, mas uma jornada sagrada de cura e redescoberta. Cada cicatriz que você carrega é um mapa de uma batalha que você venceu em silêncio. Não se compare com o palco de ninguém enquanto você ainda está nos seus bastidores. O seu brilho é único e a sua essência é o que faz o mundo ser um lugar mais bonito. Valorize os pequenos passos, pois são eles que constroem os grandes destinos.",
+            "Muitas vezes depositamos a nossa felicidade no 'quando eu chegar lá'. Mas a verdade é que a vida acontece agora, neste exato fôlego. Ser uma mulher forte não significa não cansar, mas sim ter a sabedoria de descansar sem desistir. Você é o projeto mais importante da sua vida. Cuide-se com o mesmo amor que dedica aos outros, pois o seu coração é o seu templo mais sagrado e ele precisa de luz."
+        ]
+        conclusoes = ["Você é rara e preciosa.", "O seu momento de florescer é hoje."]
+    else: # Engraçada/Vibes
+        ganchos = ["Status do dia: Em busca da minha versão rica, porque a versão linda já cansou de ser pobre! 😂", "Acordei com uma vontade de vencer na vida, mas a vontade de voltar a dormir era maior."]
+        reflexoes = [
+            "Dizem que o dinheiro não traz felicidade, mas eu preferia chorar em Paris do que chorar na fila do pão, não é mesmo? A vida é curta demais para não comprar aquele achadinho que você amou. Se você está em dúvida entre o certo e o errado, escolha o que te faz feliz (e o que parcela em 12x na Shopee!). Lembre-se: boleto a gente paga, mas o brilho no olho de um produtinho novo chegando em casa não tem preço!",
+            "Fui procurar o equilíbrio emocional e acabei encontrando um carrinho cheio de compras. Minha terapia é o rastreio do correio dizendo 'saiu para entrega'. Ser adulta é basicamente esperar encomendas e fingir que sabemos o que estamos fazendo. Sorria, afinal, as rugas de preocupação saem caro para botocar depois, então é melhor rir de tudo e seguir plena!"
+        ]
+        conclusoes = ["Foca no objetivo e não esquece o café!", "Plena e pronta para o próximo recebido! 💅"]
 
-# --- LINKS ---
-LINKS = {
-    "Shopee": "https://collshp.com/luhveestores",
-    "Mercado Livre": "https://www.mercadolivre.com.br/social/axwelloliveira",
-    "Whats": "https://wa.me/5511948021428"
-}
+    return f"{periodo}\n\n{random.choice(ganchos)}\n\n{random.choice(reflexoes)}\n\n{random.choice(conclusoes)}\n\nCom carinho, LuhVee Stores ❤️"
 
 # --- MENU LATERAL ---
 st.sidebar.title("Comando LuhVee")
-aba = st.sidebar.radio("Escolha a ferramenta:", [
-    "🛍️ Postar Produtos", 
-    "🔎 Pesquisa Multi-Redes", 
-    "📸 Instagram Trends IA",
-    "✨ Frases Motivacionais", 
-    "🔗 Vitrines & Hub"
-])
+aba = st.sidebar.radio("Escolha a ferramenta:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "📸 Instagram Trends IA", "✨ Frases Motivacionais", "🔗 Vitrines & Hub"])
 
-# ==========================================
-# ABA 1: GERADOR DE MADEIRADA (COPY AGRESSIVA)
-# ==========================================
+# --- ABA 1: POSTAR PRODUTOS (COPY AGRESSIVA) ---
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada de Vendas (Copy Agressiva)")
-    
-    col1, col2 = st.columns([2, 1])
-    with col1: produto = st.text_input("Nome do Produto:")
-    with col2: preco = st.text_input("Preço (R$):")
-    
-    loja = st.radio("Link de qual loja?", list(LINKS.keys()))
-    link_f = LINKS[loja]
-
-    if st.button("🚀 GERAR TEXTOS DE CONVERSÃO"):
+    st.title("🔥 Madeirada de Vendas")
+    produto = st.text_input("Nome do Produto:")
+    preco = st.text_input("Preço (R$):")
+    if st.button("🚀 GERAR COPY AGRESSIVA"):
         if produto:
-            st.success("✅ ESTRATÉGIA AGRESSIVA GERADA!")
             valor = f"POR APENAS R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
-            
-            copy_story = (
-                f"🚨 ÚLTIMO AVISO: {produto.upper()} EM OFERTA! 🚨\n\n"
-                f"Gente, para de perder tempo! Eu achei o {produto} que todo mundo está procurando e o estoque está voando! "
-                f"É a maior qualidade que já vi e por um preço que não existe em outro lugar. 😱\n\n"
-                f"🔥 {valor}\n"
-                f"⏳ Restam poucas unidades no link abaixo!\n"
-                f"🔗 CLICA AQUI AGORA: {link_f}\n\n"
-                f"LuhVee Stores 🛍️ - Não diga que eu não avisei!"
-            )
-            
-            copy_viral = (
-                f"PARE DE SER ENGANADA! ❌ Você precisa desse {produto}!\n\n"
-                f"Esquece tudo o que você já viu. Esse aqui é o único original que viralizou na gringa. "
-                f"Resolve o seu problema em segundos e custa menos que um lanche! 💸\n\n"
-                f"✅ {valor}\n"
-                f"✅ QUALIDADE PREMIUM TESTADA\n"
-                f"✅ ENTREGA RÁPIDA\n\n"
-                f"🔗 LINK NA MINHA BIO! Digita 'EU QUERO' que o link vai no seu direct! 🚀\n"
-                f"#luhveestores #achadinhos #viral #promoção"
-            )
-            
-            st.markdown("### 📱 Copy para Stories (Urgência)")
-            st.code(copy_story, language="text")
-            st.markdown("### 🎬 Copy para Reels/TikTok (Desejo)")
-            st.code(copy_viral, language="text")
-        else: st.warning("Digite o produto!")
+            st.code(f"🚨 ÚLTIMO AVISO: {produto.upper()}! 🚨\n\nEstoque voando! Qualidade premium por {valor}.\n🔗 Link: https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️", language="text")
 
-# ==========================================
-# ABA 2: PESQUISA MULTI-REDES + HISTÓRICO
-# ==========================================
+# --- ABA 2: PESQUISA MULTI-REDES + HISTÓRICO ---
 elif aba == "🔎 Pesquisa Multi-Redes":
-    st.title("🔎 Mineração de Ouro Multi-Plataforma")
-    categoria = st.selectbox("Selecione o Nicho para Minerar:", list(tendencias_reais.keys()))
-    
-    if st.button("📡 INICIAR VARREDURA AVANÇADA"):
+    st.title("🔎 Mineração de Ouro")
+    categoria = st.selectbox("Nicho:", list(tendencias_reais.keys()))
+    if st.button("📡 VARREDURA"):
         sugestao = random.choice(tendencias_reais[categoria])
-        rede = random.choice(redes_sociais)
+        rede = random.choice(["TikTok 📱", "Pinterest 📌", "Instagram 📸", "Ads Library 📢"])
         info = f"PRODUTO: {sugestao} | REDE: {rede}"
-        
-        # Salva no histórico
         st.session_state['historico'].append(info)
-        
-        st.subheader(f"💡 Resultado: {sugestao}")
-        st.success(f"📍 Tendência Confirmada: **{rede}**")
-        st.info("Atenção: Este produto está sendo escalado agora. Aproveite o timing!")
-
-    # --- SEÇÃO DE HISTÓRICO ---
+        st.success(f"💡 {sugestao} está bombando no {rede}!")
+    
     if st.session_state['historico']:
         st.write("---")
-        st.subheader("📋 Histórico de Mineração")
+        st.subheader("📋 Histórico de Hoje")
         for item in reversed(st.session_state['historico']):
             st.text(f"✅ {item}")
-        if st.button("🗑️ Limpar Histórico"):
-            st.session_state['historico'] = []
-            st.rerun()
 
-# ==========================================
-# ABA 3: INSTAGRAM TRENDS
-# ==========================================
+# --- ABA 3: INSTAGRAM TRENDS ---
 elif aba == "📸 Instagram Trends IA":
-    st.title("📸 Estratégia Instagram")
-    if st.button("🔍 ANALISAR ALGORITMO AGORA"):
-        st.success("🎯 FORMATO DO DIA: Reels de 7 segundos com texto no centro.")
-        st.write("🎶 Áudio do Momento: 'Trending Luxury Beats'")
-        st.info("Dica: Interaja com 10 seguidores antes de postar para aumentar o alcance!")
+    st.title("📸 Insights do Insta")
+    if st.button("🔍 ANALISAR"):
+        st.warning("🎯 Reels de 7 seg com áudio instrumental está em alta!")
 
-# ==========================================
-# ABA 4: MOTIVACIONAIS
-# ==========================================
+# --- ABA 4: MOTIVACIONAIS (COMPLETAS!) ---
 elif aba == "✨ Frases Motivacionais":
     st.title("✨ Vibes LuhVee")
-    if st.button("✨ GERAR REFLEXÃO PROFUNDA"):
-        # Importamos a lógica de texto longo aqui
-        st.code("A vida é uma jornada sagrada... [Texto Longo Gerado]", language="text")
+    periodo = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
+    estilo = st.radio("Estilo da Mensagem:", ["Profunda/Inspiradora", "Engraçada/Vibes"])
+    
+    if st.button("✨ GERAR MENSAGEM COMPLETA"):
+        msg = gerar_mensagem_luhvee(estilo, periodo)
+        st.code(msg, language="text")
 
-# ==========================================
-# ABA 5: VITRINES & HUB
-# ==========================================
+# --- ABA 5: HUB ---
 else:
-    st.title("🔗 Hub de Links")
-    for n, u in LINKS.items():
-        st.markdown(f"**{n}**")
-        st.code(u)
+    st.title("🔗 Seus Links")
+    st.code("https://collshp.com/luhveestores")
