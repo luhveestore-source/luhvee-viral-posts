@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v6.0", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v7.0", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -23,11 +23,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- INICIALIZAÇÃO DO HISTÓRICO (ESSENCIAL) ---
+# --- INICIALIZAÇÃO DO HISTÓRICO ---
 if 'historico' not in st.session_state:
     st.session_state['historico'] = []
 
-# --- BANCO DE DADOS COMPLETO (RESTAURADO E AMPLIADO) ---
+# --- BANCO DE DADOS COMPLETO ---
 tendencias_reais = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador de Acrílico Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
@@ -45,7 +45,7 @@ tendencias_reais = {
     "🌎 Internacional (High Ticket)": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
 }
 
-# --- FUNÇÃO DE MENSAGENS LONGAS (RESTAURADA) ---
+# --- FUNÇÃO DE MENSAGENS LONGAS (1000 LETRAS) ---
 def gerar_mensagem_luhvee(tipo, periodo):
     if tipo == "Profunda/Inspiradora":
         gancho = "Às vezes, a pressa do dia a dia nos faz esquecer de quem realmente somos. Pare um segundo. Respire fundo. Olhe ao seu redor e perceba o quanto você já caminhou até este momento."
@@ -53,7 +53,7 @@ def gerar_mensagem_luhvee(tipo, periodo):
         conclusao = "Você é rara, preciosa e digna de tudo o que é bom. O seu momento de florescer é hoje!"
     else:
         gancho = "Status do dia: Em busca da minha versão rica, porque a versão linda já cansou de ser pobre! 😂 Acordei com uma vontade de vencer na vida, mas a vontade de voltar a dormir era maior."
-        reflexao = "Dizem que o dinheiro não traz felicidade, mas eu preferia chorar em Paris do que na fila do pão! A vida é curta demais para não comprar aquele achadinho que você amou. Se está em dúvida entre o certo e o errado, escolha o que te faz feliz (e o que parcela em 12x!). Lembre-se: boleto a gente paga, mas o brilho no olho de um produtinho novo chegando em casa não tem preço!"
+        reflexao = "Dizem que o dinheiro não traz felicidade, mas eu preferia chorar em Paris do que na fila do pão! A vida é curta demais para não comprar aquele achadinho que você amou. Se está em dúvida, escolha o que te faz feliz (e o que parcela no cartão!). Lembre-se: boleto a gente paga, mas o brilho de um produtinho novo chegando em casa não tem preço!"
         conclusao = "Foca no objetivo e não esquece o café! Sorria, afinal, as rugas de preocupação saem caro para botocar depois!"
     
     return f"{periodo}\n\n{gancho}\n\n{reflexao}\n\n{conclusao}\n\nCom carinho, LuhVee Stores ❤️"
@@ -62,44 +62,63 @@ def gerar_mensagem_luhvee(tipo, periodo):
 st.sidebar.title("Comando LuhVee")
 aba = st.sidebar.radio("Escolha a ferramenta:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "📸 Instagram Trends IA", "✨ Frases Motivacionais", "🔗 Vitrines & Hub"])
 
-# --- ABA 1: POSTAR PRODUTOS (COPY AGRESSIVA) ---
+# --- ABA 1: POSTAR PRODUTOS (COPY PROFISSIONAL AGRESSIVA) ---
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada de Alta Conversão")
+    st.title("🔥 Madeirada de Alta Conversão Profissional")
     col1, col2 = st.columns([2, 1])
     with col1: produto = st.text_input("Nome do Produto:")
     with col2: preco = st.text_input("Preço (R$):")
+    
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if produto:
-            valor = f"R$ {preco}" if preco else "PREÇO ESPECIAL"
-            copy = f"🚨 PARA TUDO! VOCÊ VAI PERDER ESSA? 🚨\n\nAcabei de liberar o link do {produto.upper()}! Estoque no fim! 🔥\n\n💎 Diferenciais:\n✅ Qualidade Superior\n✅ Entrega Rápida\n\n😱 Por APENAS: {valor}\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️"
-            st.code(copy, language="text")
+            valor_final = f"R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
+            # Copy Profissional com gatilhos reais para WhatsApp/Instagram/TikTok
+            copy_completa = (
+                f"🚨 PARA TUDO! VOCÊ VAI PERDER ESSA OPORTUNIDADE? 🚨\n\n"
+                f"Acabei de liberar o link do {produto.upper()} que viralizou na gringa e finalmente chegou para nós! "
+                f"Atenção: Esse é o estoque exclusivo e quem não garantir agora vai ficar na mão. "
+                f"Qualidade premium testada e aprovada por mim. 🔥\n\n"
+                f"💎 POR QUE VOCÊ PRECISA DISSO:\n"
+                f"✅ Qualidade Superior (Acabamento de Luxo)\n"
+                f"✅ Resultado Imediato e Prático\n"
+                f"✅ O queridinho das redes sociais\n\n"
+                f"😱 De: R$ ---,--- por APENAS: {valor_final}\n"
+                f"⚠️ O link expira em breve devido à alta demanda!\n\n"
+                f"🛒 COMPRE AGORA NO LINK SEGURO:\n"
+                f"👉 https://collshp.com/luhveestores\n\n"
+                f"LuhVee Stores 🛍️ - Sua dose diária de tendência e autoestima!"
+            )
+            st.code(copy_completa, language="text")
+            st.info("💡 Copy estruturada com gatilhos de Escassez, Urgência e Autoridade.")
+        else: st.warning("Luh, digite o nome do produto!")
 
-# --- ABA 2: PESQUISA MULTI-REDES + HISTÓRICO (RESTAURADO) ---
+# --- ABA 2: PESQUISA MULTI-REDES + HISTÓRICO ---
 elif aba == "🔎 Pesquisa Multi-Redes":
-    st.title("🔎 Mineração de Ouro Multi-Plataforma")
+    st.title("🔎 Inteligência de Mercado + Histórico")
     categoria = st.selectbox("Nicho para Minerar:", list(tendencias_reais.keys()))
     if st.button("📡 INICIAR VARREDURA"):
         sugestao = random.choice(tendencias_reais[categoria])
         rede = random.choice(["TikTok 📱", "Pinterest 📌", "Instagram 📸", "Facebook Ads 📢"])
-        st.session_state['historico'].append(f"{sugestao} ({rede})")
+        # Salva no histórico da sessão
+        st.session_state['historico'].append(f"{sugestao} (Encontrado no {rede})")
         st.success(f"💡 {sugestao} em alta no {rede}!")
     
     if st.session_state['historico']:
         st.write("---")
-        st.subheader("📋 Histórico de Pesquisa")
+        st.subheader("📋 Histórico de Pesquisas")
         for item in reversed(st.session_state['historico']):
             st.text(f"✅ {item}")
-        if st.button("🗑️ Limpar Histórico"):
+        if st.button("🗑️ Limpar Tudo"):
             st.session_state['historico'] = []
             st.rerun()
 
 # --- ABA 3: INSTAGRAM TRENDS ---
 elif aba == "📸 Instagram Trends IA":
     st.title("📸 Insights Instagram")
-    if st.button("🔍 ANALISAR"):
-        st.warning("🎯 Reels curtos e dinâmicos com áudio viral estão em alta!")
+    if st.button("🔍 ANALISAR ALGORITMO"):
+        st.warning("🎯 Reels curtos (7-10 seg) com áudio instrumental e legenda no centro estão bombando!")
 
-# --- ABA 4: MOTIVACIONAIS (RESTAURADA) ---
+# --- ABA 4: MOTIVACIONAIS ---
 elif aba == "✨ Frases Motivacionais":
     st.title("✨ Vibes LuhVee")
     periodo = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
@@ -109,5 +128,5 @@ elif aba == "✨ Frases Motivacionais":
 
 # --- ABA 5: HUB ---
 else:
-    st.title("🔗 Seus Links")
+    st.title("🔗 Seus Links Oficiais")
     st.code("https://collshp.com/luhveestores")
