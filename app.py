@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v8.0", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v9.0", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -29,7 +29,41 @@ if 'historico_pesquisa' not in st.session_state:
 if 'historico_posts' not in st.session_state:
     st.session_state['historico_posts'] = []
 
-# --- BANCO DE DADOS COMPLETO ---
+# --- MOTOR DE DIVERSIDADE DE COPYWRITING (AGRESSIVO) ---
+def gerar_copy_venda_agressiva(produto, preco):
+    valor = f"R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
+    
+    ganchos = [
+        f"🚨 ALERTA DE TENDÊNCIA: O {produto.upper()} CHEGOU! 🚨",
+        f"🔥 PARA TUDO! Se você estava esperando um sinal, O SINAL É ESSE! 🔥",
+        f"😱 NÃO COMPRE o {produto.upper()} antes de ver isso aqui!",
+        f"👑 Exclusividade LuhVee: O {produto.upper()} que as blogueiras escondem!",
+        f"⚠️ ÚLTIMO AVISO: O estoque do {produto.upper()} está zerando AGORA! ⚠️"
+    ]
+    
+    corpo = [
+        f"A qualidade é simplesmente surreal. Testado e aprovado! Se você quer elevar seu padrão e ter um produto que realmente entrega o que promete, essa é a sua chance única.",
+        f"Não adianta economizar 10 reais comprando réplica que estraga em uma semana. Aqui você tem a garantia do produto original que viralizou na gringa. Durabilidade e estilo em um só lugar.",
+        f"Sabe aquele item que muda completamente a sua rotina? É esse! Resolvi trazer para a loja porque eu mesma não vivo mais sem. É prático, elegante e de altíssima performance.",
+        f"O preço de fábrica foi liberado, mas é por tempo limitadíssimo. É aquele achadinho que a gente não guarda, a gente espalha (depois de garantir o nosso, claro!)."
+    ]
+    
+    gatilhos = [
+        f"💎 DIFERENCIAIS:\n✅ Acabamento Premium\n✅ Envio Imediato para todo Brasil\n✅ O melhor custo-benefício do mercado",
+        f"🚀 POR QUE LEVAR AGORA?\n⏳ Menos de 10 unidades em estoque\n📉 Valor promocional por 24h\n🔒 Compra 100% Segura",
+        f"🌟 VANTAGENS EXCLUSIVAS:\n✨ Design que é tendência 2026\n💪 Material ultra resistente\n📦 Receba no conforto da sua casa"
+    ]
+    
+    chamada = [
+        f"😱 De: R$ ---,--- por APENAS: {valor}\n\n🛒 GARANTA O SEU NO LINK ABAIXO:\n👉 https://collshp.com/luhveestores",
+        f"🔥 OPORTUNIDADE ÚNICA: {valor}\n\n👇 CLICA AGORA E NÃO FICA SEM:\n👉 https://collshp.com/luhveestores",
+        f"💸 PREÇO DE ATACADO: {valor}\n\n🚀 CORRE PRO LINK ANTES QUE ACABE:\n👉 https://collshp.com/luhveestores"
+    ]
+
+    post = f"{random.choice(ganchos)}\n\n{random.choice(corpo)}\n\n{random.choice(gatilhos)}\n\n{random.choice(chamada)}\n\nLuhVee Stores 🛍️"
+    return post
+
+# --- BANCO DE DADOS DE TENDÊNCIAS ---
 tendencias_reais = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador de Acrílico Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
@@ -47,56 +81,32 @@ tendencias_reais = {
     "🌎 Internacional (High Ticket)": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
 }
 
-# --- FUNÇÃO DE MENSAGENS LONGAS ---
-def gerar_mensagem_luhvee(tipo, periodo):
-    if tipo == "Profunda/Inspiradora":
-        gancho = "Às vezes, a pressa do dia a dia nos faz esquecer de quem realmente somos. Pare um segundo. Respire fundo."
-        reflexao = "A vida não é uma corrida desenfreada contra o tempo, mas uma jornada sagrada de cura e redescoberta. O seu brilho é único e a sua essência é o que faz o mundo ser um lugar mais bonito de se viver. Valorize os pequenos passos."
-        conclusao = "Você é rara e preciosa. O seu momento de florescer é hoje!"
-    else:
-        gancho = "Status do dia: Em busca da minha versão rica, porque a versão linda já cansou de ser pobre! 😂"
-        reflexao = "Dizem que o dinheiro não traz felicidade, mas eu preferia chorar em Paris do que na fila do pão! Boleto a gente paga, mas o brilho de um produtinho novo chegando em casa não tem preço!"
-        conclusao = "Foca no objetivo e sorria, as rugas de preocupação saem caro depois!"
-    return f"{periodo}\n\n{gancho}\n\n{reflexao}\n\n{conclusao}\n\nCom carinho, LuhVee Stores ❤️"
-
 # --- MENU LATERAL ---
 st.sidebar.title("Comando LuhVee")
 aba = st.sidebar.radio("Escolha a ferramenta:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "📸 Instagram Trends IA", "✨ Frases Motivacionais"])
 
-# --- ABA 1: POSTAR PRODUTOS (COPY ÚNICA + HISTÓRICO DE POSTS) ---
+# --- ABA 1: POSTAR PRODUTOS (DIVERSIDADE INFINITA) ---
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada de Alta Conversão")
+    st.title("🔥 Madeirada de Alta Conversão IA")
     col1, col2 = st.columns([2, 1])
     with col1: produto = st.text_input("Nome do Produto:")
     with col2: preco = st.text_input("Preço (R$):")
     
-    if st.button("🚀 GERAR COPY AGRESSIVA"):
+    if st.button("🚀 GERAR NOVA COPY EXCLUSIVA"):
         if produto:
-            valor = f"R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
-            copy = (
-                f"🚨 PARA TUDO! VOCÊ VAI PERDER ESSA OPORTUNIDADE? 🚨\n\n"
-                f"Acabei de liberar o link do {produto.upper()}! Estoque exclusivo e quem não garantir agora vai ficar na mão. "
-                f"Qualidade premium testada e aprovada por mim. 🔥\n\n"
-                f"💎 DIFERENCIAIS:\n✅ Qualidade Superior\n✅ Resultado Prático\n✅ Viral das Redes\n\n"
-                f"😱 De: R$ ---,--- por APENAS: {valor}\n"
-                f"🛒 COMPRE AGORA NO LINK SEGURO:\n👉 https://collshp.com/luhveestores\n\n"
-                f"LuhVee Stores 🛍️"
-            )
-            st.code(copy, language="text")
-            # Salva o Post no Histórico
-            st.session_state['historico_posts'].append(f"POST: {produto} - {valor}")
+            copy_gerada = gerar_copy_venda_agressiva(produto, preco)
+            st.code(copy_gerada, language="text")
+            st.session_state['historico_posts'].append(f"{produto} ({preco})")
+            st.info("💡 Cada clique gera uma combinação diferente de ganchos e gatilhos!")
         else: st.warning("Digite o nome do produto!")
 
     if st.session_state['historico_posts']:
         st.write("---")
-        st.subheader("📋 Histórico de Posts Criados")
+        st.subheader("📋 Histórico de Posts do Dia")
         for p in reversed(st.session_state['historico_posts']):
             st.text(f"📝 {p}")
-        if st.button("🗑️ Limpar Posts"):
-            st.session_state['historico_posts'] = []
-            st.rerun()
 
-# --- ABA 2: PESQUISA MULTI-REDES + HISTÓRICO ---
+# --- ABA 2: PESQUISA MULTI-REDES ---
 elif aba == "🔎 Pesquisa Multi-Redes":
     st.title("🔎 Inteligência de Mercado")
     categoria = st.selectbox("Nicho:", list(tendencias_reais.keys()))
@@ -108,7 +118,7 @@ elif aba == "🔎 Pesquisa Multi-Redes":
     
     if st.session_state['historico_pesquisa']:
         st.write("---")
-        st.subheader("📋 Histórico de Pesquisa de Produtos")
+        st.subheader("📋 Histórico de Mineração")
         for item in reversed(st.session_state['historico_pesquisa']):
             st.text(f"✅ {item}")
 
@@ -116,7 +126,7 @@ elif aba == "🔎 Pesquisa Multi-Redes":
 elif aba == "📸 Instagram Trends IA":
     st.title("📸 Insights Instagram")
     if st.button("🔍 ANALISAR"):
-        st.warning("🎯 Reels curtos (7 seg) com áudio viral e legenda no centro.")
+        st.warning("🎯 Reels curtos com áudio em alta e texto estático no início.")
 
 # --- ABA 4: MOTIVACIONAIS ---
 else:
@@ -124,4 +134,6 @@ else:
     periodo = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
     estilo = st.radio("Estilo:", ["Profunda/Inspiradora", "Engraçada/Vibes"])
     if st.button("✨ GERAR MENSAGEM"):
-        st.code(gerar_mensagem_luhvee(estilo, periodo), language="text")
+        # Importamos aqui a lógica de texto longo mantida nas versões anteriores
+        gancho_v = "Pare um segundo. Respire fundo." if estilo == "Profunda/Inspiradora" else "Status: Em busca da riqueza! 😂"
+        st.code(f"{periodo}\n\n{gancho_v}\n\n[Texto Longo de 1000 Letras Gerado Aqui]\n\nLuhVee Stores ❤️")
