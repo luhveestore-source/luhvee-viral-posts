@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v9.5", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v10.0", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -29,83 +29,105 @@ if 'historico_pesquisa' not in st.session_state:
 if 'historico_posts' not in st.session_state:
     st.session_state['historico_posts'] = []
 
-# --- FUNÇÃO DE MENSAGENS LONGAS (RESTAURADA TOTALMENTE) ---
+# --- MOTOR DE DIVERSIDADE DE COPYWRITING ---
+def gerar_copy_venda_agressiva(produto, preco):
+    valor = f"R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
+    ganchos = [
+        f"🚨 ALERTA DE TENDÊNCIA: O {produto.upper()} CHEGOU! 🚨",
+        f"🔥 PARA TUDO! Se você estava esperando um sinal, O SINAL É ESSE! 🔥",
+        f"😱 NÃO COMPRE o {produto.upper()} antes de ver isso aqui!",
+        f"👑 Exclusividade LuhVee: O {produto.upper()} que as blogueiras escondem!",
+        f"⚠️ ÚLTIMO AVISO: O estoque do {produto.upper()} está zerando AGORA! ⚠️"
+    ]
+    corpo = [
+        f"A qualidade é simplesmente surreal. Testado e aprovado! Se você quer elevar seu padrão e ter um produto que realmente entrega o que promete, essa é a sua chance única.",
+        f"Não adianta economizar comprando réplica que estraga em uma semana. Aqui você tem a garantia do produto original que viralizou na gringa. Durabilidade e estilo em um só lugar."
+    ]
+    chamada = [f"😱 De: R$ ---,--- por APENAS: {valor}\n\n🛒 COMPRE AGORA NO LINK SEGURO:\n👉 https://collshp.com/luhveestores"]
+    return f"{random.choice(ganchos)}\n\n{random.choice(corpo)}\n\n{random.choice(chamada)}\n\nLuhVee Stores 🛍️"
+
+# --- FUNÇÃO DE MENSAGENS LONGAS ---
 def gerar_mensagem_luhvee_completa(tipo, periodo):
     if tipo == "Profunda/Inspiradora":
-        ganchos = [
-            "Às vezes, a pressa do dia a dia nos faz esquecer de quem realmente somos e do que viemos fazer aqui nesta terra.",
-            "Pare um segundo. Respire fundo. Olhe ao seu redor e perceba o quanto você já caminhou até este exato momento.",
-            "O sucesso não é apenas sobre os números na conta, mas sobre a paz que você sente ao deitar a cabeça no travesseiro."
-        ]
-        reflexoes = [
-            "A vida não é uma corrida desenfreada contra o tempo ou contra os outros, mas uma jornada sagrada de cura e redescoberta. Cada cicatriz que você carrega é, na verdade, um mapa detalhado de uma batalha que você venceu em silêncio. Não se compare com o palco de ninguém enquanto você ainda está nos seus bastidores. O seu brilho é único, singular, e a sua essência é exatamente o que faz o mundo ser um lugar mais bonito de se viver. Valorize os pequenos passos, cada respiração, pois são eles que constroem os grandes destinos e as histórias que valem a pena ser contadas ao longo dos anos. Você é o milagre que tanto procurava.",
-            "Muitas vezes depositamos a nossa felicidade no 'quando eu tiver' ou 'quando eu chegar lá'. Mas a verdade nua e crua é que a vida acontece agora, neste exato fôlego, nesta exata batida de coração. Ser uma mulher forte não significa não cansar ou nunca chorar, mas sim ter a sabedoria divina de descansar sem jamais desistir do que te faz vibrar. Você é o projeto mais importante e urgente da sua vida. Cuide-se com o mesmo amor e dedicação que você dedica aos outros, pois o seu coração é o seu templo mais sagrado e ele precisa de luz para continuar iluminando quem está ao seu redor."
-        ]
-        conclusoes = [
-            "Que este momento seja o início de uma nova perspectiva na sua vida. Você é rara, preciosa e digna de tudo o que é bom.",
-            "Lembre-se sempre: você é o milagre. Siga com fé, cabeça erguida e muita coragem. O mundo espera por você."
-        ]
-    else: # Engraçada/Vibes
-        ganchos = [
-            "Status do dia: Em busca da minha versão rica, porque a versão linda já cansou de ser pobre e carregar sacolas! 😂",
-            "Acordei com uma vontade imensa de vencer na vida e conquistar o mundo, mas a vontade de voltar a dormir era um pouco maior.",
-            "Se a vida te der limões, faça uma limonada, mas se ela te der um cartão sem limite, faça compras na LuhVee Stores!"
-        ]
-        reflexoes = [
-            "Dizem por aí que o dinheiro não traz felicidade, mas eu sinceramente preferia muito mais estar chorando em Paris ou Maldivas do que chorar na fila do pão às seis da manhã, não é mesmo? A vida é curta demais para a gente não comprar aquele achadinho que amou de primeira vista. Se você está em dúvida entre o que é certo e o que te faz feliz, escolha o que te faz sorrir (e o que parcela no cartão em 12 vezes sem juros!). Lembre-se: boletos a gente paga com o suor do rosto, mas o brilho no olho de ver o rastreio dizendo 'saiu para entrega' não tem preço que pague nesta vida!",
-            "Fui procurar o meu equilíbrio emocional hoje cedo e acabei encontrando um carrinho cheio de compras e um cupom de desconto. Minha terapia favorita é o barulho da notificação do banco dizendo que a compra foi aprovada. Ser adulta é basicamente viver esperando encomendas e fingir que sabemos exatamente o que estamos fazendo da vida enquanto tomamos um café gelado. Sorria sempre, gata! Afinal, as rugas de preocupação e estresse saem muito mais caro para botocar depois, então é melhor rir de tudo, manter a elegância e seguir plena para o próximo recebido!"
-        ]
-        conclusoes = [
-            "Foca no objetivo, não esquece o café e mantém o brilho! Plena e pronta para o que der e vier!",
-            "Seja o caos ou seja o brilho, mas seja você! Agora vai lá e arrasa porque os boletos não se pagam sozinhos!"
-        ]
+        gancho = "Às vezes, a pressa do dia a dia nos faz esquecer de quem realmente somos. Pare um segundo. Respire fundo."
+        reflexao = "A vida não é uma corrida contra o tempo, mas uma jornada sagrada de cura. Cada cicatriz que você carrega é um mapa de uma batalha que você venceu em silêncio. Valorize os pequenos passos, pois são eles que constroem os grandes destinos."
+        conclusao = "Você é rara, preciosa e digna de tudo o que é bom. O seu momento de florescer é hoje!"
+    else:
+        gancho = "Status do dia: Em busca da minha versão rica, porque a versão linda já cansou de ser pobre! 😂"
+        reflexao = "Dizem que o dinheiro não traz felicidade, mas eu preferia chorar em Paris do que na fila do pão! A vida é curta demais para não comprar aquele achadinho que você amou. Lembre-se: boletos a gente paga, mas o brilho no olho de um produtinho novo não tem preço!"
+        conclusao = "Foca no objetivo e não esquece o café! Sorria, as rugas de preocupação saem caro para botocar depois!"
+    return f"{periodo}\n\n{gancho}\n\n{reflexao}\n\n{conclusao}\n\nCom carinho, LuhVee Stores ❤️"
 
-    return f"{periodo}\n\n{random.choice(ganchos)}\n\n{random.choice(reflexoes)}\n\n{random.choice(conclusoes)}\n\nCom todo carinho do mundo,\nLuhVee Stores ❤️"
-
-# --- O RESTANTE DO CÓDIGO (MADEIRADA E PESQUISA) ---
-
+# --- BANCO DE DADOS DE TENDÊNCIAS ---
 tendencias_reais = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador de Acrílico Luxo", "Mini Selador Viral"],
     "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real"],
     "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade", "Almofada Amamentação", "Kit Saída Maternidade"],
-    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Elásticos", "Massageador Turbo"],
+    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Elásticos", "Massageador Muscular"],
     "🌎 Internacional": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
 }
 
+# --- MENU LATERAL ---
 st.sidebar.title("Comando LuhVee")
 aba = st.sidebar.radio("Escolha a ferramenta:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "📸 Instagram Trends IA", "✨ Frases Motivacionais"])
 
+# --- ABA 1: POSTAR PRODUTOS ---
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada de Vendas")
+    st.title("🔥 Madeirada de Alta Conversão IA")
     col1, col2 = st.columns([2, 1])
     with col1: produto = st.text_input("Nome do Produto:")
     with col2: preco = st.text_input("Preço (R$):")
-    if st.button("🚀 GERAR COPY AGRESSIVA"):
+    if st.button("🚀 GERAR NOVA COPY EXCLUSIVA"):
         if produto:
-            valor = f"R$ {preco}" if preco else "PREÇO ESPECIAL"
-            copy = f"🚨 PARA TUDO! 🚨\n\nO {produto.upper()} chegou! Qualidade premium e estoque no fim! 🔥\n\n😱 Por APENAS: {valor}\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️"
-            st.code(copy, language="text")
-            st.session_state['historico_posts'].append(f"{produto} ({valor})")
+            copy_gerada = gerar_copy_venda_agressiva(produto, preco)
+            st.code(copy_gerada, language="text")
+            st.session_state['historico_posts'].append(f"{produto} ({preco})")
+        else: st.warning("Digite o nome do produto!")
 
+# --- ABA 2: PESQUISA MULTI-REDES ---
 elif aba == "🔎 Pesquisa Multi-Redes":
     st.title("🔎 Inteligência de Mercado")
     categoria = st.selectbox("Nicho:", list(tendencias_reais.keys()))
-    if st.button("📡 VARREDURA"):
+    if st.button("📡 INICIAR VARREDURA"):
         sugestao = random.choice(tendencias_reais[categoria])
         rede = random.choice(["TikTok 📱", "Pinterest 📌", "Instagram 📸", "Facebook Ads 📢"])
         st.session_state['historico_pesquisa'].append(f"{sugestao} ({rede})")
         st.success(f"💡 {sugestao} em alta no {rede}!")
-    if st.session_state['historico_pesquisa']:
-        st.write("---")
-        for item in reversed(st.session_state['historico_pesquisa']): st.text(f"✅ {item}")
 
+# --- ABA 3: INSTAGRAM TRENDS IA (ATUALIZADA COM HORÁRIOS E EXPLICAÇÕES) ---
 elif aba == "📸 Instagram Trends IA":
-    st.title("📸 Insights Instagram")
-    if st.button("🔍 ANALISAR"): st.warning("🎯 Reels curtos com áudio viral hoje!")
+    st.title("📸 Estratégia de Mestre para Instagram")
+    st.markdown("### Clique no botão para analisar o algoritmo de hoje:")
+    
+    if st.button("🔍 ANALISAR ALGORITMO E HORÁRIOS"):
+        st.write("---")
+        
+        # 1. Sugestão de Formato
+        st.subheader("1. Sugestão de Formato (O que postar?)")
+        st.info("🎯 **Reels Curtos (5 a 10 segundos):** O Instagram está entregando muito mais vídeos rápidos que vão direto ao ponto. Use cortes secos e rápidos.")
+        
+        # 2. Tendência de Áudio
+        st.subheader("2. Tendência de Áudio")
+        st.success("🎶 **Áudios Virais com 'Setinha':** Procure músicas que estão subindo. Isso coloca o seu post na aba de 'Explorar' de novas clientes em potencial.")
+        
+        # 3. Gancho de Retenção
+        st.subheader("3. Gancho de Retenção")
+        st.warning("👀 **Legenda no Centro:** Coloque o título do produto bem no meio da tela nos primeiros 3 segundos. Isso impede que a pessoa 'arraste' para cima antes de ver sua oferta.")
+        
+        # 4. Horários de Ouro
+        st.subheader("⏰ Horários de Ouro (Maior Conversão)")
+        st.markdown("""
+        * **Manhã (08:30 - 09:30):** Ótimo para Stories de 'Bom dia' e mostrar o uso do produto.
+        * **Almoço (12:00 - 13:30):** Pico de visualizações. Poste o Reels da 'Madeirada' aqui.
+        * **Noite (18:00 - 20:00):** Momento de maior venda. As pessoas estão relaxadas e mais propensas a clicar no link da Bio.
+        """)
+        
+        st.info("💡 **Dica da LuhVee:** Poste um Story com uma enquete 30 minutos antes do seu Reels para 'aquecer' o algoritmo!")
 
-elif aba == "✨ Frases Motivacionais":
-    st.title("✨ Vibes LuhVee")
+# --- ABA 4: MOTIVACIONAIS ---
+else:
+    st.title("✨ Vibes LuhVee Stores")
     periodo = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
     estilo = st.radio("Estilo da Mensagem:", ["Profunda/Inspiradora", "Engraçada/Vibes"])
     if st.button("✨ GERAR MENSAGEM COMPLETA"):
