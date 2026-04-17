@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v23.0", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v24.0", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -27,25 +27,33 @@ st.markdown("""
 if 'historico_pesquisa' not in st.session_state:
     st.session_state['historico_pesquisa'] = []
 
-# --- MOTOR IA: DIVERSIDADE DE COPY AGRESSIVA ---
-def gerar_copy_agressiva_ia(produto, preco):
+# --- MOTOR IA: DIVERSIDADE DE COPY AGRESSIVA (MERCADO LIVRE OU SHOPEE) ---
+def gerar_copy_agressiva_ia(produto, preco, marketplace):
     valor = f"R$ {preco}" if preco else "OFERTA EXCLUSIVA"
     prod_u = produto.upper()
     
+    # Define o link e o nome baseado na escolha
+    if marketplace == "Shopee 🛍️":
+        link = "https://collshp.com/luhveestores"
+        loja = "LuhVee Stores na Shopee 🛍️"
+    else:
+        link = "https://www.mercadolivre.com.br/perfil/luhveestores" # Link exemplo ML
+        loja = "LuhVee Stores no Mercado Livre 📦"
+
     opcoes = [
-        f"🚨 ALERTA DE TENDÊNCIA: O {prod_u} CHEGOU! 🚨\n\nA qualidade deste {produto} é simplesmente surreal e testada pessoalmente por mim! Se você está cansada de investir em produtos que prometem muito e não entregam nada, este item veio para mudar o seu jogo. O acabamento premium e o design impecável fazem deste produto o desejo número 1 das redes sociais agora.\n\n😱 POR APENAS: {valor}\n\n⏰ O TEMPO ESTÁ CORRENDO: Esta oferta exclusiva é válida apenas enquanto durarem os nossos estoques físicos. Garanta o seu agora ou aceite pagar o dobro depois em outras lojas!\n\n🛒 LINK SEGURO:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️",
+        f"🚨 ALERTA DE TENDÊNCIA: O {prod_u} CHEGOU! 🚨\n\nA qualidade deste {produto} é simplesmente surreal e testada pessoalmente por mim! Se você está cansada de investir em produtos que prometem muito e não entregam nada, este item veio para mudar o seu jogo.\n\n😱 POR APENAS: {valor}\n\n⏰ O TEMPO ESTÁ CORRENDO: Estoque físico nas últimas unidades! Garanta o seu agora ou aceite pagar o dobro depois!\n\n🛒 COMPRE AGORA NO {marketplace.upper()}:\n👉 {link}\n\n{loja}",
         
-        f"👑 EXCLUSIVIDADE: O {prod_u} QUE AS BLOGUEIRAS ESCONDEM! 👑\n\nO segredo foi finalmente revelado! O {prod_u} original que viralizou na gringa finalmente está disponível aqui na nossa curadoria. Esqueça réplicas baratas que quebram na primeira semana. Aqui você tem durabilidade e estilo real para transformar sua rotina e elevar sua autoestima.\n\n🔥 OFERTA ÚNICA: {valor}\n\n⚠️ AVISO: Não temos previsão de reposição com esse valor promocional. Proteja seu bolso e garanta sua unidade agora mesmo antes que o link expire!\n\n🛒 COMPRE AGORA NO LINK:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️",
+        f"👑 EXCLUSIVIDADE: O {prod_u} QUE AS BLOGUEIRAS ESCONDEM! 👑\n\nO segredo foi finalmente revelado! O {prod_u} original que viralizou na gringa finalmente disponível. Esqueça réplicas baratas. Aqui você tem durabilidade e estilo real para sua rotina.\n\n🔥 OFERTA ÚNICA: {valor}\n\n⚠️ AVISO: Sem previsão de reposição com esse valor. Garanta sua unidade agora!\n\n🛒 LINK SEGURO {marketplace.upper()}:\n👉 {link}\n\n{loja}",
         
-        f"😱 NÃO COMPRE O {prod_u} ANTES DE VER ISSO! ❌\n\nVocê merece o melhor e nós trouxemos a elite dos achadinhos mundiais. O {prod_u} resolve sua rotina com elegância e praticidade. É o investimento que faltava para você se sentir plena, moderna e facilitar seu dia a dia de forma inteligente. Não aceite menos que o topo!\n\n💸 PREÇO IMBATÍVEL: {valor}\n\n🚀 CORRE PRO LINK ANTES QUE ESGOTE! A demanda está surreal e o botão de compra pode sair do ar a qualquer segundo!\n\n🛒 GARANTA O SEU AQUI:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️"
+        f"😱 NÃO COMPRE O {prod_u} ANTES DE VER ISSO! ❌\n\nVocê merece o melhor e nós trouxemos a elite dos achadinhos mundiais. O {prod_u} resolve sua rotina com elegância e praticidade. É o investimento inteligente para se sentir plena e moderna hoje.\n\n💸 PREÇO IMBATÍVEL: {valor}\n\n🚀 CORRE PRO LINK ANTES QUE ESGOTE!\n\n🛒 GARANTA O SEU AQUI:\n👉 {link}\n\n{loja}"
     ]
     return random.choice(opcoes)
 
-# --- MOTOR IA: MENSAGENS ATÉ 300 LETRAS (IA ROBUSTA) ---
+# --- MOTOR IA: MENSAGENS ROBUSTAS (IA REAL) ---
 def gerar_motivacional_ia(estilo, periodo):
     if estilo == "Profunda/Inspiradora":
         msgs = [
-            f"{periodo}\n\nA jornada da vida não é uma corrida desenfreada contra o tempo, mas um ciclo constante de renovação e cura. Valorize cada pequeno passo que você deu, pois eles construíram a mulher forte e resiliente que você é hoje. Você é uma essência rara, preciosa e o seu momento de florescer é exatamente agora! Confie na sua luz interior, cabeça erguida e nunca deixe ninguém apagar o seu brilho. O universo conspira a favor de quem cultiva amor e fé no caminho. ✨\n\nCom carinho, LuhVee Stores ❤️",
+            f"{periodo}\n\nA jornada da vida não é uma corrida desenfreada, mas um ciclo constante de renovação e cura. Valorize cada pequeno passo que você deu, pois eles construíram a mulher forte e resiliente que você é hoje. Você é uma essência rara, preciosa e o seu momento de florescer é exatamente agora! Confie na sua luz interior, mantenha a cabeça erguida e nunca deixe ninguém apagar o seu brilho. O universo conspira a favor de quem cultiva amor e fé no caminho. ✨\n\nCom carinho, LuhVee Stores ❤️",
             f"{periodo}\n\nPare um segundo, respire fundo e olhe para trás com orgulho de tudo o que você superou. Cada cicatriz que você carrega é, na verdade, uma medalha de uma batalha vencida em silêncio. Você é o milagre que tanto procurava e a força que precisa já habita em você. Mantenha a fé, proteja sua paz e continue brilhando com toda a sua intensidade. O seu destino é extraordinário e o hoje é apenas o começo de algo novo. 🌸\n\nLuhVee Stores ❤️"
         ]
     else:
@@ -77,21 +85,25 @@ tendencias_reais = {
 st.sidebar.title("Comando LuhVee")
 aba = st.sidebar.radio("Ferramentas:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "✨ Frases Motivacionais"])
 
-# --- ABA 1: POSTAR PRODUTOS ---
+# --- ABA 1: POSTAR PRODUTOS (COM SELEÇÃO DE MERCADO) ---
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada de Alta Conversão IA")
+    
+    # Nova seleção de Mercado
+    mkt = st.selectbox("Onde vai postar?", ["Shopee 🛍️", "Mercado Livre 📦"])
+    
     col1, col2 = st.columns([2, 1])
     with col1: prod = st.text_input("Nome do Produto:")
     with col2: prc = st.text_input("Preço (R$):")
     
     if st.button("🚀 GERAR COPY PROFISSIONAL"):
         if prod:
-            st.success("✅ DIVERSIDADE IA: NOVA OPÇÃO GERADA!")
-            st.code(gerar_copy_agressiva_ia(prod, prc), language="text")
+            st.success(f"✅ COPY PARA {mkt.upper()} GERADA!")
+            st.code(gerar_copy_agressiva_ia(prod, prc, mkt), language="text")
             
             st.markdown("### 🗺️ Roteiro de Postagem:")
             c1, c2, c3 = st.columns(3)
-            with c1: st.write("**📸 Insta:** 3 fotos Stories + Reels 7s áudio viral.")
+            with c1: st.write("**📸 Insta:** 3 fotos Stories + Reels 7s.")
             with c2: st.write("**📱 TikTok:** Gancho forte + Link Bio.")
             with c3: st.write("**💬 Whats:** Grupos + Preço Status.")
         else: st.warning("Digite o nome do produto!")
