@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v22.0", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v23.0", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -33,61 +33,68 @@ def gerar_copy_agressiva_ia(produto, preco):
     prod_u = produto.upper()
     
     opcoes = [
-        f"🚨 ALERTA DE TENDÊNCIA: O {prod_u} CHEGOU! 🚨\n\nA qualidade é surreal e testada por mim! Se você cansou de promessas vazias, esse item veio para mudar o jogo. Acabamento premium e desejo número 1 das redes sociais agora.\n\n😱 POR APENAS: {valor}\n\n⏰ O TEMPO ESTÁ CORRENDO: Unidades limitadas! Garanta o seu ou aceite pagar o dobro depois!\n\n🛒 LINK SEGURO:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️",
+        f"🚨 ALERTA DE TENDÊNCIA: O {prod_u} CHEGOU! 🚨\n\nA qualidade deste {produto} é simplesmente surreal e testada pessoalmente por mim! Se você está cansada de investir em produtos que prometem muito e não entregam nada, este item veio para mudar o seu jogo. O acabamento premium e o design impecável fazem deste produto o desejo número 1 das redes sociais agora.\n\n😱 POR APENAS: {valor}\n\n⏰ O TEMPO ESTÁ CORRENDO: Esta oferta exclusiva é válida apenas enquanto durarem os nossos estoques físicos. Garanta o seu agora ou aceite pagar o dobro depois em outras lojas!\n\n🛒 LINK SEGURO:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️",
         
-        f"👑 EXCLUSIVIDADE: O {prod_u} QUE AS BLOGUEIRAS ESCONDEM! 👑\n\nO segredo foi revelado! O original que viralizou na gringa finalmente disponível aqui. Esqueça réplicas, aqui você tem durabilidade e estilo real para sua rotina.\n\n🔥 OFERTA ÚNICA: {valor}\n\n⚠️ AVISO: Sem previsão de reposição com esse valor. Proteja seu bolso e sua autoestima!\n\n🛒 COMPRE AGORA:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️",
+        f"👑 EXCLUSIVIDADE: O {prod_u} QUE AS BLOGUEIRAS ESCONDEM! 👑\n\nO segredo foi finalmente revelado! O {prod_u} original que viralizou na gringa finalmente está disponível aqui na nossa curadoria. Esqueça réplicas baratas que quebram na primeira semana. Aqui você tem durabilidade e estilo real para transformar sua rotina e elevar sua autoestima.\n\n🔥 OFERTA ÚNICA: {valor}\n\n⚠️ AVISO: Não temos previsão de reposição com esse valor promocional. Proteja seu bolso e garanta sua unidade agora mesmo antes que o link expire!\n\n🛒 COMPRE AGORA NO LINK:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️",
         
-        f"😱 NÃO COMPRE O {prod_u} ANTES DE VER ISSO! ❌\n\nVocê merece o melhor! O {prod_u} resolve sua rotina com elegância e praticidade. É o investimento que faltava para você se sentir plena e moderna hoje.\n\n💸 PREÇO IMBATÍVEL: {valor}\n\n🚀 CORRE PRO LINK ANTES QUE ESGOTE! A demanda está surreal!\n\n🛒 GARANTA O SEU AQUI:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️"
+        f"😱 NÃO COMPRE O {prod_u} ANTES DE VER ISSO! ❌\n\nVocê merece o melhor e nós trouxemos a elite dos achadinhos mundiais. O {prod_u} resolve sua rotina com elegância e praticidade. É o investimento que faltava para você se sentir plena, moderna e facilitar seu dia a dia de forma inteligente. Não aceite menos que o topo!\n\n💸 PREÇO IMBATÍVEL: {valor}\n\n🚀 CORRE PRO LINK ANTES QUE ESGOTE! A demanda está surreal e o botão de compra pode sair do ar a qualquer segundo!\n\n🛒 GARANTA O SEU AQUI:\n👉 https://collshp.com/luhveestores\n\nLuhVee Stores 🛍️"
     ]
     return random.choice(opcoes)
 
-# --- MOTOR IA: MENSAGENS ATÉ 300 LETRAS ---
+# --- MOTOR IA: MENSAGENS ATÉ 300 LETRAS (IA ROBUSTA) ---
 def gerar_motivacional_ia(estilo, periodo):
     if estilo == "Profunda/Inspiradora":
         msgs = [
-            f"{periodo}\n\nA jornada não é uma corrida, é renovação. Valorize seus passos e sua essência. Você é rara e seu florescer é hoje! Confie na sua luz interior sempre. ✨\n\nLuhVee Stores ❤️",
-            f"{periodo}\n\nRespire fundo. Olhe o quanto você já caminhou. Cada cicatriz é uma vitória silenciosa. Você é o milagre que tanto procurava. Mantenha a fé! 🌸\n\nLuhVee Stores ❤️"
+            f"{periodo}\n\nA jornada da vida não é uma corrida desenfreada contra o tempo, mas um ciclo constante de renovação e cura. Valorize cada pequeno passo que você deu, pois eles construíram a mulher forte e resiliente que você é hoje. Você é uma essência rara, preciosa e o seu momento de florescer é exatamente agora! Confie na sua luz interior, cabeça erguida e nunca deixe ninguém apagar o seu brilho. O universo conspira a favor de quem cultiva amor e fé no caminho. ✨\n\nCom carinho, LuhVee Stores ❤️",
+            f"{periodo}\n\nPare um segundo, respire fundo e olhe para trás com orgulho de tudo o que você superou. Cada cicatriz que você carrega é, na verdade, uma medalha de uma batalha vencida em silêncio. Você é o milagre que tanto procurava e a força que precisa já habita em você. Mantenha a fé, proteja sua paz e continue brilhando com toda a sua intensidade. O seu destino é extraordinário e o hoje é apenas o começo de algo novo. 🌸\n\nLuhVee Stores ❤️"
         ]
     else:
         msgs = [
-            f"{periodo}\n\nStatus: Em busca da versão rica, porque a linda já cansou de boletos! 😂 Chorar em Paris é melhor que na fila do pão. Foca no café e no brilho! 💅\n\nLuhVee Stores ❤️",
-            f"{periodo}\n\nMinha terapia é o rastreio dizendo 'saiu para entrega'. Boletos a gente paga, mas produtinho novo não tem preço! Sorria, botox tá caro! ☕✨\n\nLuhVee Stores ❤️"
+            f"{periodo}\n\nStatus do dia: Em busca da minha versão milionária, porque a versão linda já cansou de ver boleto chegando! 😂 Dizem que dinheiro não traz felicidade, mas eu preferia muito mais chorar em Paris do que na fila do pão às seis da manhã. Foca no café forte, no brilho nos olhos e nos objetivos, porque a gente nasceu para brilhar e os nossos sonhos não se pagam sozinhos! 💅✨\n\nCom carinho, LuhVee Stores ❤️",
+            f"{periodo}\n\nMinha terapia favorita é ver a notificação do rastreio dizendo que o produto 'saiu para entrega'. Boletos a gente paga com o suor do rosto, mas um produtinho novo chegando em casa renova a alma de qualquer mulher! Sorria sempre e mantenha a pose, afinal, o botox está caro e rir de tudo ainda é o melhor tratamento de beleza gratuito! ☕ Plena e pronta para o próximo recebido!\n\nLuhVee Stores ❤️"
         ]
     return random.choice(msgs)
 
-# --- BANCO DE DADOS NICHOS ---
+# --- BANCO DE DADOS COMPLETO (TODOS OS NICHOS) ---
 tendencias_reais = {
-    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro"],
-    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral"],
-    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade", "Almofada Amamentação", "Kit Saída Maternidade"],
-    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Elásticos", "Massageador Turbo"],
+    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
+    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
+    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro"],
+    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada Amamentação", "Kit Saída Maternidade", "Canguru Ergonômico"],
+    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital Infantil", "Tablet LCD"],
+    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica"],
+    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil"],
+    "🚗 Acessórios Automotivos": ["Suporte Gravidade", "Aspirador Sem Fio", "Luz Interna Neon"],
+    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras", "Sacos de Vácuo"],
+    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Solar", "Vaso Auto-irrigação"],
     "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento"],
+    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro Ortopédica"],
+    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Faixas Elásticas", "Massageador Turbo"],
     "🌎 Internacional": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
 }
 
 # --- MENU LATERAL ---
 st.sidebar.title("Comando LuhVee")
-aba = st.sidebar.radio("Escolha a ferramenta:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "📸 Instagram Trends IA", "✨ Frases Motivacionais"])
+aba = st.sidebar.radio("Ferramentas:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "✨ Frases Motivacionais"])
 
-# --- ABA 1: POSTAR PRODUTOS (DIVERSIDADE IA) ---
+# --- ABA 1: POSTAR PRODUTOS ---
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada de Alta Conversão IA")
     col1, col2 = st.columns([2, 1])
-    with col1: produto = st.text_input("Nome do Produto:")
-    with col2: preco = st.text_input("Preço (R$):")
+    with col1: prod = st.text_input("Nome do Produto:")
+    with col2: prc = st.text_input("Preço (R$):")
     
     if st.button("🚀 GERAR COPY PROFISSIONAL"):
-        if produto:
+        if prod:
             st.success("✅ DIVERSIDADE IA: NOVA OPÇÃO GERADA!")
-            st.code(gerar_copy_agressiva_ia(produto, preco), language="text")
+            st.code(gerar_copy_agressiva_ia(prod, prc), language="text")
             
             st.markdown("### 🗺️ Roteiro de Postagem:")
             c1, c2, c3 = st.columns(3)
-            with c1: st.write("**📸 Insta:** 3 fotos Stories + Reels 7s.")
+            with c1: st.write("**📸 Insta:** 3 fotos Stories + Reels 7s áudio viral.")
             with c2: st.write("**📱 TikTok:** Gancho forte + Link Bio.")
             with c3: st.write("**💬 Whats:** Grupos + Preço Status.")
-        else: st.warning("Digite o produto!")
+        else: st.warning("Digite o nome do produto!")
 
 # --- ABA 2: PESQUISA MULTI-REDES ---
 elif aba == "🔎 Pesquisa Multi-Redes":
@@ -101,19 +108,12 @@ elif aba == "🔎 Pesquisa Multi-Redes":
     
     if st.session_state['historico_pesquisa']:
         st.write("---")
-        for item in reversed(st.session_state['historico_pesquisa']): st.text(f"✅ {item}")
+        for i in reversed(st.session_state['historico_pesquisa']): st.text(f"✅ {i}")
 
-# --- ABA 3: INSTAGRAM TRENDS IA ---
-elif aba == "📸 Instagram Trends IA":
-    st.title("📸 Estratégia de Mestre")
-    if st.button("🔍 ANALISAR ALGORITMO"):
-        st.info("🎯 **Reels Curtos (5-10s):** Foco total em retenção inicial.")
-        st.write("☀️ 08:30-09:30 | 🍱 12:00-13:30 | 🌙 18:00-20:00")
-
-# --- ABA 4: MOTIVACIONAIS IA (300 LETRAS) ---
+# --- ABA 3: MOTIVACIONAIS IA ---
 else:
     st.title("✨ Vibes LuhVee Stores")
-    periodo = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
-    estilo = st.radio("Estilo:", ["Profunda/Inspiradora", "Engraçada/Vibes"])
+    per = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
+    est = st.radio("Estilo:", ["Profunda/Inspiradora", "Engraçada/Vibes"])
     if st.button("✨ GERAR MENSAGEM IA"):
-        st.code(gerar_motivacional_ia(estilo, periodo), language="text")
+        st.code(gerar_motivacional_ia(est, per), language="text")
