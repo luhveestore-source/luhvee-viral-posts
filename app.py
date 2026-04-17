@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee Viral Machine v24.0", page_icon="🔥")
+st.set_page_config(page_title="LuhVee Viral Machine v25.0", page_icon="🔥")
 
 st.markdown("""
     <style>
@@ -27,17 +27,17 @@ st.markdown("""
 if 'historico_pesquisa' not in st.session_state:
     st.session_state['historico_pesquisa'] = []
 
-# --- MOTOR IA: DIVERSIDADE DE COPY AGRESSIVA (MERCADO LIVRE OU SHOPEE) ---
+# --- MOTOR IA: DIVERSIDADE DE COPY AGRESSIVA (LINK ML ATUALIZADO) ---
 def gerar_copy_agressiva_ia(produto, preco, marketplace):
     valor = f"R$ {preco}" if preco else "OFERTA EXCLUSIVA"
     prod_u = produto.upper()
     
-    # Define o link e o nome baseado na escolha
     if marketplace == "Shopee 🛍️":
         link = "https://collshp.com/luhveestores"
         loja = "LuhVee Stores na Shopee 🛍️"
     else:
-        link = "https://www.mercadolivre.com.br/perfil/luhveestores" # Link exemplo ML
+        # SEU LINK ATUALIZADO AQUI
+        link = "https://www.mercadolivre.com.br/social/axwelloliveira"
         loja = "LuhVee Stores no Mercado Livre 📦"
 
     opcoes = [
@@ -53,22 +53,22 @@ def gerar_copy_agressiva_ia(produto, preco, marketplace):
 def gerar_motivacional_ia(estilo, periodo):
     if estilo == "Profunda/Inspiradora":
         msgs = [
-            f"{periodo}\n\nA jornada da vida não é uma corrida desenfreada, mas um ciclo constante de renovação e cura. Valorize cada pequeno passo que você deu, pois eles construíram a mulher forte e resiliente que você é hoje. Você é uma essência rara, preciosa e o seu momento de florescer é exatamente agora! Confie na sua luz interior, mantenha a cabeça erguida e nunca deixe ninguém apagar o seu brilho. O universo conspira a favor de quem cultiva amor e fé no caminho. ✨\n\nCom carinho, LuhVee Stores ❤️",
-            f"{periodo}\n\nPare um segundo, respire fundo e olhe para trás com orgulho de tudo o que você superou. Cada cicatriz que você carrega é, na verdade, uma medalha de uma batalha vencida em silêncio. Você é o milagre que tanto procurava e a força que precisa já habita em você. Mantenha a fé, proteja sua paz e continue brilhando com toda a sua intensidade. O seu destino é extraordinário e o hoje é apenas o começo de algo novo. 🌸\n\nLuhVee Stores ❤️"
+            f"{periodo}\n\nA jornada da vida não é uma corrida desenfreada, mas um ciclo constante de renovação e cura. Valorize cada pequeno passo que você deu, pois eles construíram a mulher forte e resiliente que você é hoje. Você é uma essência rara, preciosa e o seu momento de florescer é exatamente agora! Confie na sua luz interior, mantenha a cabeça erguida e nunca deixe ninguém apagar o seu brilho. ✨\n\nCom carinho, LuhVee Stores ❤️",
+            f"{periodo}\n\nPare um segundo, respire fundo e olhe para trás com orgulho de tudo o que você superou. Cada cicatriz que você carrega é, na verdade, uma medalha de uma batalha vencida em silêncio. Você é o milagre que tanto procurava e a força que precisa já habita em você. Proteja sua paz e continue brilhando. 🌸\n\nLuhVee Stores ❤️"
         ]
     else:
         msgs = [
-            f"{periodo}\n\nStatus do dia: Em busca da minha versão milionária, porque a versão linda já cansou de ver boleto chegando! 😂 Dizem que dinheiro não traz felicidade, mas eu preferia muito mais chorar em Paris do que na fila do pão às seis da manhã. Foca no café forte, no brilho nos olhos e nos objetivos, porque a gente nasceu para brilhar e os nossos sonhos não se pagam sozinhos! 💅✨\n\nCom carinho, LuhVee Stores ❤️",
-            f"{periodo}\n\nMinha terapia favorita é ver a notificação do rastreio dizendo que o produto 'saiu para entrega'. Boletos a gente paga com o suor do rosto, mas um produtinho novo chegando em casa renova a alma de qualquer mulher! Sorria sempre e mantenha a pose, afinal, o botox está caro e rir de tudo ainda é o melhor tratamento de beleza gratuito! ☕ Plena e pronta para o próximo recebido!\n\nLuhVee Stores ❤️"
+            f"{periodo}\n\nStatus do dia: Em busca da minha versão milionária, porque a versão linda já cansou de ver boleto chegando! 😂 Dizem que dinheiro não traz felicidade, mas eu preferia muito mais estar chorando em Paris do que na fila do pão! Foca no café forte e nos objetivos, porque a gente nasceu para brilhar! 💅✨\n\nCom carinho, LuhVee Stores ❤️",
+            f"{periodo}\n\nMinha terapia favorita é ver a notificação do rastreio dizendo que o produto 'saiu para entrega'. Boletos a gente paga com o suor do rosto, mas um produtinho novo chegando em casa renova a alma de qualquer mulher! Sorria sempre, afinal, o botox está caro! ☕ Plena e pronta para o próximo recebido!\n\nLuhVee Stores ❤️"
         ]
     return random.choice(msgs)
 
-# --- BANCO DE DADOS COMPLETO (TODOS OS NICHOS) ---
+# --- BANCO DE DADOS COMPLETO ---
 tendencias_reais = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
     "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada Amamentação", "Kit Saída Maternidade", "Canguru Ergonômico"],
+    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída Maternidade", "Canguru Ergonômico"],
     "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital Infantil", "Tablet LCD"],
     "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica"],
     "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil"],
@@ -85,13 +85,10 @@ tendencias_reais = {
 st.sidebar.title("Comando LuhVee")
 aba = st.sidebar.radio("Ferramentas:", ["🛍️ Postar Produtos", "🔎 Pesquisa Multi-Redes", "✨ Frases Motivacionais"])
 
-# --- ABA 1: POSTAR PRODUTOS (COM SELEÇÃO DE MERCADO) ---
+# --- ABA 1: POSTAR PRODUTOS ---
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada de Alta Conversão IA")
-    
-    # Nova seleção de Mercado
     mkt = st.selectbox("Onde vai postar?", ["Shopee 🛍️", "Mercado Livre 📦"])
-    
     col1, col2 = st.columns([2, 1])
     with col1: prod = st.text_input("Nome do Produto:")
     with col2: prc = st.text_input("Preço (R$):")
@@ -117,7 +114,6 @@ elif aba == "🔎 Pesquisa Multi-Redes":
         rede = random.choice(["TikTok", "Pinterest", "Instagram"])
         st.session_state['historico_pesquisa'].append(f"{sugestao} ({rede})")
         st.success(f"💡 {sugestao} em alta no {rede}!")
-    
     if st.session_state['historico_pesquisa']:
         st.write("---")
         for i in reversed(st.session_state['historico_pesquisa']): st.text(f"✅ {i}")
@@ -128,4 +124,4 @@ else:
     per = st.selectbox("Momento:", ["Bom Dia ☀️", "Boa Tarde 🌤️", "Boa Noite 🌙"])
     est = st.radio("Estilo:", ["Profunda/Inspiradora", "Engraçada/Vibes"])
     if st.button("✨ GERAR MENSAGEM IA"):
-        st.code(gerar_motivacional_ia(est, per), language="text")
+        st.code(gerar_motivacional_ia(est, per), language="text")  
