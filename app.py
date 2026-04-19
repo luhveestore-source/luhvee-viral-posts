@@ -1,51 +1,15 @@
 import streamlit as st
-import random
 import requests
 from bs4 import BeautifulSoup
 
 st.set_page_config(page_title="LuhVee GOD MODE", layout="centered")
 
 st.title("🚀 LuhVee GOD MODE")
-st.caption("Gerador profissional de conteúdo para afiliados")
+st.caption("Gerador profissional por plataforma")
 
 # ===== LINKS AFILIADOS =====
 LINK_AFILIADO_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_AFILIADO_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
-
-# ===== BANCO DE FRASES =====
-HOOKS = [
-    "😳 mano, olha isso aqui",
-    "🚨 ninguém tá falando disso",
-    "🔥 isso aqui tá viralizando",
-    "😱 eu não esperava isso",
-    "💥 isso explodiu do nada",
-]
-
-CURIOSIDADE = [
-    "eu achei que era besteira…",
-    "não botei fé até testar…",
-    "parecia inútil… mas olha isso",
-    "vi muita gente falando e fui ver…",
-]
-
-BENEFICIOS = [
-    "facilita MUITO o dia a dia",
-    "economiza tempo de verdade",
-    "resolve algo chato em segundos",
-    "é muito mais útil do que parece",
-]
-
-URGENCIA = [
-    "⚠️ isso aqui pode esgotar rápido",
-    "🔥 tá vendendo muito hoje",
-    "🚨 tendência forte agora",
-]
-
-CTA = [
-    "👉 link na bio",
-    "👉 pega antes que acabe",
-    "👉 se eu fosse você, garantia agora",
-]
 
 # ===== FORMATAR PREÇO =====
 def formatar_preco(preco):
@@ -81,47 +45,64 @@ def gerar_links(plataformas):
         lista.append(("Mercado Livre", LINK_AFILIADO_ML))
     return lista
 
-# ===== GERAR COPIES =====
-def gerar_copies(produto, preco, link):
+# ===== COPY POR PLATAFORMA =====
+def gerar_copies_por_plataforma(produto, preco, link):
 
     preco_formatado = formatar_preco(preco)
-    copies = []
 
-    for _ in range(5):
-        hook = random.choice(HOOKS)
-        curiosidade = random.choice(CURIOSIDADE)
-        beneficio = random.choice(BENEFICIOS)
-        urgencia = random.choice(URGENCIA)
-        cta = random.choice(CTA)
+    tiktok = f"""😳 mano olha isso
 
-        copy = f"""{hook}
+{produto}
 
-{curiosidade}
-
-🔥 {produto}
-
-💡 {beneficio}
-
-💰 só {preco_formatado}
+💰 {preco_formatado}
 
 👉 {link}
 
-{urgencia}
-{cta}
+⚠️ isso aqui tá viralizando
 """
-        copies.append(copy)
 
-    return copies
+    instagram = f"""🔥 {produto}
+
+💰 {preco_formatado}
+
+👉 {link}
+
+⚠️ pode acabar rápido
+
+#achadinhos #promoção #oferta #viral #compras #desconto
+"""
+
+    whatsapp = f"""🚨 OLHA ISSO
+
+{produto}
+
+💰 {preco_formatado}
+
+Achei muito barato hoje 😳
+
+👉 {link}
+
+Corre antes que acabe!
+"""
+
+    return {
+        "TikTok": tiktok,
+        "Instagram": instagram,
+        "WhatsApp": whatsapp
+    }
 
 # ===== BOTÃO COPIAR =====
 def copiar_box(texto, key):
-    st.text_area("Copiar", texto, key=key)
+    st.text_area("Copiar conteúdo", texto, key=key)
 
 # ===== INPUT =====
 link = st.text_input("🔗 Cole o link do produto")
 
-produto = ""
-preco = ""
+if "produto" not in st.session_state:
+    st.session_state.produto = ""
+
+if "preco" not in st.session_state:
+    st.session_state.preco = ""
 
 if st.button("🤖 PUXAR DADOS"):
     if link:
@@ -130,8 +111,8 @@ if st.button("🤖 PUXAR DADOS"):
         st.session_state.preco = preco
         st.success("Dados carregados!")
 
-produto = st.text_input("📦 Produto", value=st.session_state.get("produto", ""))
-preco = st.text_input("💰 Preço", value=st.session_state.get("preco", ""))
+produto = st.text_input("📦 Produto", value=st.session_state.produto)
+preco = st.text_input("💰 Preço", value=st.session_state.preco)
 
 plataformas = st.multiselect(
     "🌍 Onde quer gerar link?",
@@ -147,10 +128,12 @@ if st.button("⚡ GERAR CONTEÚDO"):
     else:
         links = gerar_links(plataformas)
 
-        for nome, link_final in links:
-            st.markdown(f"## 🔗 {nome}")
+        for nome_loja, link_final in links:
 
-            copies = gerar_copies(produto, preco, link_final)
+            st.markdown(f"## 🛒 {nome_loja}")
 
-            for i, c in enumerate(copies):
-                copiar_box(c, f"{nome}_{i}") 
+            copies = gerar_copies_por_plataforma(produto, preco, link_final)
+
+            for plataforma_nome, texto in copies.items():
+                st.markdown(f"### 📱 {plataforma_nome}")
+                copiar_box(texto, f"{nome_loja}_{plataforma_nome}")
