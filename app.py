@@ -153,4 +153,4 @@ if st.button("⚡ GERAR CONTEÚDO"):
             copies = gerar_copies(produto, preco, link_final)
 
             for i, c in enumerate(copies):
-                copiar_box(c, f"{nome}_{i}")
+                copiar_box(c, f"{nome}_{i}") 
