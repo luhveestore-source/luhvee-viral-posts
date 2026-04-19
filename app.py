@@ -3,14 +3,13 @@ import random
 import datetime
 import requests
 from bs4 import BeautifulSoup
-from moviepy.editor import ImageClip
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import tempfile
 
 st.set_page_config(page_title="LuhVee GOD MODE", layout="centered")
 
 st.title("🚀 LuhVee GOD MODE")
-st.caption("Máquina automática de conteúdo + vídeo")
+st.caption("Máquina automática de conteúdo + criativo")
 
 # ===== LINKS AFILIADOS =====
 LINK_AFILIADO_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
@@ -96,8 +95,8 @@ def gerar_roteiro(produto):
 4. CTA: link na bio
 """
 
-# ===== VÍDEO (SEM ERRO) =====
-def gerar_video(produto, preco, imagem_url):
+# ===== CRIATIVO (IMAGEM) =====
+def gerar_imagem(produto, preco, imagem_url):
     try:
         response = requests.get(imagem_url)
         img_temp = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
@@ -114,12 +113,7 @@ def gerar_video(produto, preco, imagem_url):
         img_final = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
         img.save(img_final.name)
 
-        clip = ImageClip(img_final.name).set_duration(5)
-
-        video_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
-        clip.write_videofile(video_file.name, fps=24)
-
-        return video_file.name
+        return img_final.name
 
     except:
         return None
@@ -134,9 +128,9 @@ imagem = ""
 if st.button("🤖 PUXAR DADOS"):
     if link:
         produto, preco, imagem = extrair_dados(link)
-        st.success("Dados carregados! (confira)")
+        st.success("Dados carregados!")
     else:
-        st.warning("Cole o link primeiro")
+        st.warning("Cole o link")
 
 produto = st.text_input("📦 Produto", value=produto)
 preco = st.text_input("💰 Preço", value=preco)
@@ -175,21 +169,17 @@ if st.button("⚡ GERAR CONTEÚDO"):
         for c in copies:
             st.code(c)
 
-        conteudo = f"{titulo}\n\n{hashtags}\n\n{roteiro}\n\n" + "\n\n".join(copies)
-        st.download_button("📥 Baixar conteúdo", conteudo, file_name="conteudo.txt")
-
-        # ===== GERAR VÍDEO =====
+        # ===== GERAR IMAGEM =====
         if imagem:
-            if st.button("🎬 GERAR VÍDEO"):
-                with st.spinner("Gerando vídeo..."):
-                    video = gerar_video(produto, preco, imagem)
+            if st.button("🖼 GERAR CRIATIVO"):
+                img = gerar_imagem(produto, preco, imagem)
 
-                    if video:
-                        st.video(video)
-                        with open(video, "rb") as f:
-                            st.download_button("📥 Baixar vídeo", f, file_name="video.mp4")
-                    else:
-                        st.error("Erro ao gerar vídeo")
+                if img:
+                    st.image(img)
+                    with open(img, "rb") as f:
+                        st.download_button("📥 Baixar imagem", f, file_name="criativo.jpg")
+                else:
+                    st.error("Erro ao gerar imagem")
 
         st.session_state.historico.append({
             "produto": produto,
@@ -205,30 +195,3 @@ st.subheader("📜 Histórico")
 
 for item in reversed(st.session_state.historico):
     st.write(f"{item['produto']} - {item['hora']}")
-
-# ===== LOTE =====
-st.markdown("---")
-st.subheader("🚀 Modo Lote")
-
-lote = st.text_area("Cole vários links (1 por linha)")
-
-if st.button("🔥 GERAR LOTE"):
-    resultado = ""
-
-    for l in lote.split("\n"):
-        if l.strip():
-            nome, preco_l, _ = extrair_dados(l)
-
-            if not nome:
-                nome = "Produto"
-            if not preco_l:
-                preco_l = "??"
-
-            link_final = gerar_link_afiliado(l)
-            copies = gerar_copies(nome, preco_l, link_final, "Viral")
-
-            resultado += f"\n\n===== {nome} =====\n"
-            resultado += "\n".join(copies)
-
-    st.code(resultado)
-    st.download_button("📥 Baixar lote", resultado, file_name="lote.txt")
