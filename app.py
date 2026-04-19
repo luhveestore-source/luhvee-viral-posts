@@ -3,11 +3,13 @@ import random
 import datetime
 import requests
 from bs4 import BeautifulSoup
+from moviepy.editor import ImageClip, TextClip, CompositeVideoClip
+import tempfile
 
 st.set_page_config(page_title="LuhVee GOD MODE", layout="centered")
 
 st.title("🚀 LuhVee GOD MODE")
-st.caption("Máquina automática de conteúdo para afiliados")
+st.caption("Máquina automática de conteúdo + vídeo")
 
 # ===== SEUS LINKS DE AFILIADO =====
 LINK_AFILIADO_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
@@ -17,18 +19,16 @@ LINK_AFILIADO_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 if "historico" not in st.session_state:
     st.session_state.historico = []
 
-# ===== FUNÇÃO: TROCAR LINK =====
+# ===== TROCAR LINK =====
 def gerar_link_afiliado(link):
     link_lower = link.lower()
-
     if "shopee" in link_lower:
         return LINK_AFILIADO_SHOPEE
     elif "mercadolivre" in link_lower:
         return LINK_AFILIADO_ML
-    else:
-        return link
+    return link
 
-# ===== FUNÇÃO SCRAPING =====
+# ===== SCRAPING =====
 def extrair_dados(link):
     try:
         headers = {"User-Agent": "Mozilla/5.0"}
@@ -53,7 +53,7 @@ def extrair_dados(link):
     except:
         return "", "", ""
 
-# ===== COPY ENGINE =====
+# ===== COPY =====
 def gerar_copies(produto, preco, link, angulo):
     hooks = {
         "Viral": ["😳 ISSO TÁ EM TODO LUGAR", "🔥 TODO MUNDO COMPRANDO"],
@@ -64,9 +64,8 @@ def gerar_copies(produto, preco, link, angulo):
 
     base = random.choice(hooks[angulo])
 
-    copies = []
-    for _ in range(5):
-        copies.append(f"""{base}
+    return [
+        f"""{base}
 
 🔥 {produto}
 💰 R$ {preco}
@@ -74,8 +73,9 @@ def gerar_copies(produto, preco, link, angulo):
 👉 {link}
 
 ⚠️ pode acabar hoje
-""")
-    return copies
+"""
+        for _ in range(5)
+    ]
 
 def gerar_titulo(produto):
     return random.choice([
@@ -89,12 +89,34 @@ def gerar_hashtags():
 
 def gerar_roteiro(produto):
     return f"""🎬 ROTEIRO:
-
 1. “olha isso aqui…”
 2. mostra {produto}
 3. “muito barato”
 4. CTA: link na bio
 """
+
+# ===== VIDEO =====
+def gerar_video(produto, preco, imagem_url):
+    try:
+        response = requests.get(imagem_url)
+        img_temp = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
+        img_temp.write(response.content)
+        img_temp.close()
+
+        clip = ImageClip(img_temp.name).set_duration(5)
+
+        txt = TextClip(f"{produto}\nR$ {preco}", fontsize=50, color='white')
+        txt = txt.set_position('center').set_duration(5)
+
+        video = CompositeVideoClip([clip, txt])
+
+        output = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+        video.write_videofile(output.name, fps=24)
+
+        return output.name
+
+    except:
+        return None
 
 # ===== INPUT =====
 link = st.text_input("🔗 Cole o link do produto")
@@ -103,7 +125,6 @@ produto = ""
 preco = ""
 imagem = ""
 
-# ===== PUXAR DADOS =====
 if st.button("🤖 PUXAR DADOS"):
     if link:
         produto, preco, imagem = extrair_dados(link)
@@ -114,13 +135,12 @@ if st.button("🤖 PUXAR DADOS"):
 produto = st.text_input("📦 Produto", value=produto)
 preco = st.text_input("💰 Preço", value=preco)
 
-angulo = st.selectbox("🎯 Ângulo de venda", ["Viral","Barato","Problema","Luxo"])
+angulo = st.selectbox("🎯 Ângulo", ["Viral","Barato","Problema","Luxo"])
 
 # ===== GERAR =====
-if st.button("⚡ GERAR MODO ABSURDO"):
+if st.button("⚡ GERAR CONTEÚDO"):
     if produto and preco and link:
 
-        # 🔥 AQUI A MÁGICA
         link_final = gerar_link_afiliado(link)
 
         copies = gerar_copies(produto, preco, link_final, angulo)
@@ -133,7 +153,7 @@ if st.button("⚡ GERAR MODO ABSURDO"):
         if imagem:
             st.image(imagem, width=200)
 
-        st.subheader("🔗 Link usado")
+        st.subheader("🔗 Link afiliado")
         st.code(link_final)
 
         st.subheader("🎯 Título")
@@ -149,15 +169,26 @@ if st.button("⚡ GERAR MODO ABSURDO"):
         for c in copies:
             st.code(c)
 
-        # salvar histórico
+        conteudo = f"{titulo}\n\n{hashtags}\n\n{roteiro}\n\n" + "\n\n".join(copies)
+        st.download_button("📥 Baixar conteúdo", conteudo, file_name="conteudo.txt")
+
+        # ===== VIDEO =====
+        if imagem:
+            if st.button("🎬 GERAR VÍDEO"):
+                with st.spinner("Gerando vídeo..."):
+                    video = gerar_video(produto, preco, imagem)
+
+                    if video:
+                        st.video(video)
+                        with open(video, "rb") as f:
+                            st.download_button("📥 Baixar vídeo", f, file_name="video.mp4")
+                    else:
+                        st.error("Erro ao gerar vídeo")
+
         st.session_state.historico.append({
             "produto": produto,
             "hora": datetime.datetime.now().strftime("%H:%M")
         })
-
-        # download
-        conteudo = f"{titulo}\n\n{hashtags}\n\n{roteiro}\n\n" + "\n\n".join(copies)
-        st.download_button("📥 Baixar conteúdo", conteudo, file_name="conteudo.txt")
 
     else:
         st.warning("Preencha tudo!")
@@ -176,28 +207,21 @@ st.subheader("🚀 Modo Lote")
 lote = st.text_area("Cole vários links (1 por linha)")
 
 if st.button("🔥 GERAR LOTE"):
-    links = lote.split("\n")
-
     resultado = ""
 
-    for l in links:
+    for l in lote.split("\n"):
         if l.strip():
             nome, preco_l, _ = extrair_dados(l)
-
             if not nome:
                 nome = "Produto"
-
             if not preco_l:
                 preco_l = "??"
 
             link_final = gerar_link_afiliado(l)
-
             copies = gerar_copies(nome, preco_l, link_final, "Viral")
 
-            bloco = f"\n\n===== {nome} =====\n"
-            bloco += "\n".join(copies)
-
-            resultado += bloco
+            resultado += f"\n\n===== {nome} =====\n"
+            resultado += "\n".join(copies)
 
     st.code(resultado)
     st.download_button("📥 Baixar lote", resultado, file_name="lote.txt")
