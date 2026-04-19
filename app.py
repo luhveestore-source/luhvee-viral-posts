@@ -3,13 +3,13 @@ import random
 import datetime
 import requests
 from bs4 import BeautifulSoup
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 import tempfile
 
 st.set_page_config(page_title="LuhVee GOD MODE", layout="centered")
 
 st.title("🚀 LuhVee GOD MODE")
-st.caption("Máquina automática de conteúdo + criativo")
+st.caption("Máquina de conteúdo para afiliados")
 
 # ===== LINKS AFILIADOS =====
 LINK_AFILIADO_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
@@ -18,15 +18,6 @@ LINK_AFILIADO_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 # ===== ESTADO =====
 if "historico" not in st.session_state:
     st.session_state.historico = []
-
-# ===== LINK AFILIADO =====
-def gerar_link_afiliado(link):
-    link_lower = link.lower()
-    if "shopee" in link_lower:
-        return LINK_AFILIADO_SHOPEE
-    elif "mercadolivre" in link_lower:
-        return LINK_AFILIADO_ML
-    return link
 
 # ===== SCRAPING =====
 def extrair_dados(link):
@@ -52,6 +43,18 @@ def extrair_dados(link):
 
     except:
         return "", "", ""
+
+# ===== LINKS =====
+def gerar_links_multiplos(plataformas):
+    links = []
+
+    if "Shopee" in plataformas:
+        links.append(("Shopee", LINK_AFILIADO_SHOPEE))
+
+    if "Mercado Livre" in plataformas:
+        links.append(("Mercado Livre", LINK_AFILIADO_ML))
+
+    return links
 
 # ===== COPY =====
 def gerar_copies(produto, preco, link, angulo):
@@ -95,7 +98,11 @@ def gerar_roteiro(produto):
 4. CTA: link na bio
 """
 
-# ===== CRIATIVO (IMAGEM) =====
+# ===== BOTÃO COPIAR =====
+def botao_copiar(texto, chave):
+    st.text_area("Copiar conteúdo", texto, key=chave)
+
+# ===== CRIATIVO =====
 def gerar_imagem(produto, preco, imagem_url):
     try:
         response = requests.get(imagem_url)
@@ -107,7 +114,6 @@ def gerar_imagem(produto, preco, imagem_url):
         draw = ImageDraw.Draw(img)
 
         texto = f"{produto}\nR$ {preco}"
-
         draw.text((20, 20), texto, fill="white")
 
         img_final = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
@@ -135,41 +141,42 @@ if st.button("🤖 PUXAR DADOS"):
 produto = st.text_input("📦 Produto", value=produto)
 preco = st.text_input("💰 Preço", value=preco)
 
+plataformas = st.multiselect(
+    "🌍 Onde quer gerar link?",
+    ["Shopee", "Mercado Livre"],
+    default=["Shopee"]
+)
+
 angulo = st.selectbox("🎯 Ângulo", ["Viral","Barato","Problema","Luxo"])
 
 # ===== GERAR =====
 if st.button("⚡ GERAR CONTEÚDO"):
-    if produto and preco and link:
+    if produto and preco and plataformas:
 
-        link_final = gerar_link_afiliado(link)
+        links = gerar_links_multiplos(plataformas)
 
-        copies = gerar_copies(produto, preco, link_final, angulo)
-        titulo = gerar_titulo(produto)
-        hashtags = gerar_hashtags()
-        roteiro = gerar_roteiro(produto)
+        for nome_plataforma, link_final in links:
 
-        st.success("🔥 Conteúdo pronto!")
+            st.markdown(f"## 🔗 {nome_plataforma}")
 
-        if imagem:
-            st.image(imagem, width=200)
+            titulo = gerar_titulo(produto)
+            hashtags = gerar_hashtags()
+            roteiro = gerar_roteiro(produto)
+            copies = gerar_copies(produto, preco, link_final, angulo)
 
-        st.subheader("🔗 Link afiliado")
-        st.code(link_final)
+            st.subheader("🎯 Título")
+            botao_copiar(titulo, f"{nome_plataforma}_titulo")
 
-        st.subheader("🎯 Título")
-        st.code(titulo)
+            st.subheader("📱 Hashtags")
+            botao_copiar(hashtags, f"{nome_plataforma}_hashtags")
 
-        st.subheader("📱 Hashtags")
-        st.code(hashtags)
+            st.subheader("🎬 Roteiro")
+            botao_copiar(roteiro, f"{nome_plataforma}_roteiro")
 
-        st.subheader("🎬 Roteiro")
-        st.code(roteiro)
+            st.subheader("📋 Copies")
+            for i, c in enumerate(copies):
+                botao_copiar(c, f"{nome_plataforma}_copy_{i}")
 
-        st.subheader("📋 Copies")
-        for c in copies:
-            st.code(c)
-
-        # ===== GERAR IMAGEM =====
         if imagem:
             if st.button("🖼 GERAR CRIATIVO"):
                 img = gerar_imagem(produto, preco, imagem)
@@ -178,8 +185,6 @@ if st.button("⚡ GERAR CONTEÚDO"):
                     st.image(img)
                     with open(img, "rb") as f:
                         st.download_button("📥 Baixar imagem", f, file_name="criativo.jpg")
-                else:
-                    st.error("Erro ao gerar imagem")
 
         st.session_state.historico.append({
             "produto": produto,
