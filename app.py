@@ -1,29 +1,56 @@
 import streamlit as st
 import random
-import datetime
 import requests
 from bs4 import BeautifulSoup
-from PIL import Image, ImageDraw
-import tempfile
 
 st.set_page_config(page_title="LuhVee GOD MODE", layout="centered")
 
 st.title("🚀 LuhVee GOD MODE")
-st.caption("Gerador de conteúdo para afiliados")
+st.caption("Gerador profissional de conteúdo para afiliados")
 
 # ===== LINKS AFILIADOS =====
 LINK_AFILIADO_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_AFILIADO_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# ===== SESSION =====
-if "produto" not in st.session_state:
-    st.session_state.produto = ""
+# ===== BANCO DE FRASES =====
+HOOKS = [
+    "😳 mano, olha isso aqui",
+    "🚨 ninguém tá falando disso",
+    "🔥 isso aqui tá viralizando",
+    "😱 eu não esperava isso",
+    "💥 isso explodiu do nada",
+]
 
-if "preco" not in st.session_state:
-    st.session_state.preco = ""
+CURIOSIDADE = [
+    "eu achei que era besteira…",
+    "não botei fé até testar…",
+    "parecia inútil… mas olha isso",
+    "vi muita gente falando e fui ver…",
+]
 
-if "imagem" not in st.session_state:
-    st.session_state.imagem = ""
+BENEFICIOS = [
+    "facilita MUITO o dia a dia",
+    "economiza tempo de verdade",
+    "resolve algo chato em segundos",
+    "é muito mais útil do que parece",
+]
+
+URGENCIA = [
+    "⚠️ isso aqui pode esgotar rápido",
+    "🔥 tá vendendo muito hoje",
+    "🚨 tendência forte agora",
+]
+
+CTA = [
+    "👉 link na bio",
+    "👉 pega antes que acabe",
+    "👉 se eu fosse você, garantia agora",
+]
+
+# ===== FORMATAR PREÇO =====
+def formatar_preco(preco):
+    preco = preco.replace("R$", "").strip()
+    return f"R$ {preco}"
 
 # ===== SCRAPING =====
 def extrair_dados(link):
@@ -40,17 +67,12 @@ def extrair_dados(link):
                 preco = span.text.strip()
                 break
 
-        imagem = ""
-        img = soup.find("img")
-        if img and img.get("src"):
-            imagem = img["src"]
-
-        return titulo[:80], preco, imagem
+        return titulo[:80], preco
 
     except:
-        return "Produto", "??", ""
+        return "Produto", "??"
 
-# ===== LINKS =====
+# ===== GERAR LINKS =====
 def gerar_links(plataformas):
     lista = []
     if "Shopee" in plataformas:
@@ -59,127 +81,76 @@ def gerar_links(plataformas):
         lista.append(("Mercado Livre", LINK_AFILIADO_ML))
     return lista
 
-# ===== COPIES DIFERENTES =====
-def gerar_copies(produto, preco, link, angulo):
-    hooks = {
-        "Viral": [
-            "😳 ISSO TÁ EM TODO LUGAR",
-            "🔥 TODO MUNDO COMPRANDO",
-            "🚨 ISSO EXPLODIU NA INTERNET",
-            "😱 VOCÊ PRECISA VER ISSO",
-            "💥 VIRALIZOU DO NADA"
-        ],
-        "Barato": [
-            "💣 PREÇO RIDÍCULO",
-            "😱 BARATO DEMAIS",
-            "🔥 QUASE DE GRAÇA",
-            "🚨 PROMOÇÃO INSANA",
-            "💸 NEM ACREDITO NESSE PREÇO"
-        ],
-        "Problema": [
-            "🤯 RESOLVE ISSO EM SEGUNDOS",
-            "⚠️ ACABOU SEU PROBLEMA",
-            "🔥 ISSO MUDA TUDO",
-            "😳 VOCÊ PRECISA DISSO",
-            "💡 SOLUÇÃO PERFEITA"
-        ],
-        "Luxo": [
-            "✨ OUTRO NÍVEL",
-            "💎 PREMIUM",
-            "🔥 QUALIDADE TOP",
-            "👑 NÍVEL ALTO",
-            "💼 PRODUTO DIFERENCIADO"
-        ]
-    }
+# ===== GERAR COPIES =====
+def gerar_copies(produto, preco, link):
 
+    preco_formatado = formatar_preco(preco)
     copies = []
-    for frase in hooks[angulo]:
-        copy = f"""{frase}
+
+    for _ in range(5):
+        hook = random.choice(HOOKS)
+        curiosidade = random.choice(CURIOSIDADE)
+        beneficio = random.choice(BENEFICIOS)
+        urgencia = random.choice(URGENCIA)
+        cta = random.choice(CTA)
+
+        copy = f"""{hook}
+
+{curiosidade}
 
 🔥 {produto}
-💰 R$ {preco}
+
+💡 {beneficio}
+
+💰 só {preco_formatado}
 
 👉 {link}
 
-⚠️ pode acabar hoje
+{urgencia}
+{cta}
 """
         copies.append(copy)
 
     return copies
 
-# ===== UTIL =====
-def botao_copiar(texto, chave):
-    st.text_area("Copiar conteúdo", texto, key=chave)
-
-# ===== IMAGEM =====
-def gerar_imagem(produto, preco, imagem_url):
-    try:
-        if not imagem_url:
-            return None
-
-        response = requests.get(imagem_url)
-        img_temp = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
-        img_temp.write(response.content)
-        img_temp.close()
-
-        img = Image.open(img_temp.name).convert("RGB")
-        draw = ImageDraw.Draw(img)
-
-        draw.text((20, 20), f"{produto}\nR$ {preco}", fill="white")
-
-        img_final = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
-        img.save(img_final.name)
-
-        return img_final.name
-
-    except:
-        return None
+# ===== BOTÃO COPIAR =====
+def copiar_box(texto, key):
+    st.text_area("Copiar", texto, key=key)
 
 # ===== INPUT =====
 link = st.text_input("🔗 Cole o link do produto")
 
+produto = ""
+preco = ""
+
 if st.button("🤖 PUXAR DADOS"):
     if link:
-        produto, preco, imagem = extrair_dados(link)
+        produto, preco = extrair_dados(link)
         st.session_state.produto = produto
         st.session_state.preco = preco
-        st.session_state.imagem = imagem
         st.success("Dados carregados!")
 
-produto = st.text_input("📦 Produto", value=st.session_state.produto)
-preco = st.text_input("💰 Preço", value=st.session_state.preco)
+produto = st.text_input("📦 Produto", value=st.session_state.get("produto", ""))
+preco = st.text_input("💰 Preço", value=st.session_state.get("preco", ""))
 
 plataformas = st.multiselect(
     "🌍 Onde quer gerar link?",
     ["Shopee", "Mercado Livre"],
-    default=["Shopee"]
+    default=["Mercado Livre"]
 )
-
-angulo = st.selectbox("🎯 Ângulo", ["Viral","Barato","Problema","Luxo"])
 
 # ===== GERAR =====
 if st.button("⚡ GERAR CONTEÚDO"):
-    if produto and preco and plataformas:
 
+    if not produto or not preco or not plataformas:
+        st.warning("Preencha tudo!")
+    else:
         links = gerar_links(plataformas)
 
         for nome, link_final in links:
-
             st.markdown(f"## 🔗 {nome}")
 
-            copies = gerar_copies(produto, preco, link_final, angulo)
+            copies = gerar_copies(produto, preco, link_final)
 
             for i, c in enumerate(copies):
-                botao_copiar(c, f"{nome}_{i}")
-
-        if st.session_state.imagem:
-            if st.button("🖼 GERAR CRIATIVO"):
-                img = gerar_imagem(produto, preco, st.session_state.imagem)
-
-                if img:
-                    st.image(img)
-                    with open(img, "rb") as f:
-                        st.download_button("📥 Baixar imagem", f, file_name="criativo.jpg")
-
-    else:
-        st.warning("Preencha tudo!")
+                copiar_box(c, f"{nome}_{i}")
