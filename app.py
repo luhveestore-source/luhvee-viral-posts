@@ -9,9 +9,24 @@ st.set_page_config(page_title="LuhVee GOD MODE", layout="centered")
 st.title("🚀 LuhVee GOD MODE")
 st.caption("Máquina automática de conteúdo para afiliados")
 
+# ===== SEUS LINKS DE AFILIADO =====
+LINK_AFILIADO_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
+LINK_AFILIADO_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
+
 # ===== ESTADO =====
 if "historico" not in st.session_state:
     st.session_state.historico = []
+
+# ===== FUNÇÃO: TROCAR LINK =====
+def gerar_link_afiliado(link):
+    link_lower = link.lower()
+
+    if "shopee" in link_lower:
+        return LINK_AFILIADO_SHOPEE
+    elif "mercadolivre" in link_lower:
+        return LINK_AFILIADO_ML
+    else:
+        return link
 
 # ===== FUNÇÃO SCRAPING =====
 def extrair_dados(link):
@@ -81,13 +96,14 @@ def gerar_roteiro(produto):
 4. CTA: link na bio
 """
 
-# ===== INPUTS =====
+# ===== INPUT =====
 link = st.text_input("🔗 Cole o link do produto")
 
 produto = ""
 preco = ""
 imagem = ""
 
+# ===== PUXAR DADOS =====
 if st.button("🤖 PUXAR DADOS"):
     if link:
         produto, preco, imagem = extrair_dados(link)
@@ -104,7 +120,10 @@ angulo = st.selectbox("🎯 Ângulo de venda", ["Viral","Barato","Problema","Lux
 if st.button("⚡ GERAR MODO ABSURDO"):
     if produto and preco and link:
 
-        copies = gerar_copies(produto, preco, link, angulo)
+        # 🔥 AQUI A MÁGICA
+        link_final = gerar_link_afiliado(link)
+
+        copies = gerar_copies(produto, preco, link_final, angulo)
         titulo = gerar_titulo(produto)
         hashtags = gerar_hashtags()
         roteiro = gerar_roteiro(produto)
@@ -113,6 +132,9 @@ if st.button("⚡ GERAR MODO ABSURDO"):
 
         if imagem:
             st.image(imagem, width=200)
+
+        st.subheader("🔗 Link usado")
+        st.code(link_final)
 
         st.subheader("🎯 Título")
         st.code(titulo)
@@ -168,7 +190,9 @@ if st.button("🔥 GERAR LOTE"):
             if not preco_l:
                 preco_l = "??"
 
-            copies = gerar_copies(nome, preco_l, l, "Viral")
+            link_final = gerar_link_afiliado(l)
+
+            copies = gerar_copies(nome, preco_l, link_final, "Viral")
 
             bloco = f"\n\n===== {nome} =====\n"
             bloco += "\n".join(copies)
