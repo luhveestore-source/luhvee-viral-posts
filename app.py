@@ -1,62 +1,55 @@
 import streamlit as st
 import random
+import datetime
 
 st.set_page_config(page_title="LuhVee PRO", layout="centered")
 
 st.title("🔥 Robô LuhVee PRO")
+st.caption("Automação de vendas para afiliados 🚀")
 
-# ===== SEUS LINKS FIXOS =====
-LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
-LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
+# ===== ESTADOS =====
+if "historico" not in st.session_state:
+    st.session_state.historico = []
 
-# ===== PRODUTOS =====
-produtos_virais = [
-    {"nome": "Mini Seladora Portátil", "preco": "29,90"},
-    {"nome": "Luz LED RGB TikTok", "preco": "49,90"},
-    {"nome": "Escova Elétrica Facial", "preco": "39,90"},
-    {"nome": "Suporte Celular Veicular", "preco": "24,90"},
-    {"nome": "Organizador de Gaveta", "preco": "19,90"},
-]
+if "favoritos" not in st.session_state:
+    st.session_state.favoritos = []
 
-# ===== COPY =====
-def gerar_copy(nome, preco, link):
+# ===== INPUTS =====
+produto = st.text_input("📦 Nome do Produto")
+preco = st.text_input("💰 Preço")
+link = st.text_input("🔗 Link do Produto")
+
+plataforma = st.selectbox("🌍 Plataforma", ["Shopee", "Mercado Livre"])
+modo = st.selectbox("🔥 Tipo de Copy", ["Agressiva", "Moderada"])
+
+# ===== FUNÇÕES =====
+def gerar_copy(produto, preco, link, modo):
     gatilhos = [
-        "🚨 PROMOÇÃO RELÂMPAGO!",
+        "🚨 ÚLTIMAS UNIDADES!",
         "🔥 TODO MUNDO COMPRANDO!",
-        "⚠️ ESTOQUE ACABANDO!"
+        "⚠️ ESTOQUE ACABANDO!",
+        "💣 PREÇO IMPERDÍVEL!"
     ]
 
-    call = [
-        "Corre antes que acabe!",
-        "Clica e garante o seu!",
-        "Não perde essa chance!"
+    calls = [
+        "CORRE AGORA!",
+        "ACABA HOJE!",
+        "VOCÊ VAI PERDER!",
+        "CLICA E GARANTE!"
+    ] if modo == "Agressiva" else [
+        "Vale a pena conferir",
+        "Recomendo muito",
+        "Olha isso 👀"
     ]
 
-    return f"""{random.choice(gatilhos)}
+    base = f"""{random.choice(gatilhos)}
 
-🔥 {nome}
+🔥 {produto}
 💰 R$ {preco}
 
 👉 {link}
 
-{random.choice(call)}
+{random.choice(calls)}
 """
 
-# ===== ESCOLHA PLATAFORMA =====
-plataforma = st.radio(
-    "Escolha a plataforma:",
-    ["Mercado Livre", "Shopee"]
-)
-
-link_base = LINK_ML if plataforma == "Mercado Livre" else LINK_SHOPEE
-
-# ===== PRODUTOS =====
-st.subheader("🔥 Produtos em Alta")
-
-for p in produtos_virais:
-    st.markdown(f"### {p['nome']}")
-    st.write(f"💰 R$ {p['preco']}")
-
-    if st.button(f"🚀 Gerar Copy - {p['nome']}"):
-        copy = gerar_copy(p["nome"], p["preco"], link_base)
-        st.code(copy)
+    return [base, base
