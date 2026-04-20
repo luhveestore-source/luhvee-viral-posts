@@ -22,25 +22,37 @@ st.markdown("""
 st.title("👑 LuhVee Stores - Ferramenta de Elite")
 st.subheader("Gerador de Copywriting Agressivo & Gestão de Estratégia")
 
-# --- BANCO DE NICHOS COMPLETO ---
+# --- BANCO DE NICHOS COMPLETO (TODOS MANTIDOS) ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
     "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída de Maternidade"],
-    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Elásticos", "Massageador Muscular Turbo"],
+    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída Maternidade"],
+    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital Infantil", "Tablet LCD"],
+    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica"],
+    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil"],
+    "🚗 Acessórios Automotivos": ["Suporte Gravidade", "Aspirador Sem Fio", "Luz Interna Neon"],
+    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras", "Sacos de Vácuo"],
+    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Solar", "Vaso Auto-irrigação"],
     "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento"],
+    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro"],
+    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Faixas Elásticas", "Massageador Muscular"],
     "🌎 Internacional (High Ticket)": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
 }
 
 # --- MENU LATERAL ---
 aba = st.sidebar.radio("Selecione a Missão:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "✨ Vibes do Dia"])
 
-# --- FUNÇÃO GERADORA DE TEXTO ROBUSTO ---
-def gerar_copy_ia_elite(rede, produto, preco, marketplace, link):
+# --- FUNÇÃO GERADORA DE TEXTO ROBUSTO COM SEUS LINKS ---
+def gerar_copy_ia_elite(rede, produto, preco, marketplace, link_manual):
     prod = produto.upper() if produto else "ITEM EXCLUSIVO"
     valor = f"R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
-    lk = link if link else "https://collshp.com/luhveestores"
+    
+    # Lógica dos seus Links
+    if marketplace == "Shopee 🛍️":
+        lk = link_manual if link_manual else "https://collshp.com/luhveestores"
+    else:
+        lk = link_manual if link_manual else "https://www.mercadolivre.com.br/social/axwelloliveira"
     
     if rede == "TikTok/Reels":
         return (
@@ -77,7 +89,7 @@ if aba == "🛍️ Postar Produtos":
     with col2:
         preco_produto = st.text_input("Preço de Venda:", placeholder="Ex: 87,90")
     
-    link_final = st.text_input("🔗 Cole o Link de Venda (ML ou Shopee):")
+    link_final = st.text_input("🔗 Link Específico (opcional):")
 
     if st.button("🚀 GERAR CAMPANHA COMPLETA"):
         if not produto_nome:
@@ -104,7 +116,7 @@ elif aba == "🔎 Minerador de Ouro":
     escolha_nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
     if st.button("📡 VARREDURA DE TENDÊNCIAS"):
         sugestao = random.choice(nichos_completos[escolha_nicho])
-        st.success(f"💡 O produto **{sugestao}** está em fase de explosão no TikTok e Pinterest! Excelente para mineração hoje.")
+        st.success(f"💡 O produto **{sugestao}** está em fase de explosão! Excelente para mineração hoje.")
 
 else:
     st.write("### ✨ Vibes LuhVee Stores (300 Letras)")
@@ -113,11 +125,9 @@ else:
         if estilo == "Profunda/Inspiradora":
             msg = ("A vida não é uma corrida contra o tempo, mas uma jornada sagrada de cura e redescoberta. "
                    "Cada cicatriz que você carrega é um mapa de uma batalha vencida em silêncio. Valorize seus passos, "
-                   "pois são eles que constroem o seu destino extraordinário. Você é rara, preciosa e o milagre que "
-                   "tanto procurava já habita em você. Floresça no seu tempo! ✨❤️")
+                   "pois são eles que constroem o seu destino extraordinário. Floresça no seu tempo! ✨❤️")
         else:
             msg = ("Status do dia: Em busca da minha versão milionária, porque a linda já cansou de boletos! 😂 "
-                   "Dizem que dinheiro não traz felicidade, mas eu preferia muito mais chorar em Paris do que na "
-                   "fila do mercado às seis da manhã. Foca no café, no brilho e nos objetivos, porque a gente nasceu "
-                   "para o luxo e os sonhos não se pagam sozinhos! 💅✨")
+                   "Dizem que dinheiro não traz felicidade, mas eu preferia muito mais estar chorando em Paris do que na "
+                   "fila do mercado às seis da manhã. A gente nasceu para o luxo e os sonhos não se pagam sozinhos! 💅✨")
         st.code(msg, language="text")
