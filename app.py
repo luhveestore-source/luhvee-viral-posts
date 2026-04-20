@@ -20,12 +20,12 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- BANCO DE DADOS GIGANTE DE NICHOS (O LEQUE COMPLETO) ---
+# --- BANCO DE DADOS GIGANTE DE NICHOS ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
     "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro", "Óculos de Sol Luxury", "Relógio Feminino Rose Gold", "Cinto Corrente Trend"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída de Maternidade", "Canguru Ergonômico", "Aquecedor de Mamadeira USB", "Monitor de Bebê Wi-Fi", "Tapete de Atividades"],
+    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída Maternidade", "Canguru Ergonômico", "Aquecedor de Mamadeira USB", "Monitor de Bebê Wi-Fi", "Tapete de Atividades"],
     "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica Colorida", "Mini Drone Sensor"],
     "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica", "Brinquedo Interativo com Petiscos", "Coleira com LED", "Lançador de Bolinhas", "Rede para Gatos de Janela"],
     "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil", "Smartwatch Ultra Series", "Teclado Mecânico RGB", "Suporte Articulado para Monitor", "Power Bank Indução"],
@@ -38,9 +38,9 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE INTELIGÊNCIA ARTIFICIAL (CONSTRUÇÃO DE TEXTO ÚNICO) ---
+# --- MOTOR DE INTELIGÊNCIA ARTIFICIAL (CONSTRUÇÃO ÚNICA) ---
 def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=None):
-    # BANCO DE DADOS DE BLOCOS (AUMENTADO PARA ZERO REPETIÇÃO)
+    # BANCO DE BLOCOS
     ganchos = [
         f"🚨 ALERTA DE TENDÊNCIA: O {produto} CHEGOU PARA MUDAR TUDO! 🚨",
         f"🔥 O SEGREDO FOI REVELADO! Você não pode ficar sem esse {produto}! 🔥",
@@ -70,9 +70,9 @@ def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=
         "Dica da Luh: Boletos a gente paga, mas o prazer de um produtinho novo chegando não tem preço. Garanta logo!"
     ]
 
-    # Lógica de Links Blindados
+    # Lógica de Links Blindados de Venda
     if marketplace == "Shopee 🛍️":
-        link = "https://collshp.com/luhveestores"
+        link = "https://collshp.com/luhveestores?view=storefront"
         loja = "LuhVee Stores na Shopee 🛍️"
     else:
         link = "https://www.mercadolivre.com.br/social/axwelloliveira"
@@ -94,19 +94,20 @@ def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=
             "Sorria sempre, afinal, o botox está caro e rir de tudo ainda é o melhor tratamento de beleza gratuito e eficaz que existe no mundo! 💅"
         ]
         fechamento_vibe = [
-            "Confira meus achadinhos favoritos no meu Hub:",
+            "Confira meus achadinhos favoritos no meu Hub de Pesquisa:",
             "Dê um up na sua rotina com o que tem de melhor no meu Hub:",
-            "O link da sua transformação está no meu Hub:",
+            "O link da sua transformação está no meu Hub de Pesquisa:",
             "Acesse as ofertas exclusivas de hoje no meu Hub:"
         ]
-        # Inclusão do link do Hub solicitado
-        return f"{random.choice(intros)}\n\n{random.choice(vibes_corpo)}\n\n✨ {random.choice(fechamento_vibe)}\n👉 https://collshp.com/luhveestores\n\nCom carinho, LuhVee Stores ❤️"
+        # Link do Hub atualizado conforme solicitado
+        hub_link = "https://pesquisa-luhveestores.streamlit.app/"
+        return f"{random.choice(intros)}\n\n{random.choice(vibes_corpo)}\n\n✨ {random.choice(fechamento_vibe)}\n👉 {hub_link}\n\nCom carinho, LuhVee Stores ❤️"
 
-# --- MENU LATERAL (COMANDO CENTRAL) ---
+# --- MENU LATERAL ---
 st.sidebar.title("👑 Comando LuhVee ELITE")
 aba = st.sidebar.radio("Selecione a Missão:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "✨ Vibes do Dia (IA)"])
 
-# --- ABA 1: POSTAR PRODUTOS (MADEIRADA) ---
+# --- ABA 1: POSTAR PRODUTOS ---
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada de Conversão Milionária")
     mkt_sel = st.selectbox("Qual o Marketplace de hoje?", ["Shopee 🛍️", "Mercado Livre 📦"])
@@ -129,7 +130,7 @@ if aba == "🛍️ Postar Produtos":
         else:
             st.warning("Luh, digite o nome do produto para eu conseguir criar a mágica!")
 
-# --- ABA 2: MINERADOR DE OURO (NICHOS COMPLETOS) ---
+# --- ABA 2: MINERADOR DE OURO ---
 elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Caçador de Tendências Pro")
     nicho_sel = st.selectbox("Escolha o Nicho para Minerar:", list(nichos_completos.keys()))
@@ -140,16 +141,16 @@ elif aba == "🔎 Minerador de Ouro":
         <div style='background-color: #111; padding: 20px; border-radius: 10px; border: 1px solid #ff69b4;'>
             <h2 style='color: #ff69b4; margin: 0;'>💎 Produto Encontrado:</h2>
             <p style='color: white; font-size: 24px; font-weight: bold;'>{produto_escolhido}</p>
-            <p style='color: #aaa;'>Dica: Este item está com alto volume de busca orgânica no Pinterest e TikTok.</p>
+            <p style='color: #aaa;'>Dica: Este item está com alto volume de busca orgânica hoje.</p>
         </div>
         """, unsafe_allow_html=True)
 
-# --- ABA 3: FRASES MOTIVACIONAIS (IA INFINITA) ---
+# --- ABA 3: FRASES MOTIVACIONAIS ---
 else:
     st.title("✨ Vibes LuhVee Stores (Inteligência Real)")
     momento_dia = st.selectbox("Selecione o Momento:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
     
-    if st.button("🪄 GERAR MENSAGEM ÚNICA (300 Letras)"):
+    if st.button("🪄 GERAR MENSAGEM ÚNICA (IA)"):
         mensagem_ia = motor_ia_avancado("Vibes", periodo=momento_dia)
         st.code(mensagem_ia, language="text")
         st.balloons()
