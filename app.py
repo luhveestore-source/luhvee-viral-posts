@@ -27,7 +27,7 @@ LINK_HUB = "https://links-luhveestore.streamlit.app/"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS COMPLETO ---
+# --- BANCO DE NICHOS ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
@@ -45,15 +45,49 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE VENDAS ---
-def motor_vendas(produto, preco, marketplace):
-    ganchos = [f"🚨 ALERTA DE TENDÊNCIA: O {produto.upper()} CHEGOU! 🚨", f"🔥 O SEGREDO FOI REVELADO! Você precisa desse {produto.upper()}! 🔥", f"😱 PARE TUDO! Se você queria um sinal para ter seu {produto.upper()}, é esse!"]
-    corpos = ["A qualidade é surreal e foi testada pessoalmente por mim. Esqueça réplicas.", "Sabe aquele item que resolve sua vida e te deixa com cara de rica? É esse!", "O design exclusivo faz deste produto o desejo número 1 das redes."]
-    link = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
-    return f"{random.choice(ganchos)}\n\n{random.choice(corpos)}\n\n😱 POR APENAS: R$ {preco}\n\n🛒 LINK SEGURO:\n👉 {link}\n\nLuhVee Stores ❤️"
+# --- MOTOR DE VENDAS AGRESSIVO (LONGO E COMPLETO) ---
+def motor_vendas_agressivo(produto, preco, marketplace, rede):
+    link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
+    
+    # Roteiro Anti-Flop por Rede
+    estrategias = {
+        "Instagram 📸": "💡 DICA ANTI-FLOP: Poste nos Stories com enquete antes. Use o link na bio e no sticker de link.",
+        "TikTok 📱": "💡 DICA ANTI-FLOP: Use um áudio em alta no volume 3%. Legenda curta com 'Link na Bio'.",
+        "WhatsApp 💬": "💡 DICA ANTI-FLOP: Poste no Status e envie individualmente para quem mais interage com você."
+    }
 
-# --- MOTOR INFINITO (SUA LÓGICA EXATA) ---
-aberturas = ["✨ Hoje pode ser o dia da sua virada...", "💖 Tem coisa boa chegando pra você...", "🌸 Não ignora isso aqui...", "🔥 Você merece muito mais do que imagina...", "💫 Isso aqui pode mudar seu dia...", "✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
+    copy = f"""🚨 ALERTA DE PRODUTO VIRAL: {produto.upper()} 🚨
+
+O segredo que as grandes blogueiras escondem finalmente foi revelado! Se você estava procurando por qualidade premium e um preço que cabe no seu bolso, sua busca termina AGORA.
+
+✅ Por que você precisa do {produto}:
+- Qualidade máxima testada e aprovada pela LuhVee.
+- Design exclusivo que você não encontra em lojas comuns.
+- Durabilidade garantida: não é descartável, é investimento!
+- Praticidade que vai transformar sua rotina hoje mesmo.
+
+⚠️ AVISO IMPORTANTE: O estoque está nas últimas unidades devido ao sucesso no TikTok. Quem deixar para amanhã vai perder o preço promocional!
+
+💰 OFERTA EXCLUSIVA: R$ {preco}
+
+🛒 COMPRE COM SEGURANÇA NOS LINKS ABAIXO:
+
+🌐 MEU HUB DE OFERTAS: 
+{LINK_HUB}
+
+🛍️ LINK DIRETO DO PRODUTO ({marketplace.upper()}):
+{link_venda}
+
+🔍 CONSULTE OUTROS PRODUTOS:
+{LINK_PESQUISA}
+
+---
+{estrategias[rede]}
+Com carinho, LuhVee Stores ❤️"""
+    return copy
+
+# --- MOTOR INFINITO ---
+aberturas = ["✨ Hoje pode ser o dia da sua virada...", "💖 Tem coisa boa chegando pra você...", "🌸 Não ignora isso aqui...", "🔥 Você merece muito mais...", "💫 Isso aqui pode mudar seu dia...", "✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
 meios = ["imagine encontrar algo que combina com você", "coisas assim somem rápido", "muita gente já está aproveitando", "isso chama atenção de verdade", "você vai gostar disso", "você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto do que você imagina", "você é mais forte do que pensa"]
 fechamentos = ["💖 Confia no processo.", "✨ Não deixa pra depois.", "🔥 Pode ser sua chance hoje.", "💫 Aproveita enquanto dá tempo.", "✨ Vai dar certo!", "🔥 Bora pra cima!", "🌸 Você consegue!", "💫 Nunca desista!"]
 
@@ -68,29 +102,35 @@ st.sidebar.title("👑 Comando LuhVee ELITE")
 aba = st.sidebar.radio("Navegação:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "💖 Mensagens Infinitas"])
 
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada de Conversão")
-    mkt = st.selectbox("Escolha o Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
+    st.title("🔥 Madeirada de Conversão Milionária")
+    
     col1, col2 = st.columns(2)
-    with col1: prod = st.text_input("📦 Produto:")
-    with col2: prc = st.text_input("💰 Preço:")
-    if st.button("🚀 GERAR COPY"):
-        if prod: st.code(motor_vendas(prod, prc, mkt), language="text")
-        else: st.warning("Digite o produto!")
+    with col1:
+        mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
+        rede_sel = st.selectbox("Onde vai postar?", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
+    with col2:
+        prod = st.text_input("📦 Nome do Produto:")
+        prc = st.text_input("💰 Preço de Venda:")
+        
+    if st.button("🚀 GERAR COPY AGRESSIVA + ESTRATÉGIA"):
+        if prod and prc:
+            resultado_venda = motor_vendas_agressivo(prod, prc, mkt, rede_sel)
+            st.text_area("📋 Copy Pronta para Uso:", resultado_venda, height=450)
+        else:
+            st.warning("Luh, preencha o nome e o preço do produto!")
 
 elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Minerador Profissional")
     nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
     if st.button("📡 MINERAR"):
-        st.success(f"💎 Sugestão: **{random.choice(nichos_completos[nicho])}**")
+        st.success(f"💎 Sugestão Viral: **{random.choice(nichos_completos[nicho])}**")
 
 else:
     st.title("💖 Gerador de Mensagens Infinitas")
     per = st.selectbox("Período:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
-    qtd = st.slider("Quantidade de mensagens:", 1, 500, 20)
-    
+    qtd = st.slider("Quantidade:", 1, 500, 20)
     if st.button("✨ GERAR AGORA"):
         random.seed(time.time())
         mensagens = [gerar_mensagem_unica(per) for _ in range(qtd)]
-        resultado = "\n\n---\n\n".join(mensagens)
-        st.text_area("📋 Copie e poste todas as variações:", resultado, height=500)
+        st.text_area("📋 Copie e poste:", "\n\n---\n\n".join(mensagens), height=500)
         st.balloons()
