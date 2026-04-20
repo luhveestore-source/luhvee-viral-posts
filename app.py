@@ -17,6 +17,7 @@ st.markdown("""
     .stButton>button:hover { transform: translateY(-3px); box-shadow: 0px 10px 20px rgba(255, 105, 180, 0.6); }
     .stTextInput>div>div>input, .stSelectbox>div>div { background-color: #1a1a1a !important; color: white !important; border: 1px solid #ff69b4 !important; }
     .stCode { background-color: #111 !important; border: 1px solid #ff69b4 !important; color: #ff69b4 !important; }
+    .stTextArea>div>div>textarea { background-color: #1a1a1a !important; color: #ff69b4 !important; border: 1px solid #ff69b4 !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -26,77 +27,70 @@ LINK_HUB = "https://links-luhveestore.streamlit.app/"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS ---
+# --- BANCO DE NICHOS COMPLETO ---
 nichos_completos = {
-    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Máscara de LED Facial", "Organizador Giratório"],
-    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Aspirador Robô"],
-    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro", "Óculos Luxury"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada Amamentação", "Kit Saída Maternidade", "Canguru Ergonômico", "Monitor Wi-Fi"],
-    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD", "Escavadeira Controle", "Mini Drone"],
-    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte", "Escova Mágica", "Brinquedo Interativo", "Rede de Janela"],
-    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor", "Smartwatch Ultra", "Teclado RGB"],
-    "🚗 Acessórios Automotivos": ["Suporte Gravidade", "Aspirador Sem Fio", "Luz Neon App", "Polidor Farol", "Câmera de Ré"],
-    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras", "Sacos de Vácuo", "Dispenser Automático"],
-    "🌿 Ferramentas & Jardinagem": ["Kit de Poda", "Regador Solar", "Vaso Auto-irrigação", "Parafusadeira Viral", "Lanterna Tática"],
-    "👔 Moda Masculina": ["Camisa Linho", "Calça Jogger Tech", "Jaqueta Corta-Vento", "Carteira Antifurto"],
-    "👟 Calçados Masculinos": ["Tênis Nuvem", "Sapato Social Flex", "Bota Adventure", "Tênis Academia"],
-    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Elásticos", "Massageador Turbo", "Corda Digital", "Tapete Yoga"],
-    "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas"]
+    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
+    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
+    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro", "Óculos de Sol Luxury", "Relógio Feminino Rose Gold", "Cinto Corrente Trend"],
+    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída de Maternidade", "Canguru Ergonômico", "Aquecedor de Mamadeira USB", "Monitor de Bebê Wi-Fi", "Tapete de Atividades"],
+    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica ColorColorida", "Mini Drone Sensor"],
+    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica", "Brinquedo Interativo com Petiscos", "Coleira com LED", "Lançador de Bolinhas", "Rede para Gatos de Janela"],
+    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil", "Smartwatch Ultra Series", "Teclado Mecânico RGB", "Suporte Articulado para Monitor", "Power Bank Indução"],
+    "🚗 Acessórios Automotivos": ["Suporte Celular Gravidade", "Aspirador de Carro Sem Fio", "Luz Interna Neon App", "Polidor de Farol", "Câmera de Ré Visão Noturna", "Organizador de Banco Couro"],
+    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras Empilháveis", "Sacos de Vácuo para Roupas", "Mini Aspirador de Mesa", "Suporte de Vassouras Adesivo", "Dispenser de Sabão Automático"],
+    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Automático Solar", "Vaso de Auto-irrigação", "Parafusadeira Viral sem Fio", "Lanterna Tática Militar", "Kit de Ferramentas Rosa"],
+    "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento Refletiva", "Kit Meias Performance", "Carteira Slim Antifurto", "Pulseira de Couro Masculina"],
+    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro Ortopédica", "Bota Adventure Impermeável", "Tênis de Academia Knit"],
+    "💪 Produtos de Academia": ["Garrafa de Água Motivacional", "Kit de Faixas Elásticas", "Massageador Muscular Turbo", "Corda de Pular Digital", "Tapete de Yoga Antiderrapante", "Rolo de Liberação Miofascial"],
+    "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE INTELIGÊNCIA ARTIFICIAL (COPY DE PRODUTOS) ---
-def gerar_copy_venda(produto, preco, marketplace):
-    ganchos = ["🚨 ALERTA DE TENDÊNCIA: O {prod} CHEGOU! 🚨", "🔥 O SEGREDO FOI REVELADO! Você precisa desse {prod}! 🔥", "😱 PARE TUDO! Se você queria um sinal para ter seu {prod}, é esse!"]
+# --- MOTOR DE VENDAS ---
+def motor_vendas(produto, preco, marketplace):
+    ganchos = [f"🚨 ALERTA DE TENDÊNCIA: O {produto.upper()} CHEGOU! 🚨", f"🔥 O SEGREDO FOI REVELADO! Você precisa desse {produto.upper()}! 🔥", f"😱 PARE TUDO! Se você queria um sinal para ter seu {produto.upper()}, é esse!"]
     corpos = ["A qualidade é surreal e foi testada pessoalmente por mim. Esqueça réplicas.", "Sabe aquele item que resolve sua vida e te deixa com cara de rica? É esse!", "O design exclusivo faz deste produto o desejo número 1 das redes."]
-    
     link = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
-    loja = "LuhVee Stores na Shopee" if marketplace == "Shopee 🛍️" else "LuhVee Stores no Mercado Livre"
-    
-    res = f"{random.choice(ganchos).format(prod=produto.upper())}\n\n{random.choice(corpos)}\n\n😱 POR APENAS: R$ {preco}\n\n🚀 CORRE PRO LINK! Estoque limitado!\n\n🛒 LINK SEGURO:\n👉 {link}\n\n{loja} 🛍️"
-    return res
+    return f"{random.choice(ganchos)}\n\n{random.choice(corpos)}\n\n😱 POR APENAS: R$ {preco}\n\n🛒 LINK SEGURO:\n👉 {link}\n\nLuhVee Stores ❤️"
 
-# --- MOTOR DE MENSAGENS INFINITAS (SUA LÓGICA INTEGRADA) ---
-aberturas_inf = ["✨ Hoje pode ser o dia da sua virada...", "💖 Tem coisa boa chegando pra você...", "🌸 Não ignora isso aqui...", "🔥 Você merece muito mais...", "💫 Isso aqui pode mudar seu dia..."]
-meio_inf = ["imagine encontrar algo que combina com você", "coisas assim somem rápido", "muita gente já está aproveitando", "isso chama atenção de verdade", "você vai gostar disso"]
-fechamento_inf = ["💖 Confia no processo.", "✨ Não deixa pra depois.", "🔥 Pode ser sua chance hoje.", "💫 Aproveita enquanto dá tempo."]
+# --- MOTOR INFINITO (SUA LÓGICA EXATA) ---
+aberturas = ["✨ Hoje pode ser o dia da sua virada...", "💖 Tem coisa boa chegando pra você...", "🌸 Não ignora isso aqui...", "🔥 Você merece muito mais do que imagina...", "💫 Isso aqui pode mudar seu dia...", "✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
+meios = ["imagine encontrar algo que combina com você", "coisas assim somem rápido", "muita gente já está aproveitando", "isso chama atenção de verdade", "você vai gostar disso", "você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto do que você imagina", "você é mais forte do que pensa"]
+fechamentos = ["💖 Confia no processo.", "✨ Não deixa pra depois.", "🔥 Pode ser sua chance hoje.", "💫 Aproveita enquanto dá tempo.", "✨ Vai dar certo!", "🔥 Bora pra cima!", "🌸 Você consegue!", "💫 Nunca desista!"]
 
-def gerar_vibe_infinita(periodo):
+def gerar_mensagem_unica(periodo):
     s = "☀️ Bom dia!" if periodo == "Bom Dia" else "🌤️ Boa tarde!" if periodo == "Boa Tarde" else "🌙 Boa noite!"
-    base = f"{s}\n\n{random.choice(aberturas_inf)} {random.choice(meio_inf)}.\n{random.choice(fechamento_inf)}"
+    msg = f"{s}\n\n{random.choice(aberturas)} {random.choice(meios)}.\n{random.choice(fechamentos)}"
     links = f"\n\n🔍 Pesquisa: {LINK_PESQUISA}\n🌐 Hub: {LINK_HUB}"
-    return base + links
+    return msg + links
 
 # --- INTERFACE ---
 st.sidebar.title("👑 Comando LuhVee ELITE")
-aba = st.sidebar.radio("Selecione a Missão:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "✨ Mensagens Infinitas IA"])
+aba = st.sidebar.radio("Navegação:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "💖 Mensagens Infinitas"])
 
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada de Conversão")
-    mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
+    mkt = st.selectbox("Escolha o Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
     col1, col2 = st.columns(2)
-    with col1: prod = st.text_input("📦 Nome do Produto:")
+    with col1: prod = st.text_input("📦 Produto:")
     with col2: prc = st.text_input("💰 Preço:")
-    
-    if st.button("🚀 GERAR COPY PROFISSIONAL"):
-        if prod:
-            st.code(gerar_copy_venda(prod, prc, mkt), language="text")
-            st.info("📸 Insta: Stories + Reels | 📱 TikTok: Gancho 3s | 💬 Whats: Grupos")
-        else: st.warning("Digite o nome do produto!")
+    if st.button("🚀 GERAR COPY"):
+        if prod: st.code(motor_vendas(prod, prc, mkt), language="text")
+        else: st.warning("Digite o produto!")
 
 elif aba == "🔎 Minerador de Ouro":
-    st.title("🔎 Caçador de Tendências")
-    nicho = st.selectbox("Nicho:", list(nichos_completos.keys()))
-    if st.button("📡 MINERAR AGORA"):
-        st.success(f"💎 PRODUTO VIRAL ENCONTRADO: **{random.choice(nichos_completos[nicho])}**")
+    st.title("🔎 Minerador Profissional")
+    nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
+    if st.button("📡 MINERAR"):
+        st.success(f"💎 Sugestão: **{random.choice(nichos_completos[nicho])}**")
 
 else:
-    st.title("💖 Mensagens Infinitas (Fábrica LuhVee)")
-    per = st.selectbox("Tipo:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
+    st.title("💖 Gerador de Mensagens Infinitas")
+    per = st.selectbox("Período:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
     qtd = st.slider("Quantidade de mensagens:", 1, 500, 20)
     
-    if st.button("✨ GERAR 500 MENSAGENS AGORA"):
+    if st.button("✨ GERAR AGORA"):
         random.seed(time.time())
-        mensagens_lista = [gerar_vibe_infinita(per) for _ in range(qtd)]
-        resultado_final = "\n\n---\n\n".join(mensagens_lista)
-        st.text_area("📋 Copie e poste (Várias opções):", resultado_final, height=500)
+        mensagens = [gerar_mensagem_unica(per) for _ in range(qtd)]
+        resultado = "\n\n---\n\n".join(mensagens)
+        st.text_area("📋 Copie e poste todas as variações:", resultado, height=500)
         st.balloons()
