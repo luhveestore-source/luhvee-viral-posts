@@ -39,51 +39,43 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE INTELIGÊNCIA ARTIFICIAL (CONSTRUÇÃO ÚNICA) ---
-def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=None):
-    # BANCO DE BLOCOS PARA VARIAÇÃO
-    ganchos = [
-        f"🚨 ALERTA DE TENDÊNCIA: O {produto} CHEGOU PARA MUDAR TUDO! 🚨",
-        f"🔥 O SEGREDO FOI REVELADO! Você não pode ficar sem esse {produto}! 🔥",
-        f"😱 PARE TUDO! Se você estava esperando um sinal para ter seu {produto}, é esse!",
-        f"💎 EXCLUSIVIDADE: O {produto} que viralizou na gringa finalmente disponível!",
-        f"👑 STATUS E LUXO: O {produto} que as blogueiras não te mostram por onde compram!",
-        f"⚠️ ÚLTIMO AVISO: O estoque do {produto} está zerando agora em todo o Brasil!",
-        f"🌟 TRANSFORMAÇÃO: Como o {produto} vai facilitar sua rotina hoje mesmo!",
-        f"🤫 O QUE NINGUÉM TE CONTA: Por que o {produto} é o melhor investimento do ano?"
-    ]
-    
-    corpos = [
-        "A qualidade é simplesmente surreal e foi testada pessoalmente por mim. Esqueça as réplicas que só trazem decepção. Aqui o acabamento é premium e a durabilidade é garantida.",
-        "Sabe aquele item que resolve sua vida de forma inteligente e ainda te deixa com cara de rica? É exatamente esse! Elegância e praticidade em um só lugar.",
-        "O design exclusivo e a performance desse produto fazem dele o desejo número 1 de todas as redes sociais. Você merece o melhor e nós trouxemos a elite para você.",
-        "Tecnologia de ponta aliada a um custo-benefício que parece erro de sistema. Eu usei, aprovei e garanto: o resultado é imediato e vai transformar sua rotina.",
-        "Não é apenas mais um produto no seu carrinho, é um investimento na sua autoestima e no seu bem-estar. Sinta a diferença de ter algo realmente original.",
-        "Ideal para quem não abre mão de sofisticação. Esse item foi selecionado a dedo na nossa curadoria para garantir que você receba o topo da qualidade mundial."
-    ]
-    
-    chamadas = [
-        "Estoque físico nas últimas unidades! Garanta o seu agora ou aceite pagar o dobro depois em lojas de shopping.",
-        "⚠️ AVISO IMPORTANTE: Sem previsão de reposição com esse valor promocional. Proteja seu bolso e sua autoestima!",
-        "🚀 CORRE PRO LINK! A demanda está surreal por conta dos vídeos virais e o botão vai sair do ar a qualquer segundo!",
-        "Não deixe para amanhã o que você pode garantir hoje com preço de lançamento exclusivo da nossa loja.",
-        "Clique no link seguro abaixo e faça parte do grupo seleto que já garantiu essa maravilha!",
-        "Dica da Luh: Boletos a gente paga, mas o prazer de um produtinho novo chegando não tem preço. Garanta logo!"
-    ]
-
-    # Links Oficiais de Venda
-    if marketplace == "Shopee 🛍️":
-        link = "https://collshp.com/luhveestores?view=storefront"
-        loja = "LuhVee Stores na Shopee 🛍️"
-    else:
-        link = "https://www.mercadolivre.com.br/social/axwelloliveira"
-        loja = "LuhVee Stores no Mercado Livre 📦"
-    
+# --- MOTOR DE INTELIGÊNCIA ARTIFICIAL ---
+def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None):
     if tipo == "Venda":
+        ganchos = [
+            f"🚨 ALERTA DE TENDÊNCIA: O {produto} CHEGOU PARA MUDAR TUDO! 🚨",
+            f"🔥 O SEGREDO FOI REVELADO! Você não pode ficar sem esse {produto}! 🔥",
+            f"😱 PARE TUDO! Se você estava esperando um sinal para ter seu {produto}, é esse!",
+            f"💎 EXCLUSIVIDADE: O {produto} que viralizou na gringa finalmente disponível!",
+            f"👑 STATUS E LUXO: O {produto} que as blogueiras não te mostram por onde compram!",
+            f"⚠️ ÚLTIMO AVISO: O estoque do {produto} está zerando agora em todo o Brasil!",
+            f"🌟 TRANSFORMAÇÃO: Como o {produto} vai facilitar sua rotina hoje mesmo!",
+            f"🤫 O QUE NINGUÉM TE CONTA: Por que o {produto} é o melhor investimento do ano?"
+        ]
+        corpos = [
+            "A qualidade é simplesmente surreal e foi testada pessoalmente por mim. Esqueça as réplicas que só trazem decepção. Aqui o acabamento é premium e a durabilidade é garantida.",
+            "Sabe aquele item que resolve sua vida de forma inteligente e ainda te deixa com cara de rica? É exatamente esse! Elegância e praticidade em um só lugar.",
+            "O design exclusivo e a performance desse produto fazem dele o desejo número 1 de todas as redes sociais. Você merece o melhor e nós trouxemos a elite para você.",
+            "Tecnologia de ponta aliada a um custo-benefício que parece erro de sistema. Eu usei, aprovei e garanto: o resultado é imediato e vai transformar sua rotina.",
+            "Não é apenas mais um produto no seu carrinho, é um investimento na sua autoestima e no seu bem-estar. Sinta a diferença de ter algo realmente original."
+        ]
+        chamadas = [
+            "Estoque físico nas últimas unidades! Garanta o seu agora ou aceite pagar o dobro depois.",
+            "⚠️ AVISO IMPORTANTE: Sem previsão de reposição com esse valor promocional!",
+            "🚀 CORRE PRO LINK! A demanda está surreal e o botão vai sair do ar a qualquer segundo!",
+            "Clique no link seguro abaixo e faça parte do grupo seleto que já garantiu essa maravilha!"
+        ]
+
+        if marketplace == "Shopee 🛍️":
+            link = "https://collshp.com/luhveestores?view=storefront"
+            loja = "LuhVee Stores na Shopee 🛍️"
+        else:
+            link = "https://www.mercadolivre.com.br/social/axwelloliveira"
+            loja = "LuhVee Stores no Mercado Livre 📦"
+        
         return f"{random.choice(ganchos)}\n\n{random.choice(corpos)}\n\n💎 DIFERENCIAIS:\n✅ Qualidade Premium Testada\n✅ Envio Imediato e Seguro\n✅ Garantia Total LuhVee\n\n😱 POR APENAS: R$ {preco}\n\n{random.choice(chamadas)}\n\n🛒 LINK SEGURO NO {marketplace.upper()}:\n👉 {link}\n\n{loja}"
 
     elif tipo == "Vibes":
-        intros = [f"{periodo} ☀️", f"{periodo} ✨", f"{periodo} 🌸", f"{periodo} 👑"]
         vibes_corpo = [
             "A jornada da vida não é uma corrida contra o tempo, mas um ciclo constante de renovação. Valorize cada pequeno passo, pois são eles que constroem seu destino extraordinário.",
             "Status do dia: Em busca da minha versão milionária, porque a versão linda já cansou de carregar boletos no lombo! 😂 A gente nasceu para o luxo, o resto é detalhe.",
@@ -101,7 +93,7 @@ def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=
             "Acesse todas as minhas vitrines e novidades aqui no Hub:"
         ]
         hub_principal = "https://links-luhveestore.streamlit.app/"
-        return f"{random.choice(intros)}\n\n{random.choice(vibes_corpo)}\n\n✨ {random.choice(fechamento_vibe)}\n👉 {hub_principal}\n\nCom carinho, LuhVee Stores ❤️"
+        return f"{random.choice(vibes_corpo)}\n\n✨ {random.choice(fechamento_vibe)}\n👉 {hub_principal}\n\nCom carinho, LuhVee Stores ❤️"
 
 # --- MENU LATERAL ---
 st.sidebar.title("👑 Comando LuhVee ELITE")
@@ -111,48 +103,34 @@ aba = st.sidebar.radio("Selecione a Missão:", ["🛍️ Postar Produtos", "🔎
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada de Conversão Milionária")
     mkt_sel = st.selectbox("Qual o Marketplace de hoje?", ["Shopee 🛍️", "Mercado Livre 📦"])
-    
     col1, col2 = st.columns(2)
     with col1: prod_nome = st.text_input("📦 Nome do Produto:", placeholder="Ex: Escova 5 em 1 Titanium")
     with col2: prod_preco = st.text_input("💰 Preço de Venda:", placeholder="Ex: 89,90")
     
     if st.button("🚀 GERAR COPY INFINITA"):
         if prod_nome:
-            st.success("✅ IA TRABALHANDO: COPY EXCLUSIVA E AGRESSIVA GERADA!")
+            random.seed(time.time())
             texto_gerado = motor_ia_avancado("Venda", produto=prod_nome, preco=prod_preco, marketplace=mkt_sel)
             st.code(texto_gerado, language="text")
-            
-            st.markdown("### 🗺️ Roteiro de Postagem (Estratégia de Milhões)")
-            c1, c2, c3 = st.columns(3)
-            with c1: st.info("**📸 Instagram:** 3 Fotos nos Stories + Reels de 7s com áudio em alta.")
-            with c2: st.info("**📱 TikTok:** Gancho de 3 segundos + Legenda com CTA para a Bio.")
-            with c3: st.info("**💬 WhatsApp:** Copy nos Grupos + Foto com preço no Status.")
-        else:
-            st.warning("Luh, digite o nome do produto!")
+            st.markdown("### 🗺️ Roteiro de Postagem:")
+            st.info("📸 Insta: Stories + Reels | 📱 TikTok: Gancho 3s | 💬 Whats: Grupos")
+        else: st.warning("Luh, digite o nome do produto!")
 
 # --- ABA 2: MINERADOR DE OURO ---
 elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Caçador de Tendências Pro")
-    nicho_sel = st.selectbox("Escolha o Nicho para Minerar:", list(nichos_completos.keys()))
-    
-    if st.button("📡 INICIAR VARREDURA DE MERCADO"):
+    nicho_sel = st.selectbox("Escolha o Nicho:", list(nichos_completos.keys()))
+    if st.button("📡 INICIAR VARREDURA"):
         produto_escolhido = random.choice(nichos_completos[nicho_sel])
-        st.markdown(f"""
-        <div style='background-color: #111; padding: 20px; border-radius: 10px; border: 1px solid #ff69b4;'>
-            <h2 style='color: #ff69b4; margin: 0;'>💎 Produto Encontrado:</h2>
-            <p style='color: white; font-size: 24px; font-weight: bold;'>{produto_escolhido}</p>
-            <p style='color: #aaa;'>Dica: Este item está com alto volume de busca orgânica hoje.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"<div style='background-color: #111; padding: 20px; border-radius: 10px; border: 1px solid #ff69b4;'><h2 style='color: #ff69b4;'>💎 Produto Encontrado:</h2><p style='color: white; font-size: 24px;'>{produto_escolhido}</p></div>", unsafe_allow_html=True)
 
 # --- ABA 3: FRASES MOTIVACIONAIS ---
 else:
-    st.title("✨ Vibes LuhVee Stores (IA)")
-    momento_dia = st.selectbox("Selecione o Momento:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
+    st.title("✨ Vibes LuhVee Stores (Corpo da Mensagem)")
+    st.write("Gere o corpo da mensagem abaixo e adicione sua saudação (Bom dia, etc) manualmente ao postar!")
     
-    if st.button("🪄 GERAR MENSAGEM ÚNICA (IA)"):
-        # GARANTE VARIAÇÃO REAL AO USAR O TEMPO ATUAL COMO SEMENTE
+    if st.button("🪄 GERAR CORPO DA MENSAGEM (IA)"):
         random.seed(time.time())
-        mensagem_ia = motor_ia_avancado("Vibes", periodo=momento_dia)
+        mensagem_ia = motor_ia_avancado("Vibes")
         st.code(mensagem_ia, language="text")
         st.balloons()
