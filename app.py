@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURAÇÃO VISUAL PREMIUM ---
-st.set_page_config(page_title="LuhVee GOD MODE v27.0", page_icon="👑", layout="wide")
+st.set_page_config(page_title="LuhVee Viral Machine PRO", page_icon="👑", layout="wide")
 
 st.markdown("""
     <style>
@@ -19,115 +19,114 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("👑 LuhVee Stores - Ferramenta de Elite")
-st.subheader("Gerador de Copywriting Agressivo & Gestão de Estratégia")
-
-# --- BANCO DE NICHOS COMPLETO (TODOS MANTIDOS) ---
+# --- BANCO DE NICHOS COMPLETO (RESTAURADO) ---
 nichos_completos = {
-    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador"],
-    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol"],
-    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída Maternidade"],
-    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital Infantil", "Tablet LCD"],
-    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica"],
-    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil"],
-    "🚗 Acessórios Automotivos": ["Suporte Gravidade", "Aspirador Sem Fio", "Luz Interna Neon"],
-    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras", "Sacos de Vácuo"],
-    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Solar", "Vaso Auto-irrigação"],
-    "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento"],
-    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro"],
-    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Faixas Elásticas", "Massageador Muscular"],
-    "🌎 Internacional (High Ticket)": ["ProDentim", "Suplemento BioFit", "Renovador Facial"]
+    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional"],
+    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta"],
+    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro"],
+    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída de Maternidade", "Canguru Ergonômico"],
+    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD", "Escavadeira de Controle"],
+    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte", "Escova Tira Pelos", "Brinquedo Interativo"],
+    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil", "Smartwatch Ultra"],
+    "🚗 Acessórios Automotivos": ["Suporte Gravidade", "Aspirador Sem Fio", "Luz Interna Neon", "Polidor de Farol"],
+    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras", "Sacos de Vácuo", "Mini Aspirador de Mesa"],
+    "🌿 Ferramentas & Jardinagem": ["Kit Poda Profissional", "Regador Solar", "Vaso Auto-irrigação", "Parafusadeira Viral"],
+    "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento", "Kit Meias Performance"],
+    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro", "Bota Adventure"],
+    "💪 Produtos de Academia": ["Garrafa Motivacional", "Kit Faixas Elásticas", "Massageador Turbo", "Corda de Pular Digital"],
+    "🌎 Internacional (High Ticket)": ["ProDentim", "Suplemento BioFit", "Renovador Facial", "Redutor de Medidas"]
 }
 
+# --- MOTOR IA DE CONSTRUÇÃO DE TEXTO (NUNCA REPETE) ---
+def motor_ia_luhvee(tipo, produto=None, preco=None, marketplace=None, periodo=None):
+    # Dicionário de Blocos para Variedade Infinita
+    ganchos_venda = [
+        f"🚨 ALERTA DE TENDÊNCIA: O {produto} CHEGOU! 🚨",
+        f"🔥 O SEGREDO FOI REVELADO! Você precisa desse {produto}! 🔥",
+        f"😱 NÃO COMPRE o {produto} sem ver esse vídeo antes!",
+        f"💎 EXCLUSIVIDADE: O {produto} que viralizou na gringa chegou na LuhVee!",
+        f"👑 STATUS DE LUXO: Tenha o {produto} original e sinta a diferença!"
+    ]
+    
+    corpo_venda = [
+        "A qualidade é surreal e foi testada pessoalmente por mim. Esqueça as réplicas que decepcionam.",
+        "Sabe aquele item que resolve sua vida e te deixa com cara de rica? É exatamente esse!",
+        "O acabamento premium e a durabilidade fazem deste produto o desejo número 1 das redes sociais.",
+        "Tecnologia de ponta e design exclusivo. Você não vai encontrar essa qualidade em outro lugar.",
+        "Eu usei, aprovei e garanto: o resultado é imediato e vai transformar sua rotina."
+    ]
+    
+    chamada_venda = [
+        "Estoque físico nas últimas unidades! Garanta o seu ou aceite pagar o dobro depois.",
+        "⚠️ AVISO: Sem previsão de reposição com esse valor. Proteja seu bolso e sua autoestima!",
+        "🚀 CORRE PRO LINK! A demanda está surreal e o botão vai sair do ar a qualquer segundo!",
+        "Não deixe para amanhã o que você pode garantir hoje com preço de lançamento."
+    ]
+
+    # Lógica de Links
+    link_final = "https://collshp.com/luhveestores" if marketplace == "Shopee 🛍️" else "https://www.mercadolivre.com.br/social/axwelloliveira"
+    
+    if tipo == "Venda":
+        res = f"{random.choice(ganchos_venda)}\n\n{random.choice(corpo_venda)}\n\n💎 DIFERENCIAIS:\n✅ Qualidade Premium\n✅ Envio Imediato\n✅ Garantia LuhVee\n\n😱 POR APENAS: R$ {preco}\n\n{random.choice(chamada_venda)}\n\n🛒 LINK SEGURO NO {marketplace.upper()}:\n👉 {link_final}\n\nLuhVee Stores 🛍️"
+        return res
+
+    elif tipo == "Vibes":
+        intro = f"{periodo} 🌸"
+        corpo_v = [
+            "A jornada da vida não é uma corrida, mas um ciclo de renovação. Valorize seus passos.",
+            "Status: Em busca da versão rica, porque a linda já cansou de boletos! 😂",
+            "Respire fundo. Cada cicatriz é uma vitória silenciosa que te trouxe até aqui.",
+            "Minha terapia favorita é o rastreio dizendo 'saiu para entrega'. Renova a alma!",
+            "Você é rara, preciosa e digna de todo luxo e amor deste mundo. Floresça!"
+        ]
+        reflexao = [
+            "Não deixe ninguém apagar seu brilho. O sol nasce para quem cultiva luz interior.",
+            "Dizem que dinheiro não traz felicidade, mas chorar em Paris é bem melhor, né?",
+            "Foca no café, no brilho e nos objetivos. Seus sonhos não se pagam sozinhos!",
+            "Sorria sempre, o botox está caro e rir é o melhor tratamento de beleza gratuito."
+        ]
+        msg = f"{intro}\n\n{random.choice(corpo_v)} {random.choice(reflexao)}\n\n✨ Confira meus achadinhos:\n👉 https://collshp.com/luhveestores\n\nCom carinho, LuhVee Stores ❤️"
+        return msg
+
 # --- MENU LATERAL ---
-aba = st.sidebar.radio("Selecione a Missão:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "✨ Vibes do Dia"])
+st.sidebar.title("Comando LuhVee PRO")
+aba = st.sidebar.radio("Selecione a Missão:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "✨ Frases Motivacionais IA"])
 
-# --- FUNÇÃO GERADORA DE TEXTO ROBUSTO COM SEUS LINKS ---
-def gerar_copy_ia_elite(rede, produto, preco, marketplace, link_manual):
-    prod = produto.upper() if produto else "ITEM EXCLUSIVO"
-    valor = f"R$ {preco}" if preco else "PREÇO DE OPORTUNIDADE"
-    
-    # Lógica dos seus Links
-    if marketplace == "Shopee 🛍️":
-        lk = link_manual if link_manual else "https://collshp.com/luhveestores"
-    else:
-        lk = link_manual if link_manual else "https://www.mercadolivre.com.br/social/axwelloliveira"
-    
-    if rede == "TikTok/Reels":
-        return (
-            f"😱 PARE DE COMPRAR ERRADO! Você já viu esse {prod} por aí, mas só aqui na LuhVee você garante o original que realmente funciona! 🔥\n\n"
-            f"Diferente de tudo que você já testou, esse modelo tem tecnologia premium e acabamento de luxo. Eu usei, testei e não vivo mais sem. "
-            f"Sabe aquele item que resolve sua vida e ainda te deixa com cara de rica? É ESSE!\n\n"
-            f"💎 DIFERENCIAIS:\n✅ Qualidade Superior (Não é réplica!)\n✅ Design Exclusivo Tendência 2026\n✅ Envio Imediato e Seguro\n\n"
-            f"💸 INVESTIMENTO: {valor}\n"
-            f"🔗 LINK NA BIO OU COMENTA 'EU QUERO'!\n\n"
-            f"#achadinhos #viral #luhveestores #shopeebrasil #mercadolivre #beleza"
-        )
-    
-    elif rede == "WhatsApp Grupos":
-        return (
-            f"🚨 *SÓ PARA QUEM É VIP!* O estoque do *{prod}* acaba de chegar e eu consegui uma condição de fábrica para vocês! 🚨\n\n"
-            f"Meninas, esse é o produto que está bombando nas redes vizinhas. A qualidade é impecável e o resultado é imediato. "
-            f"Não adianta procurar em outro lugar, esse preço com essa garantia você só encontra aqui na minha curadoria.\n\n"
-            f"🔥 *POR QUE VOCÊ PRECISA DISSO AGORA?*\n"
-            f"O fornecedor avisou que o lote é limitado. Quem boletar primeiro garante. Não quero ninguém chorando no meu direct depois porque perdeu!\n\n"
-            f"💰 *APENAS:* {valor}\n"
-            f"🛒 *LINK SEGURO ({marketplace.upper()}):*\n"
-            f"👉 {lk}\n\n"
-            f"LuhVee Stores 🛍️ - Só o que é luxo!"
-        )
-
-# --- CONTEÚDO DAS ABAS ---
+# --- ABA 1: POSTAR PRODUTOS ---
 if aba == "🛍️ Postar Produtos":
-    st.write("### 🔥 Madeirada de Alta Conversão")
-    mkt = st.selectbox("Qual o destino do link?", ["Shopee 🛍️", "Mercado Livre 📦"])
+    st.title("🔥 Madeirada de Conversão Milionária")
+    mkt = st.selectbox("Qual o Marketplace?", ["Shopee 🛍️", "Mercado Livre 📦"])
     
     col1, col2 = st.columns(2)
-    with col1:
-        produto_nome = st.text_input("Nome Profissional do Produto:", placeholder="Ex: Escova Alisadora 5 em 1 Titanium")
-    with col2:
-        preco_produto = st.text_input("Preço de Venda:", placeholder="Ex: 87,90")
+    with col1: prod_n = st.text_input("Nome do Produto:")
+    with col2: prc_n = st.text_input("Preço:")
     
-    link_final = st.text_input("🔗 Link Específico (opcional):")
-
-    if st.button("🚀 GERAR CAMPANHA COMPLETA"):
-        if not produto_nome:
-            st.error("Luh, coloque o nome do produto para a IA trabalhar!")
-        else:
-            st.balloons()
-            st.markdown("<div class='copy-section'>", unsafe_allow_html=True)
-            st.write("### 🎬 Para Reels / TikTok / Shorts")
-            st.code(gerar_copy_ia_elite("TikTok/Reels", produto_nome, preco_produto, mkt, link_final), language="text")
-            st.markdown("</div>", unsafe_allow_html=True)
-
-            st.markdown("<div class='copy-section'>", unsafe_allow_html=True)
-            st.write("### 💬 Para Grupos de WhatsApp / Telegram")
-            st.code(gerar_copy_ia_elite("WhatsApp Grupos", produto_nome, preco_produto, mkt, link_final), language="text")
-            st.markdown("</div>", unsafe_allow_html=True)
+    if st.button("🚀 GERAR COPY IA INFINITA"):
+        if prod_n:
+            st.success("✅ IA TRABALHANDO: COPY EXCLUSIVA GERADA!")
+            texto = motor_ia_luhvee("Venda", produto=prod_n, preco=prc_n, marketplace=mkt)
+            st.code(texto, language="text")
             
-            st.markdown("### 🗺️ Roteiro de Stories (Conversão Rápida)")
-            st.info("📌 **Passo 1:** Foto do produto com o gancho: 'O segredo da minha rotina chegou!'\n"
-                    "📌 **Passo 2:** Vídeo curto (7s) mostrando o acabamento premium.\n"
-                    "📌 **Passo 3:** Link com sticker chamativo: 'ÚLTIMAS UNIDADES NESSE PREÇO!'")
+            st.markdown("### 🗺️ Plano de Postagem (Passo a Passo)")
+            c1, c2, c3 = st.columns(3)
+            with c1: st.info("**Insta:** 3 Fotos Stories + Reels 7s")
+            with c2: st.info("**TikTok:** Gancho de 3s + Link Bio")
+            with c3: st.info("**Whats:** Copy Grupos + Preço Status")
+        else: st.warning("Digite o produto!")
 
+# --- ABA 2: MINERADOR ---
 elif aba == "🔎 Minerador de Ouro":
-    st.write("### 🔎 Inteligência de Mercado")
-    escolha_nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
-    if st.button("📡 VARREDURA DE TENDÊNCIAS"):
-        sugestao = random.choice(nichos_completos[escolha_nicho])
-        st.success(f"💡 O produto **{sugestao}** está em fase de explosão! Excelente para mineração hoje.")
+    st.title("🔎 Caçador de Tendências Pro")
+    nicho = st.selectbox("Escolha o Nicho:", list(nichos_completos.keys()))
+    if st.button("📡 MINERAR AGORA"):
+        produto_achado = random.choice(nichos_completos[nicho])
+        st.success(f"💎 PRODUTO VIRAL ENCONTRADO: **{produto_achado}**")
+        st.write("Dica: Esse item está com alta demanda de busca orgânica hoje.")
 
+# --- ABA 3: MOTIVACIONAIS IA ---
 else:
-    st.write("### ✨ Vibes LuhVee Stores (300 Letras)")
-    estilo = st.radio("Qual a vibe de hoje?", ["Profunda/Inspiradora", "Engraçada/Vibes"])
-    if st.button("🪄 GERAR MENSAGEM PARA STATUS"):
-        if estilo == "Profunda/Inspiradora":
-            msg = ("A vida não é uma corrida contra o tempo, mas uma jornada sagrada de cura e redescoberta. "
-                   "Cada cicatriz que você carrega é um mapa de uma batalha vencida em silêncio. Valorize seus passos, "
-                   "pois são eles que constroem o seu destino extraordinário. Floresça no seu tempo! ✨❤️")
-        else:
-            msg = ("Status do dia: Em busca da minha versão milionária, porque a linda já cansou de boletos! 😂 "
-                   "Dizem que dinheiro não traz felicidade, mas eu preferia muito mais estar chorando em Paris do que na "
-                   "fila do mercado às seis da manhã. A gente nasceu para o luxo e os sonhos não se pagam sozinhos! 💅✨")
-        st.code(msg, language="text")
+    st.title("✨ Vibes LuhVee Stores (IA)")
+    momento = st.selectbox("Período:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
+    if st.button("🪄 GERAR MENSAGEM ÚNICA"):
+        msg_ia = motor_ia_luhvee("Vibes", periodo=momento)
+        st.code(msg_ia, language="text")
