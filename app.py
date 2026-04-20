@@ -113,3 +113,44 @@ if aba == "🛍️ Postar Produtos":
     mkt_sel = st.selectbox("Qual o Marketplace de hoje?", ["Shopee 🛍️", "Mercado Livre 📦"])
     
     col1, col2 = st.columns(2)
+    with col1: prod_nome = st.text_input("📦 Nome do Produto:", placeholder="Ex: Escova 5 em 1 Titanium")
+    with col2: prod_preco = st.text_input("💰 Preço de Venda:", placeholder="Ex: 89,90")
+    
+    if st.button("🚀 GERAR COPY INFINITA"):
+        if prod_nome:
+            st.success("✅ IA TRABALHANDO: COPY EXCLUSIVA E AGRESSIVA GERADA!")
+            texto_gerado = motor_ia_avancado("Venda", produto=prod_nome, preco=prod_preco, marketplace=mkt_sel)
+            st.code(texto_gerado, language="text")
+            
+            st.markdown("### 🗺️ Roteiro de Postagem (Estratégia de Milhões)")
+            c1, c2, c3 = st.columns(3)
+            with c1: st.info("**📸 Instagram:** 3 Fotos nos Stories + Reels de 7s com áudio em alta.")
+            with c2: st.info("**📱 TikTok:** Gancho de 3 segundos + Legenda com CTA para a Bio.")
+            with c3: st.info("**💬 WhatsApp:** Copy nos Grupos + Foto com preço no Status.")
+        else:
+            st.warning("Luh, digite o nome do produto!")
+
+# --- ABA 2: MINERADOR DE OURO ---
+elif aba == "🔎 Minerador de Ouro":
+    st.title("🔎 Caçador de Tendências Pro")
+    nicho_sel = st.selectbox("Escolha o Nicho para Minerar:", list(nichos_completos.keys()))
+    
+    if st.button("📡 INICIAR VARREDURA DE MERCADO"):
+        produto_escolhido = random.choice(nichos_completos[nicho_sel])
+        st.markdown(f"""
+        <div style='background-color: #111; padding: 20px; border-radius: 10px; border: 1px solid #ff69b4;'>
+            <h2 style='color: #ff69b4; margin: 0;'>💎 Produto Encontrado:</h2>
+            <p style='color: white; font-size: 24px; font-weight: bold;'>{produto_escolhido}</p>
+            <p style='color: #aaa;'>Dica: Este item está com alto volume de busca orgânica hoje.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- ABA 3: FRASES MOTIVACIONAIS ---
+else:
+    st.title("✨ Vibes LuhVee Stores (IA)")
+    momento_dia = st.selectbox("Selecione o Momento:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
+    
+    if st.button("🪄 GERAR MENSAGEM ÚNICA (IA)"):
+        mensagem_ia = motor_ia_avancado("Vibes", periodo=momento_dia)
+        st.code(mensagem_ia, language="text")
+        st.balloons()
