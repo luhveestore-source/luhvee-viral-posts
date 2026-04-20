@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import time
 
 # --- CONFIGURAÇÃO VISUAL PREMIUM (BLACK & PINK) ---
 st.set_page_config(page_title="LuhVee Viral Machine ELITE", page_icon="👑", layout="wide")
@@ -26,7 +27,7 @@ nichos_completos = {
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
     "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro", "Óculos de Sol Luxury", "Relógio Feminino Rose Gold", "Cinto Corrente Trend"],
     "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída Maternidade", "Canguru Ergonômico", "Aquecedor de Mamadeira USB", "Monitor de Bebê Wi-Fi", "Tapete de Atividades"],
-    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica Colorida", "Mini Drone Sensor"],
+    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica ColorColorida", "Mini Drone Sensor"],
     "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica", "Brinquedo Interativo com Petiscos", "Coleira com LED", "Lançador de Bolinhas", "Rede para Gatos de Janela"],
     "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil", "Smartwatch Ultra Series", "Teclado Mecânico RGB", "Suporte Articulado para Monitor", "Power Bank Indução"],
     "🚗 Acessórios Automotivos": ["Suporte Celular Gravidade", "Aspirador de Carro Sem Fio", "Luz Interna Neon App", "Polidor de Farol", "Câmera de Ré Visão Noturna", "Organizador de Banco Couro"],
@@ -99,7 +100,6 @@ def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=
             "O link da sua transformação está no meu Hub Central:",
             "Acesse todas as minhas vitrines e novidades aqui no Hub:"
         ]
-        # LINK DO HUB CENTRAL ATUALIZADO CONFORME SOLICITADO
         hub_principal = "https://links-luhveestore.streamlit.app/"
         return f"{random.choice(intros)}\n\n{random.choice(vibes_corpo)}\n\n✨ {random.choice(fechamento_vibe)}\n👉 {hub_principal}\n\nCom carinho, LuhVee Stores ❤️"
 
@@ -151,6 +151,8 @@ else:
     momento_dia = st.selectbox("Selecione o Momento:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
     
     if st.button("🪄 GERAR MENSAGEM ÚNICA (IA)"):
+        # GARANTE VARIAÇÃO REAL AO USAR O TEMPO ATUAL COMO SEMENTE
+        random.seed(time.time())
         mensagem_ia = motor_ia_avancado("Vibes", periodo=momento_dia)
         st.code(mensagem_ia, language="text")
         st.balloons()
