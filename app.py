@@ -94,11 +94,12 @@ def motor_ia_avancado(tipo, produto=None, preco=None, marketplace=None, periodo=
             "Sorria sempre, afinal, o botox está caro e rir de tudo ainda é o melhor tratamento de beleza gratuito e eficaz que existe no mundo! 💅"
         ]
         fechamento_vibe = [
-            "Confira meus achadinhos favoritos aqui:",
-            "Dê um up na sua rotina com esses mimos:",
-            "O link da sua transformação está aqui:",
-            "Aproveite as promoções do dia no meu Hub:"
+            "Confira meus achadinhos favoritos no meu Hub:",
+            "Dê um up na sua rotina com o que tem de melhor no meu Hub:",
+            "O link da sua transformação está no meu Hub:",
+            "Acesse as ofertas exclusivas de hoje no meu Hub:"
         ]
+        # Inclusão do link do Hub solicitado
         return f"{random.choice(intros)}\n\n{random.choice(vibes_corpo)}\n\n✨ {random.choice(fechamento_vibe)}\n👉 https://collshp.com/luhveestores\n\nCom carinho, LuhVee Stores ❤️"
 
 # --- MENU LATERAL (COMANDO CENTRAL) ---
