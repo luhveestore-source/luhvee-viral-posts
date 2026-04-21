@@ -46,7 +46,7 @@ nichos_completos = {
 }
 
 # --- MOTOR DE VENDAS INTELIGENTE ---
-def motor_vendas_curto(produto, preco, marketplace, rede):
+def motor_vendas_curto(produto, preco, parcelas, marketplace, rede):
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
     
     # Lógica de Gênero da Mensagem
@@ -55,14 +55,9 @@ def motor_vendas_curto(produto, preco, marketplace, rede):
     
     gancho = "O segredo que os especialistas escondem!" if is_masculino else "O segredo que as blogueiras escondem!"
     elogio = "Estilo e resistência bruta." if is_masculino else "Qualidade premium e design de luxo."
-
-    # Cálculo de Parcelamento (Baseado em 10x)
-    try:
-        valor_limpo = float(preco.replace(',', '.'))
-        parcela = valor_limpo / 10
-        msg_parcela = f"💳 Ou 10x de R$ {parcela:.2f} sem juros!"
-    except:
-        msg_parcela = "💳 Parcelamento facilitado no link!"
+    
+    # Parcelamento manual
+    msg_parcela = f"💳 {parcelas}" if parcelas else "💳 Parcelamento facilitado no link!"
 
     estrategias = {
         "Instagram 📸": "💡 STORY: Use sticker de link!",
@@ -117,10 +112,11 @@ if aba == "🛍️ Postar Produtos":
     with col2:
         prod = st.text_input("📦 Produto:", placeholder="Ex: Bota Adventure")
         prc = st.text_input("💰 Preço:", placeholder="Ex: 213,66")
+        parc = st.text_input("💳 Parcelamento (Manual):", placeholder="Ex: Ou 12x de 19,90")
         
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
-            resultado_venda = motor_vendas_curto(prod, prc, mkt, rede_sel)
+            resultado_venda = motor_vendas_curto(prod, prc, parc, mkt, rede_sel)
             st.text_area("📋 Copy Pronta:", resultado_venda, height=350)
         else:
             st.warning("Preencha o nome e o preço!")
