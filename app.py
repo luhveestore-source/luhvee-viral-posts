@@ -45,51 +45,43 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE VENDAS AGRESSIVO (LONGO E COMPLETO) ---
-def motor_vendas_agressivo(produto, preco, marketplace, rede):
+# --- MOTOR DE VENDAS CURTO E AGRESSIVO ---
+def motor_vendas_curto(produto, preco, marketplace, rede):
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
     
-    # Roteiro Anti-Flop por Rede
+    # Dicas estratégicas para não flopar
     estrategias = {
-        "Instagram 📸": "💡 DICA ANTI-FLOP: Poste nos Stories com enquete antes. Use o link na bio e no sticker de link.",
-        "TikTok 📱": "💡 DICA ANTI-FLOP: Use um áudio em alta no volume 3%. Legenda curta com 'Link na Bio'.",
-        "WhatsApp 💬": "💡 DICA ANTI-FLOP: Poste no Status e envie individualmente para quem mais interage com você."
+        "Instagram 📸": "💡 STORY: Use sticker de link!",
+        "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!",
+        "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"
     }
 
-    copy = f"""🚨 ALERTA DE PRODUTO VIRAL: {produto.upper()} 🚨
+    # Estrutura de copy agressiva com max 300 letras
+    copy = f"""🚨 VIRALIZOU: {produto.upper()} 🚨
 
-O segredo que as grandes blogueiras escondem finalmente foi revelado! Se você estava procurando por qualidade premium e um preço que cabe no seu bolso, sua busca termina AGORA.
+O queridinho das blogueiras chegou! Qualidade premium que você só encontra aqui. 🔥
 
-✅ Por que você precisa do {produto}:
-- Qualidade máxima testada e aprovada pela LuhVee.
-- Design exclusivo que você não encontra em lojas comuns.
-- Durabilidade garantida: não é descartável, é investimento!
-- Praticidade que vai transformar sua rotina hoje mesmo.
+✅ Original & Testado
+✅ Design de Luxo
+✅ Praticidade Total
 
-⚠️ AVISO IMPORTANTE: O estoque está nas últimas unidades devido ao sucesso no TikTok. Quem deixar para amanhã vai perder o preço promocional!
+😱 APENAS: R$ {preco}
 
-💰 OFERTA EXCLUSIVA: R$ {preco}
+🛒 COMPRE AQUI:
+👉 {link_venda}
 
-🛒 COMPRE COM SEGURANÇA NOS LINKS ABAIXO:
-
-🌐 MEU HUB DE OFERTAS: 
-{LINK_HUB}
-
-🛍️ LINK DIRETO DO PRODUTO ({marketplace.upper()}):
-{link_venda}
-
-🔍 CONSULTE OUTROS PRODUTOS:
-{LINK_PESQUISA}
+🎁 +ACHADINHOS:
+👉 {LINK_HUB}
 
 ---
 {estrategias[rede]}
-Com carinho, LuhVee Stores ❤️"""
+LuhVee Stores 🛍️"""
     return copy
 
-# --- MOTOR INFINITO ---
-aberturas = ["✨ Hoje pode ser o dia da sua virada...", "💖 Tem coisa boa chegando pra você...", "🌸 Não ignora isso aqui...", "🔥 Você merece muito mais...", "💫 Isso aqui pode mudar seu dia...", "✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
-meios = ["imagine encontrar algo que combina com você", "coisas assim somem rápido", "muita gente já está aproveitando", "isso chama atenção de verdade", "você vai gostar disso", "você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto do que você imagina", "você é mais forte do que pensa"]
-fechamentos = ["💖 Confia no processo.", "✨ Não deixa pra depois.", "🔥 Pode ser sua chance hoje.", "💫 Aproveita enquanto dá tempo.", "✨ Vai dar certo!", "🔥 Bora pra cima!", "🌸 Você consegue!", "💫 Nunca desista!"]
+# --- MOTOR INFINITO (MENSAGENS) ---
+aberturas = ["✨ Hoje é seu dia...", "💖 Ei, não esquece:", "🌸 Lembrete importante:", "🔥 Acorda pro sucesso!", "💫 Você nasceu pra brilhar!"]
+meios = ["você merece o melhor", "coisas boas estão chegando", "seu momento está perto", "você é mais forte do que imagina", "seu esforço vale a pena"]
+fechamentos = ["💖 Confia.", "✨ Vai dar certo!", "🔥 Bora pra cima!", "🌸 Você consegue!", "💫 Nunca desista!"]
 
 def gerar_mensagem_unica(periodo):
     s = "☀️ Bom dia!" if periodo == "Bom Dia" else "🌤️ Boa tarde!" if periodo == "Boa Tarde" else "🌙 Boa noite!"
@@ -102,22 +94,23 @@ st.sidebar.title("👑 Comando LuhVee ELITE")
 aba = st.sidebar.radio("Navegação:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "💖 Mensagens Infinitas"])
 
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada de Conversão Milionária")
+    st.title("🔥 Madeirada Curta & Lucrativa")
     
     col1, col2 = st.columns(2)
     with col1:
         mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
-        rede_sel = st.selectbox("Onde vai postar?", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
+        rede_sel = st.selectbox("Rede Social:", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
     with col2:
-        prod = st.text_input("📦 Nome do Produto:")
-        prc = st.text_input("💰 Preço de Venda:")
+        prod = st.text_input("📦 Produto:", placeholder="Ex: Escova 5 em 1")
+        prc = st.text_input("💰 Preço:", placeholder="Ex: 89,90")
         
-    if st.button("🚀 GERAR COPY AGRESSIVA + ESTRATÉGIA"):
+    if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
-            resultado_venda = motor_vendas_agressivo(prod, prc, mkt, rede_sel)
-            st.text_area("📋 Copy Pronta para Uso:", resultado_venda, height=450)
+            resultado_venda = motor_vendas_curto(prod, prc, mkt, rede_sel)
+            st.text_area("📋 Copy Pronta (Copiou, vendeu!):", resultado_venda, height=300)
+            st.success("Máximo 300 letras atingido! 🚀")
         else:
-            st.warning("Luh, preencha o nome e o preço do produto!")
+            st.warning("Luh, preencha o nome e o preço!")
 
 elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Minerador Profissional")
@@ -132,5 +125,5 @@ else:
     if st.button("✨ GERAR AGORA"):
         random.seed(time.time())
         mensagens = [gerar_mensagem_unica(per) for _ in range(qtd)]
-        st.text_area("📋 Copie e poste:", "\n\n---\n\n".join(mensagens), height=500)
+        st.text_area("📋 Lista de Mensagens:", "\n\n---\n\n".join(mensagens), height=500)
         st.balloons()
