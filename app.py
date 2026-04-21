@@ -27,7 +27,7 @@ LINK_PESQUISA = "https://pesquisa-luhvee.streamlit.app"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS COMPLETO ---
+# --- BANCO DE NICHOS ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
@@ -45,9 +45,25 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE VENDAS AGRESSIVO (MAX 300 LETRAS) ---
+# --- MOTOR DE VENDAS INTELIGENTE ---
 def motor_vendas_curto(produto, preco, marketplace, rede):
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
+    
+    # Lógica de Gênero da Mensagem
+    masculinos = ["bota", "tenis", "sapato", "masculino", "fone", "carro", "aspirador", "suporte", "kit"]
+    is_masculino = any(x in produto.lower() for x in masculinos)
+    
+    gancho = "O segredo que os especialistas escondem!" if is_masculino else "O segredo que as blogueiras escondem!"
+    elogio = "Estilo e resistência bruta." if is_masculino else "Qualidade premium e design de luxo."
+
+    # Cálculo de Parcelamento (Baseado em 10x)
+    try:
+        valor_limpo = float(preco.replace(',', '.'))
+        parcela = valor_limpo / 10
+        msg_parcela = f"💳 Ou 10x de R$ {parcela:.2f} sem juros!"
+    except:
+        msg_parcela = "💳 Parcelamento facilitado no link!"
+
     estrategias = {
         "Instagram 📸": "💡 STORY: Use sticker de link!",
         "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!",
@@ -56,13 +72,14 @@ def motor_vendas_curto(produto, preco, marketplace, rede):
 
     copy = f"""🚨 VIRALIZOU: {produto.upper()} 🚨
 
-O segredo que as blogueiras escondem finalmente revelado! Qualidade premium e preço que cabe no seu bolso. 🔥
+{gancho} {elogio} 🔥
 
 ✅ Original & Testado
-✅ Design de Luxo
-✅ Praticidade Total
+✅ Qualidade Premium
+✅ Entrega Garantida
 
 😱 APENAS: R$ {preco}
+{msg_parcela}
 
 🛒 COMPRE AQUI:
 👉 {link_venda}
@@ -75,14 +92,13 @@ O segredo que as blogueiras escondem finalmente revelado! Qualidade premium e pr
 Bjs da Luhvee Stores 🛍️"""
     return copy
 
-# --- MOTOR DE MENSAGENS INFINITAS (SUA LÓGICA LIMPA) ---
+# --- MENSAGENS MOTIVACIONAIS ---
 aberturas = ["✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
 meios = ["você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto", "você é mais forte do que pensa"]
 fechamentos = ["💖 Confia no processo", "✨ Vai dar certo", "🔥 Bora pra cima", "🌸 Você consegue", "💫 Nunca desista"]
 
 def gerar_mensagem_unica(periodo):
     s = "☀️ Bom dia!" if periodo == "Bom Dia" else "🌤️ Boa tarde!" if periodo == "Boa Tarde" else "🌙 Boa noite!"
-    # Montagem sem pontos extras no final das frases do meio
     msg = f"{s}\n\n{random.choice(aberturas)}\n{random.choice(meios)}.\n{random.choice(fechamentos)}!"
     links = f"\n\n🌐 Hub: {LINK_HUB}"
     assinatura = "\n\nBjs da Luhvee Stores ❤️"
@@ -99,13 +115,13 @@ if aba == "🛍️ Postar Produtos":
         mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
         rede_sel = st.selectbox("Rede Social:", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
     with col2:
-        prod = st.text_input("📦 Produto:", placeholder="Ex: Escova 5 em 1")
-        prc = st.text_input("💰 Preço:", placeholder="Ex: 89,90")
+        prod = st.text_input("📦 Produto:", placeholder="Ex: Bota Adventure")
+        prc = st.text_input("💰 Preço:", placeholder="Ex: 213,66")
         
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
             resultado_venda = motor_vendas_curto(prod, prc, mkt, rede_sel)
-            st.text_area("📋 Copy Pronta:", resultado_venda, height=300)
+            st.text_area("📋 Copy Pronta:", resultado_venda, height=350)
         else:
             st.warning("Preencha o nome e o preço!")
 
