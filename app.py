@@ -27,7 +27,7 @@ LINK_PESQUISA = "https://pesquisa-luhvee.streamlit.app"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS (COMPLETO) ---
+# --- BANCO DE NICHOS COMPLETO ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
@@ -52,13 +52,13 @@ def motor_vendas_curto(produto, preco, parcelas, marketplace, rede):
     is_masculino = any(x in produto.lower() for x in masculinos)
 
     if is_masculino:
-        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"🔥 ITEM INDISPENSÁVEL: {produto.upper()} 🔥", f"😱 OLHA O QUE CHEGOU: {produto.upper()}! 😱"]
-        corpos = ["O segredo que os especialistas escondem! Resistência bruta e estilo.", "Qualidade superior testada. O item que os caras estão usando na gringa!", "Design robusto e acabamento premium. Superou todas as expectativas."]
+        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"🔥 ITEM INDISPENSÁVEL: {produto.upper()} 🔥", f"😱 OLHA O QUE CHEGOU: {produto.upper()}! 😱", f"⚡️ NOVIDADE INSANA: {produto.upper()} ⚡️"]
+        corpos = ["O segredo que os especialistas escondem! Resistência bruta e estilo.", "Qualidade superior testada. O item que os caras estão usando na gringa!", "Design robusto e acabamento premium. Superou todas as expectativas.", "Praticidade que você precisava para o seu dia a dia ser outro nível."]
     else:
-        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"👑 ACHADINHO DE LUXO: {produto.upper()} 👑", f"😱 APAIXONADA: {produto.upper()}! 😱"]
-        corpos = ["O segredo que as blogueiras escondem! Qualidade surreal e design de luxo.", "Desejo número 1 das redes! Praticidade total e acabamento impecável.", "Eu testei e pirei! Transformação real na sua rotina com elegância."]
+        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"👑 ACHADINHO DE LUXO: {produto.upper()} 👑", f"😱 APAIXONADA: {produto.upper()}! 😱", f"✨ O QUERIDINHO CHEGOU: {produto.upper()} ✨"]
+        corpos = ["O segredo que as blogueiras escondem! Qualidade surreal e design de luxo.", "Desejo número 1 das redes! Praticidade total e acabamento impecável.", "Eu testei e pirei! Transformação real na sua rotina com elegância.", "Simplesmente perfeito para quem ama um achadinho premium."]
 
-    chamadas = ["✅ Original & Testado\n✅ Qualidade Premium\n✅ Entrega Garantida", "🔥 Oferta Relâmpago\n🏆 Top 1 de Vendas\n🚀 Envio Imediato", "✨ Acabamento Impecável\n🛡️ Compra Segura\n📦 Estoque Limitado"]
+    chamadas = ["✅ Original & Testado\n✅ Qualidade Premium\n✅ Entrega Garantida", "🔥 Oferta Relâmpago\n🏆 Top 1 de Vendas\n🚀 Envio Imediato", "✨ Acabamento Impecável\n🛡️ Compra Segura\n📦 Estoque Limitado", "⭐ Qualidade Surreal\n🚚 Frete Rápido\n💎 Edição Exclusiva"]
     msg_parcela = f"💳 {parcelas}" if parcelas else "💳 Parcelamento facilitado no link!"
     estrategias = {"Instagram 📸": "💡 STORY: Use sticker de link!", "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!", "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"}
 
@@ -91,7 +91,7 @@ if aba == "🛍️ Postar Produtos":
         
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
-            random.seed(time.time())
+            random.seed(time.time() + random.randint(1, 1000)) # FORÇA MUDANÇA
             st.text_area("📋 Copy Pronta:", motor_vendas_curto(prod, prc, parc, mkt, rede_sel), height=380)
         else: st.warning("Preencha o nome e o preço!")
 
@@ -99,7 +99,7 @@ elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Minerador Profissional")
     nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
     if st.button("📡 MINERAR"):
-        random.seed(time.time()) # AGORA MUDA SEMPRE!
+        random.seed(time.time() + random.randint(1, 1000)) # FORÇA MUDANÇA
         st.success(f"💎 Sugestão Viral: **{random.choice(nichos_completos[nicho])}**")
 
 else:
@@ -107,7 +107,7 @@ else:
     per = st.selectbox("Período:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
     qtd = st.slider("Quantidade:", 1, 500, 20)
     if st.button("✨ GERAR AGORA"):
-        random.seed(time.time())
+        random.seed(time.time() + random.randint(1, 1000)) # FORÇA MUDANÇA
         mensagens = [gerar_mensagem_unica(per) for _ in range(qtd)]
         st.text_area("📋 Lista de Mensagens:", "\n\n---\n\n".join(mensagens), height=500)
         st.balloons()
