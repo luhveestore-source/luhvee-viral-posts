@@ -27,7 +27,7 @@ LINK_PESQUISA = "https://pesquisa-luhvee.streamlit.app"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS ---
+# --- BANCO DE NICHOS (COMPLETO) ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
@@ -45,15 +45,12 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE VENDAS VARIÁVEL (IA INFINITA) ---
+# --- MOTOR DE VENDAS VARIÁVEL ---
 def motor_vendas_curto(produto, preco, parcelas, marketplace, rede):
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
-    
-    # Identifica Gênero
-    masculinos = ["bota", "tenis", "sapato", "masculino", "fone", "carro", "aspirador", "suporte", "kit"]
+    masculinos = ["bota", "tenis", "sapato", "masculino", "fone", "carro", "aspirador", "suporte", "kit", "ferramenta"]
     is_masculino = any(x in produto.lower() for x in masculinos)
 
-    # Blocos de Copy para Variedade
     if is_masculino:
         ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"🔥 ITEM INDISPENSÁVEL: {produto.upper()} 🔥", f"😱 OLHA O QUE CHEGOU: {produto.upper()}! 😱"]
         corpos = ["O segredo que os especialistas escondem! Resistência bruta e estilo.", "Qualidade superior testada. O item que os caras estão usando na gringa!", "Design robusto e acabamento premium. Superou todas as expectativas."]
@@ -61,51 +58,21 @@ def motor_vendas_curto(produto, preco, parcelas, marketplace, rede):
         ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"👑 ACHADINHO DE LUXO: {produto.upper()} 👑", f"😱 APAIXONADA: {produto.upper()}! 😱"]
         corpos = ["O segredo que as blogueiras escondem! Qualidade surreal e design de luxo.", "Desejo número 1 das redes! Praticidade total e acabamento impecável.", "Eu testei e pirei! Transformação real na sua rotina com elegância."]
 
-    chamadas = [
-        "✅ Original & Testado\n✅ Qualidade Premium\n✅ Entrega Garantida",
-        "🔥 Oferta Relâmpago\n🏆 Top 1 de Vendas\n🚀 Envio Imediato",
-        "✨ Acabamento Impecável\n🛡️ Compra Segura\n📦 Estoque Limitado"
-    ]
-
+    chamadas = ["✅ Original & Testado\n✅ Qualidade Premium\n✅ Entrega Garantida", "🔥 Oferta Relâmpago\n🏆 Top 1 de Vendas\n🚀 Envio Imediato", "✨ Acabamento Impecável\n🛡️ Compra Segura\n📦 Estoque Limitado"]
     msg_parcela = f"💳 {parcelas}" if parcelas else "💳 Parcelamento facilitado no link!"
-    
-    estrategias = {
-        "Instagram 📸": "💡 STORY: Use sticker de link!",
-        "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!",
-        "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"
-    }
+    estrategias = {"Instagram 📸": "💡 STORY: Use sticker de link!", "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!", "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"}
 
-    copy = f"""{random.choice(ganchos)}
-
-{random.choice(corpos)} 🔥
-
-{random.choice(chamadas)}
-
-😱 APENAS: R$ {preco}
-{msg_parcela}
-
-🛒 COMPRE AQUI:
-👉 {link_venda}
-
-🎁 MEU HUB DE OFERTAS:
-👉 {LINK_HUB}
-
----
-{estrategias[rede]}
-Bjs da Luhvee Stores 🛍️"""
+    copy = f"{random.choice(ganchos)}\n\n{random.choice(corpos)} 🔥\n\n{random.choice(chamadas)}\n\n😱 APENAS: R$ {preco}\n{msg_parcela}\n\n🛒 COMPRE AQUI:\n👉 {link_venda}\n\n🎁 MEU HUB DE OFERTAS:\n👉 {LINK_HUB}\n\n---\n{estrategias[rede]}\nBjs da Luhvee Stores 🛍️"
     return copy
 
 # --- MENSAGENS MOTIVACIONAIS ---
-aberturas = ["✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
-meios = ["você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto", "você é mais forte do que pensa"]
-fechamentos = ["💖 Confia no processo", "✨ Vai dar certo", "🔥 Bora pra cima", "🌸 Você consegue", "💫 Nunca desista"]
-
 def gerar_mensagem_unica(periodo):
+    aberturas = ["✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida!", "💫 Você nasceu pra brilhar!"]
+    meios = ["você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto", "você é mais forte do que pensa"]
+    fechamentos = ["💖 Confia no processo", "✨ Vai dar certo", "🔥 Bora pra cima", "🌸 Você consegue", "💫 Nunca desista"]
     s = "☀️ Bom dia!" if periodo == "Bom Dia" else "🌤️ Boa tarde!" if periodo == "Boa Tarde" else "🌙 Boa noite!"
-    msg = f"{s}\n\n{random.choice(aberturas)}\n{random.choice(meios)}.\n{random.choice(fechamentos)}!"
-    links = f"\n\n🌐 Hub: {LINK_HUB}"
-    assinatura = "\n\nBjs da Luhvee Stores ❤️"
-    return msg + links + assinatura
+    msg = f"{s}\n\n{random.choice(aberturas)}\n{random.choice(meios)}.\n{random.choice(fechamentos)}!\n\n🌐 Hub: {LINK_HUB}\n\nBjs da Luhvee Stores ❤️"
+    return msg
 
 # --- INTERFACE ---
 st.sidebar.title("👑 Comando LuhVee ELITE")
@@ -118,22 +85,21 @@ if aba == "🛍️ Postar Produtos":
         mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
         rede_sel = st.selectbox("Rede Social:", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
     with col2:
-        prod = st.text_input("📦 Produto:", placeholder="Ex: Creme de Pentear")
-        prc = st.text_input("💰 Preço:", placeholder="Ex: 35,75")
-        parc = st.text_input("💳 Parcelamento:", placeholder="Ex: Parcelado no link!")
+        prod = st.text_input("📦 Produto:", placeholder="Ex: Bota Adventure")
+        prc = st.text_input("💰 Preço:", placeholder="Ex: 213,66")
+        parc = st.text_input("💳 Parcelamento:", placeholder="Ex: Ou 12x de 19,90")
         
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
-            random.seed(time.time()) # Garante que cada clique mude o texto
-            resultado_venda = motor_vendas_curto(prod, prc, parc, mkt, rede_sel)
-            st.text_area("📋 Copy Pronta:", resultado_venda, height=380)
-        else:
-            st.warning("Preencha o nome e o preço!")
+            random.seed(time.time())
+            st.text_area("📋 Copy Pronta:", motor_vendas_curto(prod, prc, parc, mkt, rede_sel), height=380)
+        else: st.warning("Preencha o nome e o preço!")
 
 elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Minerador Profissional")
     nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
     if st.button("📡 MINERAR"):
+        random.seed(time.time()) # AGORA MUDA SEMPRE!
         st.success(f"💎 Sugestão Viral: **{random.choice(nichos_completos[nicho])}**")
 
 else:
