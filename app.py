@@ -22,18 +22,18 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- LINKS OFICIAIS ---
-LINK_PESQUISA = "https://pesquisa-luhvee.streamlit.app"
 LINK_HUB = "https://links-luhveestore.streamlit.app/"
+LINK_PESQUISA = "https://pesquisa-luhvee.streamlit.app"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS ---
+# --- BANCO DE NICHOS COMPLETO ---
 nichos_completos = {
     "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
     "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
     "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro", "Óculos de Sol Luxury", "Relógio Feminino Rose Gold", "Cinto Corrente Trend"],
     "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída de Maternidade", "Canguru Ergonômico", "Aquecedor de Mamadeira USB", "Monitor de Bebê Wi-Fi", "Tapete de Atividades"],
-    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica ColorColorida", "Mini Drone Sensor"],
+    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica Colorida", "Mini Drone Sensor"],
     "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica", "Brinquedo Interativo com Petiscos", "Coleira com LED", "Lançador de Bolinhas", "Rede para Gatos de Janela"],
     "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil", "Smartwatch Ultra Series", "Teclado Mecânico RGB", "Suporte Articulado para Monitor", "Power Bank Indução"],
     "🚗 Acessórios Automotivos": ["Suporte Celular Gravidade", "Aspirador de Carro Sem Fio", "Luz Interna Neon App", "Polidor de Farol", "Câmera de Ré Visão Noturna", "Organizador de Banco Couro"],
@@ -45,21 +45,18 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE VENDAS CURTO E AGRESSIVO ---
+# --- MOTOR DE VENDAS AGRESSIVO (MAX 300 LETRAS) ---
 def motor_vendas_curto(produto, preco, marketplace, rede):
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
-    
-    # Dicas estratégicas para não flopar
     estrategias = {
         "Instagram 📸": "💡 STORY: Use sticker de link!",
         "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!",
         "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"
     }
 
-    # Estrutura de copy agressiva com max 300 letras
     copy = f"""🚨 VIRALIZOU: {produto.upper()} 🚨
 
-O queridinho das blogueiras chegou! Qualidade premium que você só encontra aqui. 🔥
+O segredo que as blogueiras escondem finalmente revelado! Qualidade premium e preço que cabe no seu bolso. 🔥
 
 ✅ Original & Testado
 ✅ Design de Luxo
@@ -70,24 +67,26 @@ O queridinho das blogueiras chegou! Qualidade premium que você só encontra aqu
 🛒 COMPRE AQUI:
 👉 {link_venda}
 
-🎁 +ACHADINHOS:
+🎁 MEU HUB DE OFERTAS:
 👉 {LINK_HUB}
 
 ---
 {estrategias[rede]}
-LuhVee Stores 🛍️"""
+Bjs da Luhvee Stores 🛍️"""
     return copy
 
-# --- MOTOR INFINITO (MENSAGENS) ---
-aberturas = ["✨ Hoje é seu dia...", "💖 Ei, não esquece:", "🌸 Lembrete importante:", "🔥 Acorda pro sucesso!", "💫 Você nasceu pra brilhar!"]
-meios = ["você merece o melhor", "coisas boas estão chegando", "seu momento está perto", "você é mais forte do que imagina", "seu esforço vale a pena"]
-fechamentos = ["💖 Confia.", "✨ Vai dar certo!", "🔥 Bora pra cima!", "🌸 Você consegue!", "💫 Nunca desista!"]
+# --- MOTOR DE MENSAGENS INFINITAS (SUA LÓGICA LIMPA) ---
+aberturas = ["✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida que você merece!", "💫 Você nasceu pra brilhar!"]
+meios = ["você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto", "você é mais forte do que pensa"]
+fechamentos = ["💖 Confia no processo", "✨ Vai dar certo", "🔥 Bora pra cima", "🌸 Você consegue", "💫 Nunca desista"]
 
 def gerar_mensagem_unica(periodo):
     s = "☀️ Bom dia!" if periodo == "Bom Dia" else "🌤️ Boa tarde!" if periodo == "Boa Tarde" else "🌙 Boa noite!"
-    msg = f"{s}\n\n{random.choice(aberturas)} {random.choice(meios)}.\n{random.choice(fechamentos)}"
-    links = f"\n\n🔍 Pesquisa: {LINK_PESQUISA}\n🌐 Hub: {LINK_HUB}"
-    return msg + links
+    # Montagem sem pontos extras no final das frases do meio
+    msg = f"{s}\n\n{random.choice(aberturas)}\n{random.choice(meios)}.\n{random.choice(fechamentos)}!"
+    links = f"\n\n🌐 Hub: {LINK_HUB}"
+    assinatura = "\n\nBjs da Luhvee Stores ❤️"
+    return msg + links + assinatura
 
 # --- INTERFACE ---
 st.sidebar.title("👑 Comando LuhVee ELITE")
@@ -95,7 +94,6 @@ aba = st.sidebar.radio("Navegação:", ["🛍️ Postar Produtos", "🔎 Minerad
 
 if aba == "🛍️ Postar Produtos":
     st.title("🔥 Madeirada Curta & Lucrativa")
-    
     col1, col2 = st.columns(2)
     with col1:
         mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
@@ -107,10 +105,9 @@ if aba == "🛍️ Postar Produtos":
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
             resultado_venda = motor_vendas_curto(prod, prc, mkt, rede_sel)
-            st.text_area("📋 Copy Pronta (Copiou, vendeu!):", resultado_venda, height=300)
-            st.success("Máximo 300 letras atingido! 🚀")
+            st.text_area("📋 Copy Pronta:", resultado_venda, height=300)
         else:
-            st.warning("Luh, preencha o nome e o preço!")
+            st.warning("Preencha o nome e o preço!")
 
 elif aba == "🔎 Minerador de Ouro":
     st.title("🔎 Minerador Profissional")
