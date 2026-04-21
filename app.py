@@ -19,95 +19,187 @@ st.markdown("""
     .stCode { background-color: #111 !important; border: 1px solid #ff69b4 !important; color: #ff69b4 !important; }
     .stTextArea>div>div>textarea { background-color: #1a1a1a !important; color: #ff69b4 !important; border: 1px solid #ff69b4 !important; }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-# --- LINKS OFICIAIS ---
+# --- LINKS ---
 LINK_HUB = "https://links-luhveestore.streamlit.app/"
 LINK_PESQUISA = "https://pesquisa-luhvee.streamlit.app"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# --- BANCO DE NICHOS COMPLETO ---
+# --- NICHOS ---
 nichos_completos = {
-    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro", "Gloss Volumizador", "Kit de Pincéis Profissional", "Máscara de LED Facial", "Removedor de Cravos a Vácuo", "Organizador de Maquiagem Giratório"],
-    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Organizador Luxo", "Mini Selador Viral", "Luminária Pôr do Sol", "Projetor Astronauta", "Fita LED RGB Inteligente", "Umidificador de Ar Retrô", "Aspirador Robô Inteligente"],
-    "👗 Moda & Acessórios": ["Conjunto Alfaiataria", "Sandália Strass", "Body Modelador Real", "Bolsa Corrente Ouro", "Óculos de Sol Luxury", "Relógio Feminino Rose Gold", "Cinto Corrente Trend"],
-    "🤱 Moda Mamãe e Bebê": ["Bolsa Maternidade Térmica", "Almofada de Amamentação", "Kit Saída de Maternidade", "Canguru Ergonômico", "Aquecedor de Mamadeira USB", "Monitor de Bebê Wi-Fi", "Tapete de Atividades"],
-    "🧸 Infantil & Brinquedos": ["Cacto Dançante", "Mini Câmera Digital", "Tablet LCD para Desenho", "Escavadeira de Controle", "Kit de Miçangas DIY", "Lousa Mágica Colorida", "Mini Drone Sensor"],
-    "🐶 Mundo Pet": ["Cama Nuvem Relaxante", "Bebedouro Fonte de Água", "Escova Tira Pelos Mágica", "Brinquedo Interativo com Petiscos", "Coleira com LED", "Lançador de Bolinhas", "Rede para Gatos de Janela"],
-    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Carregador Magsafe", "Mini Projetor Portátil", "Smartwatch Ultra Series", "Teclado Mecânico RGB", "Suporte Articulado para Monitor", "Power Bank Indução"],
-    "🚗 Acessórios Automotivos": ["Suporte Celular Gravidade", "Aspirador de Carro Sem Fio", "Luz Interna Neon App", "Polidor de Farol", "Câmera de Ré Visão Noturna", "Organizador de Banco Couro"],
-    "🗄️ Organização & Limpeza": ["Etiquetadora Bluetooth", "Caixas Organizadoras Empilháveis", "Sacos de Vácuo para Roupas", "Mini Aspirador de Mesa", "Suporte de Vassouras Adesivo", "Dispenser de Sabão Automático"],
-    "🌿 Ferramentas & Jardinagem": ["Kit de Poda Profissional", "Regador Automático Solar", "Vaso de Auto-irrigação", "Parafusadeira Viral sem Fio", "Lanterna Tática Militar", "Kit de Ferramentas Rosa"],
-    "👔 Moda Masculina": ["Camisa Linho Premium", "Calça Jogger Tech", "Jaqueta Corta-Vento Refletiva", "Kit Meias Performance", "Carteira Slim Antifurto", "Pulseira de Couro Masculina"],
-    "👟 Calçados Masculinos": ["Tênis Nuvem Confort", "Sapato Social Flex", "Sandália de Couro Ortopédica", "Bota Adventure Impermeável", "Tênis de Academia Knit"],
-    "💪 Produtos de Academia": ["Garrafa de Água Motivacional", "Kit de Faixas Elásticas", "Massageador Muscular Turbo", "Corda de Pular Digital", "Tapete de Yoga Antiderrapante", "Rolo de Liberação Miofascial"],
-    "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
+    "✨ Beleza & Autoestima": ["Perfume Caviar Night", "Sérum Coreano Glow", "Escova 3 em 1 Pro"],
+    "🏠 Casa & Decoração": ["MOP Giratório Inox", "Luminária Pôr do Sol", "Projetor Astronauta"],
+    "📱 Tecnologia & Gadgets": ["Fone Noise Cancelling", "Mini Projetor Portátil", "Smartwatch Ultra"]
 }
 
-# --- MOTOR DE VENDAS VARIÁVEL ---
-def motor_vendas_curto(produto, preco, parcelas, marketplace, rede):
+# --- MOTOR MÁQUINA DE VENDAS ---
+def motor_maquina_vendas(produto, preco, parcelas, marketplace, rede):
+
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
-    masculinos = ["bota", "tenis", "sapato", "masculino", "fone", "carro", "aspirador", "suporte", "kit", "ferramenta"]
-    is_masculino = any(x in produto.lower() for x in masculinos)
 
-    if is_masculino:
-        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"🔥 ITEM INDISPENSÁVEL: {produto.upper()} 🔥", f"😱 OLHA O QUE CHEGOU: {produto.upper()}! 😱", f"⚡️ NOVIDADE INSANA: {produto.upper()} ⚡️"]
-        corpos = ["O segredo que os especialistas escondem! Resistência bruta e estilo.", "Qualidade superior testada. O item que os caras estão usando na gringa!", "Design robusto e acabamento premium. Superou todas as expectativas.", "Praticidade que você precisava para o seu dia a dia ser outro nível."]
-    else:
-        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"👑 ACHADINHO DE LUXO: {produto.upper()} 👑", f"😱 APAIXONADA: {produto.upper()}! 😱", f"✨ O QUERIDINHO CHEGOU: {produto.upper()} ✨"]
-        corpos = ["O segredo que as blogueiras escondem! Qualidade surreal e design de luxo.", "Desejo número 1 das redes! Praticidade total e acabamento impecável.", "Eu testei e pirei! Transformação real na sua rotina com elegância.", "Simplesmente perfeito para quem ama um achadinho premium."]
+    preco_formatado = f"R$ {preco.replace('R$', '').strip()}"
+    parcela_txt = f"\n💳 {parcelas}" if parcelas else ""
 
-    chamadas = ["✅ Original & Testado\n✅ Qualidade Premium\n✅ Entrega Garantida", "🔥 Oferta Relâmpago\n🏆 Top 1 de Vendas\n🚀 Envio Imediato", "✨ Acabamento Impecável\n🛡️ Compra Segura\n📦 Estoque Limitado", "⭐ Qualidade Surreal\n🚚 Frete Rápido\n💎 Edição Exclusiva"]
-    msg_parcela = f"💳 {parcelas}" if parcelas else "💳 Parcelamento facilitado no link!"
-    estrategias = {"Instagram 📸": "💡 STORY: Use sticker de link!", "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!", "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"}
+    hooks = [
+        f"🚨 {produto.upper()} TÁ VIRALIZANDO AGORA",
+        f"😳 COMO ISSO FICOU TÃO BARATO?",
+        f"🔥 TODO MUNDO TÁ COMPRANDO ISSO",
+        f"💥 ISSO AQUI EXPLODIU DO NADA",
+        f"⚠️ VOCÊ PRECISA VER ISSO"
+    ]
 
-    copy = f"{random.choice(ganchos)}\n\n{random.choice(corpos)} 🔥\n\n{random.choice(chamadas)}\n\n😱 APENAS: R$ {preco}\n{msg_parcela}\n\n🛒 COMPRE AQUI:\n👉 {link_venda}\n\n🎁 MEU HUB DE OFERTAS:\n👉 {LINK_HUB}\n\n---\n{estrategias[rede]}\nBjs da Luhvee Stores 🛍️"
-    return copy
+    dores = [
+        "se você ainda não tem isso, tá perdendo tempo todo dia",
+        "isso resolve algo que muita gente sofre sem perceber",
+        "a maioria das pessoas ainda não descobriu isso"
+    ]
 
-# --- MENSAGENS MOTIVACIONAIS ---
+    desejos = [
+        "facilita sua rotina absurdamente",
+        "deixa tudo mais prático e rápido",
+        "você vai usar isso todo dia"
+    ]
+
+    provas = [
+        "tá entre os mais vendidos",
+        "todo mundo que compra recomenda",
+        "explodiu nos vídeos essa semana"
+    ]
+
+    urgencias = [
+        "⚠️ pode acabar a qualquer momento",
+        "🔥 estoque limitado",
+        "🚨 preço pode subir"
+    ]
+
+    ctas = [
+        "👉 garante o seu agora",
+        "👉 clica e aproveita",
+        "👉 corre enquanto dá tempo"
+    ]
+
+    intensidades = ["leve", "medio", "agressivo"]
+
+    copies = []
+
+    for _ in range(5):
+
+        nivel = random.choice(intensidades)
+
+        if nivel == "leve":
+            copy = f"""{random.choice(hooks)}
+
+{produto}
+
+💡 {random.choice(desejos)}
+
+💰 {preco_formatado}{parcela_txt}
+
+👉 {link_venda}
+"""
+
+        elif nivel == "medio":
+            copy = f"""{random.choice(hooks)}
+
+{random.choice(dores)}
+
+🔥 {produto}
+
+💡 {random.choice(desejos)}
+
+😳 {random.choice(provas)}
+
+💰 {preco_formatado}{parcela_txt}
+
+👉 {link_venda}
+
+{random.choice(urgencias)}
+"""
+
+        else:
+            copy = f"""{random.choice(hooks)}
+
+{random.choice(dores).upper()}
+
+🔥 {produto.upper()}
+
+💥 {random.choice(desejos).upper()}
+
+😱 {random.choice(provas).upper()}
+
+💰 {preco_formatado}{parcela_txt}
+
+👉 {link_venda}
+
+{random.choice(urgencias)}
+{random.choice(ctas)}
+"""
+
+        copies.append(copy)
+
+    estrategias = {
+        "Instagram 📸": "💡 STORY + CTA forte",
+        "TikTok 📱": "💡 Hook nos 3 primeiros segundos",
+        "WhatsApp 💬": "💡 Envie nos grupos agora"
+    }
+
+    return copies, estrategias[rede]
+
+# --- MENSAGENS ---
 def gerar_mensagem_unica(periodo):
-    aberturas = ["✨ Hoje é um novo começo!", "💖 Ei, não esquece:", "🌸 Um lembrete importante:", "🔥 Acorda pra vida!", "💫 Você nasceu pra brilhar!"]
-    meios = ["você merece coisas incríveis", "seu esforço vai valer a pena", "coisas boas estão chegando", "seu momento está mais perto", "você é mais forte do que pensa"]
-    fechamentos = ["💖 Confia no processo", "✨ Vai dar certo", "🔥 Bora pra cima", "🌸 Você consegue", "💫 Nunca desista"]
-    s = "☀️ Bom dia!" if periodo == "Bom Dia" else "🌤️ Boa tarde!" if periodo == "Boa Tarde" else "🌙 Boa noite!"
-    msg = f"{s}\n\n{random.choice(aberturas)}\n{random.choice(meios)}.\n{random.choice(fechamentos)}!\n\n🌐 Hub: {LINK_HUB}\n\nBjs da Luhvee Stores ❤️"
-    return msg
+    return f"{periodo} 💖 Nunca desista!\n\n👉 {LINK_HUB}"
 
 # --- INTERFACE ---
 st.sidebar.title("👑 Comando LuhVee ELITE")
-aba = st.sidebar.radio("Navegação:", ["🛍️ Postar Produtos", "🔎 Minerador de Ouro", "💖 Mensagens Infinitas"])
+aba = st.sidebar.radio("Navegação:", ["🛍️ Postar Produtos", "🔎 Minerador", "💖 Mensagens"])
 
 if aba == "🛍️ Postar Produtos":
-    st.title("🔥 Madeirada Curta & Lucrativa")
+
+    st.title("🔥 Máquina de Vendas")
+
     col1, col2 = st.columns(2)
+
     with col1:
         mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
-        rede_sel = st.selectbox("Rede Social:", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
-    with col2:
-        prod = st.text_input("📦 Produto:", placeholder="Ex: Bota Adventure")
-        prc = st.text_input("💰 Preço:", placeholder="Ex: 213,66")
-        parc = st.text_input("💳 Parcelamento:", placeholder="Ex: Ou 12x de 19,90")
-        
-    if st.button("🚀 GERAR COPY AGRESSIVA"):
-        if prod and prc:
-            random.seed(time.time() + random.randint(1, 1000)) # FORÇA MUDANÇA
-            st.text_area("📋 Copy Pronta:", motor_vendas_curto(prod, prc, parc, mkt, rede_sel), height=380)
-        else: st.warning("Preencha o nome e o preço!")
+        rede_sel = st.selectbox("Rede:", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
 
-elif aba == "🔎 Minerador de Ouro":
-    st.title("🔎 Minerador Profissional")
-    nicho = st.selectbox("Selecione o Nicho:", list(nichos_completos.keys()))
+    with col2:
+        prod = st.text_input("Produto")
+        prc = st.text_input("Preço")
+        parc = st.text_input("Parcelamento")
+
+    if st.button("🚀 GERAR COPYS INSANAS"):
+
+        if prod and prc:
+
+            random.seed(time.time())
+
+            copies, dica = motor_maquina_vendas(prod, prc, parc, mkt, rede_sel)
+
+            for i, c in enumerate(copies):
+                st.text_area(f"📋 Copy {i+1}", c, height=250)
+
+            st.success(dica)
+
+        else:
+            st.warning("Preencha tudo")
+
+elif aba == "🔎 Minerador":
+
+    st.title("🔎 Minerador de Produtos")
+
+    nicho = st.selectbox("Nicho", list(nichos_completos.keys()))
+
     if st.button("📡 MINERAR"):
-        random.seed(time.time() + random.randint(1, 1000)) # FORÇA MUDANÇA
-        st.success(f"💎 Sugestão Viral: **{random.choice(nichos_completos[nicho])}**")
+        st.success(random.choice(nichos_completos[nicho]))
 
 else:
-    st.title("💖 Gerador de Mensagens Infinitas")
-    per = st.selectbox("Período:", ["Bom Dia", "Boa Tarde", "Boa Noite"])
-    qtd = st.slider("Quantidade:", 1, 500, 20)
-    if st.button("✨ GERAR AGORA"):
-        random.seed(time.time() + random.randint(1, 1000)) # FORÇA MUDANÇA
-        mensagens = [gerar_mensagem_unica(per) for _ in range(qtd)]
-        st.text_area("📋 Lista de Mensagens:", "\n\n---\n\n".join(mensagens), height=500)
-        st.balloons()
+
+    st.title("💖 Mensagens")
+
+    periodo = st.selectbox("Período", ["Bom dia", "Boa tarde", "Boa noite"])
+
+    if st.button("✨ GERAR"):
+        st.text_area("Mensagem", gerar_mensagem_unica(periodo), height=200)
