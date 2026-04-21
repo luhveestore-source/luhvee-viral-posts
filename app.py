@@ -4,20 +4,26 @@ import time
 import io
 import textwrap
 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+try:
+    from PIL import Image, ImageDraw, ImageFont
+except ImportError:
+    st.error("Instale: pip install Pillow")
 
 # --- CONFIG ---
 st.set_page_config(page_title="LuhVee Viral Machine ELITE", page_icon="👑", layout="wide")
 
-# --- STYLE ---
+# --- CSS MELHORADO ---
 st.markdown("""
 <style>
 .stApp { background-color: #050505; }
-h1, h2 { color: #ff69b4 !important; }
+h1, h2, h3 { color: #ff69b4 !important; }
 .stButton>button {
     background: linear-gradient(135deg, #ff69b4, #ff1493);
-    color: white; border-radius: 12px;
-    font-weight: bold; height: 55px;
+    color: white !important;
+    border-radius: 12px;
+    font-weight: bold;
+    height: 55px;
+    font-size: 20px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -25,154 +31,176 @@ h1, h2 { color: #ff69b4 !important; }
 # --- LINKS ---
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
+LINK_HUB = "https://links-luhveestore.streamlit.app/"
 
-# --- GERADOR DE IMAGEM PROFISSIONAL ---
+# --- FUNÇÃO AJUSTAR PREÇO ---
+def formatar_preco(preco):
+    preco = preco.replace("R$", "").strip()
+    return f"R$ {preco}"
+
+# --- IMAGEM ELITE CORRIGIDA ---
 def criar_post_elite(nome_prod, preco, foto_file, logo_file):
 
-    base = Image.new('RGB', (1080, 1920), (10,10,10))
-
-    # Fundo blur
-    if foto_file:
-        try:
-            bg = Image.open(foto_file).convert("RGB")
-            bg = bg.resize((1080,1920))
-            bg = bg.filter(ImageFilter.GaussianBlur(25))
-            base = bg
-        except:
-            pass
-
-    overlay = Image.new('RGBA', (1080,1920), (0,0,0,160))
-    base = Image.alpha_composite(base.convert("RGBA"), overlay)
+    base = Image.new('RGB', (1080, 1920), (0, 0, 0))
 
     draw = ImageDraw.Draw(base)
 
-    # Produto central
+    # --- FOTO PRODUTO (SEM DISTORCER) ---
     if foto_file:
+        img = Image.open(foto_file).convert("RGBA")
+
+        max_w, max_h = 900, 1000
+        ratio = min(max_w/img.width, max_h/img.height)
+        new_size = (int(img.width * ratio), int(img.height * ratio))
+
+        img = img.resize(new_size, Image.Resampling.LANCZOS)
+
+        pos = ((1080 - new_size[0])//2, (1920 - new_size[1])//2 - 150)
+        base.paste(img, pos, img)
+
+    # --- FONTES DINÂMICAS ---
+    def get_font(size):
         try:
-            prod = Image.open(foto_file).convert("RGBA")
-            prod.thumbnail((800,900))
-            pos = ((1080-prod.size[0])//2, (1920-prod.size[1])//2 - 100)
-            base.paste(prod, pos, prod)
+            return ImageFont.truetype("arialbd.ttf", size)
         except:
-            pass
+            return ImageFont.load_default()
 
-    # Fontes
-    try:
-        font_title = ImageFont.truetype("arialbd.ttf", 90)
-        font_price = ImageFont.truetype("arialbd.ttf", 130)
-        font_small = ImageFont.truetype("arial.ttf", 50)
-    except:
-        font_title = font_price = font_small = ImageFont.load_default()
+    font_titulo = get_font(90)
+    font_preco = get_font(120)
+    font_sticker = get_font(50)
 
-    # Nome
-    nome = textwrap.fill(nome_prod.upper(), 18)
+    # --- NOME PRODUTO (AUTO AJUSTE) ---
+    nome = nome_prod.upper()
+    linhas = textwrap.wrap(nome, width=15)
+
     y = 120
-    for linha in nome.split("\n"):
-        draw.text((540,y), linha, fill="white", font=font_title, anchor="mm")
+    for linha in linhas:
+        draw.text((540, y), linha, fill="white", font=font_titulo, anchor="mm")
         y += 100
 
-    # Preço
-    preco_txt = f"R$ {preco}"
-    draw.text((544,1554), preco_txt, font=font_price, fill=(0,0,0), anchor="mm")
-    draw.text((540,1550), preco_txt, font=font_price, fill=(255,105,180), anchor="mm")
+    # --- PREÇO ---
+    preco = formatar_preco(preco)
 
-    # CTA
-    draw.text((540,1680), "🔥 GARANTA AGORA 🔥", font=font_small, fill="white", anchor="mm")
+    draw.text((540, 1700), preco, fill=(255,105,180), font=font_preco, anchor="mm")
 
-    # Sticker
-    draw.rounded_rectangle((700,50,1050,150), 30, fill=(255,20,147))
-    draw.text((875,100), "LINK NA BIO", font=font_small, fill="white", anchor="mm")
+    # --- BOTÃO LINK NA BIO ---
+    x1, y1, x2, y2 = 650, 50, 1030, 180
+    draw.rounded_rectangle([x1,y1,x2,y2], radius=30, fill=(255,20,147))
 
-    # Logo
-    if logo_file:
-        try:
-            logo = Image.open(logo_file).convert("RGBA")
-            logo.thumbnail((200,200))
-            base.paste(logo, (30,30), logo)
-        except:
-            pass
+    draw.text(((x1+x2)//2, (y1+y2)//2), "LINK NA BIO 🔗", fill="white", font=font_sticker, anchor="mm")
 
-    return base.convert("RGB")
+    return base
 
-# --- MOTOR MÁQUINA DE VENDAS ---
-def motor_maquina_vendas(produto, preco, parcelas, marketplace):
+# --- COPYS ELITE (MAIS LONGAS E DIFERENTES) ---
+def motor_maquina_vendas(produto, preco, parcelas, marketplace, rede):
 
-    link = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
+    link = LINK_SHOPEE if "Shopee" in marketplace else LINK_ML
+    preco = formatar_preco(preco)
 
     hooks = [
-        "🚨 ISSO TÁ VIRALIZANDO",
-        "🔥 TODO MUNDO COMPRANDO",
-        "💥 EXPLODIU DO NADA",
-        "😱 OLHA ISSO"
+        f"🚨 {produto.upper()} VIRALIZOU AGORA!",
+        f"🔥 TODO MUNDO TÁ COMPRANDO {produto.upper()}",
+        f"⚠️ ISSO AQUI TÁ ESGOTANDO RÁPIDO!"
+    ]
+
+    dores = [
+        "Cansado de produto ruim?",
+        "Você merece algo melhor!",
+        "Chega de gastar dinheiro à toa!"
     ]
 
     desejos = [
-        "facilita sua vida",
         "qualidade absurda",
-        "todo mundo quer",
-        "você vai usar todo dia"
+        "resultado imediato",
+        "nível premium de verdade"
     ]
 
-    urgencia = [
-        "⚠️ pode acabar hoje",
-        "🔥 estoque limitado",
-        "🚨 corre antes que suba"
+    finais = [
+        "👉 corre antes que acabe",
+        "👉 aproveita enquanto tá barato",
+        "👉 não deixa pra depois"
     ]
 
     copies = []
 
-    for _ in range(5):
+    for _ in range(3):
         copy = f"""{random.choice(hooks)}
 
+{random.choice(dores)}
+
 🔥 {produto}
+💎 {random.choice(desejos)}
 
-💡 {random.choice(desejos)}
-
-💰 R$ {preco}
+💰 {preco}
 {parcelas if parcelas else ""}
 
-👉 {link}
+⚠️ Estoque limitado
 
-{random.choice(urgencia)}
+🛒 COMPRE AGORA:
+{link}
+
+{random.choice(finais)}
+
+❤️ LuhVee Stores
 """
         copies.append(copy)
 
     return copies
 
-# --- UI ---
-st.title("👑 LuhVee Máquina de Vendas")
+# --- INTERFACE ---
+st.sidebar.title("👑 LuhVee ELITE")
+aba = st.sidebar.radio("Menu:", ["🛍️ Criar Post", "🔎 Ideias", "💬 Mensagens"])
 
-col1, col2 = st.columns(2)
+# --- ABA 1 ---
+if aba == "🛍️ Criar Post":
 
-with col1:
-    logo = st.file_uploader("Logo", type=["png"])
-    foto = st.file_uploader("Produto", type=["png","jpg","jpeg"])
+    st.title("🔥 Criador de Posts Profissionais")
 
-with col2:
-    produto = st.text_input("Nome do Produto")
-    preco = st.text_input("Preço")
-    parcelas = st.text_input("Parcelamento")
-    mkt = st.selectbox("Marketplace", ["Shopee 🛍️", "Mercado Livre 📦"])
+    col1, col2 = st.columns(2)
 
-if st.button("🚀 GERAR TUDO"):
+    with col1:
+        foto = st.file_uploader("📸 Foto Produto", type=['png','jpg','jpeg'])
+        logo = st.file_uploader("🏷️ Logo", type=['png'])
 
-    if produto and preco and foto:
+    with col2:
+        produto = st.text_input("📦 Produto")
+        preco = st.text_input("💰 Preço")
+        parcelas = st.text_input("💳 Parcelas")
+        marketplace = st.selectbox("🌍 Plataforma", ["Shopee 🛍️", "Mercado Livre 📦"])
+        rede = st.selectbox("📱 Rede", ["Instagram", "TikTok", "WhatsApp"])
 
-        # Imagem
-        img = criar_post_elite(produto, preco, foto, logo)
-        st.image(img, use_container_width=True)
+    if st.button("🚀 GERAR POST ELITE"):
 
-        buf = io.BytesIO()
-        img.save(buf, format="PNG")
+        if produto and preco and foto:
 
-        st.download_button("📥 Baixar Imagem", buf.getvalue(), "post.png")
+            img = criar_post_elite(produto, preco, foto, logo)
+            st.image(img, use_container_width=True)
 
-        # Copies
-        st.subheader("📋 Copies de Venda")
-        cps = motor_maquina_vendas(produto, preco, parcelas, mkt)
+            buf = io.BytesIO()
+            img.save(buf, format="PNG")
 
-        for i, c in enumerate(cps):
-            st.text_area(f"Copy {i+1}", c, height=200)
+            st.download_button("📥 Baixar", buf.getvalue(), "post.png")
 
-    else:
-        st.warning("Preencha tudo!")
+            st.subheader("📋 Copys")
+
+            copies = motor_maquina_vendas(produto, preco, parcelas, marketplace, rede)
+
+            for i, c in enumerate(copies):
+                st.text_area(f"Copy {i+1}", c, height=200)
+
+        else:
+            st.warning("Preencha tudo!")
+
+# --- ABA 2 ---
+elif aba == "🔎 Ideias":
+
+    ideias = ["Luz LED TikTok", "Escova Facial", "Mini Seladora", "Suporte Veicular"]
+
+    if st.button("💡 Gerar Ideia"):
+        st.success(random.choice(ideias))
+
+# --- ABA 3 ---
+else:
+
+    if st.button("✨ Gerar Mensagem"):
+        st.text_area("Mensagem", f"Você merece vencer! 💖\n👉 {LINK_HUB}")
