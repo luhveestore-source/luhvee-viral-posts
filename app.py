@@ -45,33 +45,41 @@ nichos_completos = {
     "🌎 Internacional (High Ticket)": ["ProDentim Original", "Suplemento BioFit", "Renovador Facial 24k", "Redutor de Medidas Viral", "Sérum Anti-Idade Suíço"]
 }
 
-# --- MOTOR DE VENDAS INTELIGENTE ---
+# --- MOTOR DE VENDAS VARIÁVEL (IA INFINITA) ---
 def motor_vendas_curto(produto, preco, parcelas, marketplace, rede):
     link_venda = LINK_SHOPEE if marketplace == "Shopee 🛍️" else LINK_ML
     
-    # Lógica de Gênero da Mensagem
+    # Identifica Gênero
     masculinos = ["bota", "tenis", "sapato", "masculino", "fone", "carro", "aspirador", "suporte", "kit"]
     is_masculino = any(x in produto.lower() for x in masculinos)
-    
-    gancho = "O segredo que os especialistas escondem!" if is_masculino else "O segredo que as blogueiras escondem!"
-    elogio = "Estilo e resistência bruta." if is_masculino else "Qualidade premium e design de luxo."
-    
-    # Parcelamento manual
-    msg_parcela = f"💳 {parcelas}" if parcelas else "💳 Parcelamento facilitado no link!"
 
+    # Blocos de Copy para Variedade
+    if is_masculino:
+        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"🔥 ITEM INDISPENSÁVEL: {produto.upper()} 🔥", f"😱 OLHA O QUE CHEGOU: {produto.upper()}! 😱"]
+        corpos = ["O segredo que os especialistas escondem! Resistência bruta e estilo.", "Qualidade superior testada. O item que os caras estão usando na gringa!", "Design robusto e acabamento premium. Superou todas as expectativas."]
+    else:
+        ganchos = [f"🚨 VIRALIZOU: {produto.upper()} 🚨", f"👑 ACHADINHO DE LUXO: {produto.upper()} 👑", f"😱 APAIXONADA: {produto.upper()}! 😱"]
+        corpos = ["O segredo que as blogueiras escondem! Qualidade surreal e design de luxo.", "Desejo número 1 das redes! Praticidade total e acabamento impecável.", "Eu testei e pirei! Transformação real na sua rotina com elegância."]
+
+    chamadas = [
+        "✅ Original & Testado\n✅ Qualidade Premium\n✅ Entrega Garantida",
+        "🔥 Oferta Relâmpago\n🏆 Top 1 de Vendas\n🚀 Envio Imediato",
+        "✨ Acabamento Impecável\n🛡️ Compra Segura\n📦 Estoque Limitado"
+    ]
+
+    msg_parcela = f"💳 {parcelas}" if parcelas else "💳 Parcelamento facilitado no link!"
+    
     estrategias = {
         "Instagram 📸": "💡 STORY: Use sticker de link!",
         "TikTok 📱": "💡 TIKTOK: Áudio viral + Link Bio!",
         "WhatsApp 💬": "💡 WHATS: Poste no Status agora!"
     }
 
-    copy = f"""🚨 VIRALIZOU: {produto.upper()} 🚨
+    copy = f"""{random.choice(ganchos)}
 
-{gancho} {elogio} 🔥
+{random.choice(corpos)} 🔥
 
-✅ Original & Testado
-✅ Qualidade Premium
-✅ Entrega Garantida
+{random.choice(chamadas)}
 
 😱 APENAS: R$ {preco}
 {msg_parcela}
@@ -110,14 +118,15 @@ if aba == "🛍️ Postar Produtos":
         mkt = st.selectbox("Marketplace:", ["Shopee 🛍️", "Mercado Livre 📦"])
         rede_sel = st.selectbox("Rede Social:", ["Instagram 📸", "TikTok 📱", "WhatsApp 💬"])
     with col2:
-        prod = st.text_input("📦 Produto:", placeholder="Ex: Bota Adventure")
-        prc = st.text_input("💰 Preço:", placeholder="Ex: 213,66")
-        parc = st.text_input("💳 Parcelamento (Manual):", placeholder="Ex: Ou 12x de 19,90")
+        prod = st.text_input("📦 Produto:", placeholder="Ex: Creme de Pentear")
+        prc = st.text_input("💰 Preço:", placeholder="Ex: 35,75")
+        parc = st.text_input("💳 Parcelamento:", placeholder="Ex: Parcelado no link!")
         
     if st.button("🚀 GERAR COPY AGRESSIVA"):
         if prod and prc:
+            random.seed(time.time()) # Garante que cada clique mude o texto
             resultado_venda = motor_vendas_curto(prod, prc, parc, mkt, rede_sel)
-            st.text_area("📋 Copy Pronta:", resultado_venda, height=350)
+            st.text_area("📋 Copy Pronta:", resultado_venda, height=380)
         else:
             st.warning("Preencha o nome e o preço!")
 
