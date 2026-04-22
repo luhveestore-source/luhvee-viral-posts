@@ -1,230 +1,147 @@
 import streamlit as st
 import random
-import time
 import io
-import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
-# =========================
-# CONFIG LuhVee
-# =========================
-st.set_page_config(page_title="👑 LuhVee GOD MODE", layout="wide")
+# --- CONFIGURAÇÃO DA PÁGINA ---
+st.set_page_config(page_title="👑 LuhVee TURBO - Vendas Agressivas", layout="wide")
 
+# Links Fixos
 LINK_HUB = "https://links-luhveestore.streamlit.app/"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 
-# =========================
-# HISTÓRICO
-# =========================
-if "historico" not in st.session_state:
-    st.session_state.historico = []
+# --- FUNÇÕES DE APOIO ---
 
-# =========================
-# BANCO VIRAL (NICHOS)
-# =========================
-nichos = {
-    "🔥 Viral Geral": ["Mini Seladora", "LED TikTok", "Carregador Turbo", "Fone Bluetooth"],
-    "💄 Beleza": ["Sérum Facial", "Escova 3 em 1", "Máscara LED", "Gloss Labial"],
-    "🏠 Casa": ["Mop Giratório", "Organizador", "Aspirador Portátil", "Umidificador"],
-    "📱 Tech": ["Smartwatch", "Mini Projetor", "Power Bank", "Teclado RGB"],
-    "🐶 Pet": ["Cama Pet Nuvem", "Fonte de Água", "Escova Tira Pelo"]
-}
-
-# =========================
-# FORMATAR PREÇO
-# =========================
-def preco_formatado(p):
-    return f"R$ {p.replace('R$','').strip()}"
-
-# =========================
-# IMAGEM SEM DISTORÇÃO
-# =========================
-def criar_imagem(produto, preco, foto):
-
-    base = Image.new("RGB", (1080,1920), (0,0,0))
-    draw = ImageDraw.Draw(base)
-
-    img = Image.open(foto).convert("RGBA")
-
-    ratio = min(900/img.width, 1000/img.height)
-    img = img.resize((int(img.width*ratio), int(img.height*ratio)))
-
-    base.paste(img, ((1080-img.width)//2, 500), img)
-
+def formatar_preco(valor):
+    # Garante que o preço tenha o formato R$ XX,XX
+    valor = valor.replace('R$', '').strip().replace(',', '.')
     try:
-        font = ImageFont.truetype("arialbd.ttf", 90)
+        f_valor = float(valor)
+        return f"R$ {f_valor:,.2f}".replace('.', 'v').replace(',', '.').replace('v', ',')
     except:
-        font = ImageFont.load_default()
+        return f"R$ {valor}"
 
-    draw.text((540,200), produto.upper(), fill="white", anchor="mm", font=font)
+def criar_post_visual(produto, preco, foto_upload):
+    # Criar uma imagem vertical (Story/Reels) 1080x1920
+    # Usamos um degradê ou cor sólida moderna
+    largura, altura = 1080, 1920
+    canvas = Image.new("RGB", (largura, altura), (15, 15, 15)) # Fundo Dark elegante
+    draw = ImageDraw.Draw(canvas)
 
+    # Carregar imagem do produto
+    img_produto = Image.open(foto_upload).convert("RGBA")
+    
+    # Redimensionamento Proporcional (Sem distorção)
+    max_size = 900
+    ratio = min(max_size / img_produto.width, max_size / img_produto.height)
+    novo_tamanho = (int(img_produto.width * ratio), int(img_produto.height * ratio))
+    img_produto = img_produto.resize(novo_tamanho, Image.LANCZOS)
+
+    # Centralizar imagem
+    pos_x = (largura - img_produto.width) // 2
+    pos_y = (altura - img_produto.height) // 2
+    canvas.paste(img_produto, (pos_x, pos_y), img_produto)
+
+    # Adicionar Textos (Usando fontes padrão se não houver .ttf)
     try:
-        font2 = ImageFont.truetype("arialbd.ttf", 120)
+        font_titulo = ImageFont.truetype("arial.ttf", 80)
+        font_preco = ImageFont.truetype("arial.ttf", 150)
     except:
-        font2 = ImageFont.load_default()
+        font_titulo = ImageFont.load_default()
+        font_preco = ImageFont.load_default()
 
-    draw.text((540,1700), preco_formatado(preco), fill=(255,105,180), anchor="mm", font=font2)
+    # Desenhar faixas de destaque
+    draw.rectangle([0, 150, largura, 350], fill=(255, 20, 147)) # Rosa Choque
+    draw.text((largura//2, 250), produto.upper(), fill="white", anchor="mm", font=font_titulo)
+    
+    draw.text((largura//2, 1700), formatar_preco(preco), fill=(255, 215, 0), anchor="mm", font=font_preco) # Dourado
 
-    return base
+    return canvas
 
-# =========================
-# COPY INSANA (AGRESSIVA)
-# =========================
-def gerar_copy(produto, preco, parcelas, mkt):
-
-    link = LINK_SHOPEE if "Shopee" in mkt else LINK_ML
-
+def gerar_copy_agressiva(produto, preco, plataforma):
+    link = LINK_SHOPEE if plataforma == "Shopee" else LINK_ML
+    
     hooks = [
-        f"🚨 {produto.upper()} TÁ VIRALIZANDO AGORA!",
-        f"🔥 TODO MUNDO CORRENDO PRA COMPRAR ISSO!",
-        f"⚠️ ISSO VAI ESGOTAR HOJE!"
+        f"🚨 ALERTA DE OPORTUNIDADE: {produto}!",
+        f"🔥 O {produto} que todo mundo está procurando chegou!",
+        f"⚠️ PARE TUDO! Olha esse preço no {produto}!",
+        f"😱 Ninguém acredita no preço desse {produto}..."
     ]
-
-    dores = [
-        "Você ainda tá perdendo dinheiro comprando errado?",
-        "Cansado de produto ruim?",
-        "Isso aqui resolve de verdade!"
+    
+    gatilhos = [
+        "Estoque renovado, mas voando! 💸",
+        "Últimas unidades com esse valor promocional. ⏳",
+        "Qualidade premium que você já conhece. ⭐",
+        "Frete rápido e compra garantida! 🚚"
     ]
-
-    desejos = [
-        "qualidade absurda",
-        "resultado imediato",
-        "nível premium de verdade"
-    ]
-
-    finais = [
-        "👉 corre antes que acabe",
-        "👉 aproveita agora",
-        "👉 já garanti o meu"
+    
+    chamada = [
+        "Clica no link e garante o seu antes que mude o preço!",
+        "Não adianta chorar depois que esgotar! 🏃‍♂️💨",
+        "Aproveite a promoção exclusiva de hoje!"
     ]
 
     copy = f"""{random.choice(hooks)}
 
-{random.choice(dores)}
+{random.choice(gatilhos)}
 
-🔥 {produto}
-💎 {random.choice(desejos)}
+🛍️ {produto}
+💰 Por apenas: {formatar_preco(preco)}
 
-💰 {preco_formatado(preco)}
-{parcelas if parcelas else ""}
-
-⚠️ Estoque limitado
-
-🛒 COMPRE AQUI:
+🔥 COMPRE AGORA:
 {link}
 
-🎁 Meu HUB:
+🔗 Veja mais no nosso catálogo:
 {LINK_HUB}
 
-{random.choice(finais)}
-
-❤️ LuhVee Stores
+#promoção #ofertadiaria #shopee #mercadolivre #luhvee
 """
-
     return copy
 
-# =========================
-# MENSAGENS MOTIVACIONAIS + VENDA
-# =========================
-def gerar_mensagens(qtd):
+# --- INTERFACE STREAMLIT ---
 
-    msgs = []
+st.sidebar.header("👑 PAINEL DE CONTROLE")
+menu = st.sidebar.selectbox("O que vamos fazer?", ["Gerador de Post", "Histórico"])
 
-    for _ in range(qtd):
+if menu == "Gerador de Post":
+    st.title("🚀 Gerador de Vendas Agressivas")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        nome_prod = st.text_input("Nome do Produto", placeholder="Ex: Smartwatch Ultra")
+        valor_prod = st.text_input("Preço", placeholder="Ex: 149,90")
+        mkt_target = st.radio("Destino", ["Shopee", "Mercado Livre"])
+        imagem_arq = st.file_uploader("Foto do Produto", type=["png", "jpg", "jpeg"])
 
-        msg = f"""✨ Bom dia!
-
-Você merece coisas incríveis 💖
-E hoje pode ser o dia da sua virada.
-
-🔥 Aproveita essas ofertas:
-👉 {LINK_HUB}
-
-🚀 Não deixa pra depois!
-"""
-
-        msgs.append(msg)
-
-    return msgs
-
-# =========================
-# INTERFACE
-# =========================
-st.sidebar.title("👑 LuhVee GOD")
-
-aba = st.sidebar.radio("Menu", [
-    "🛍️ Criar Post",
-    "🔎 Minerador Viral",
-    "💬 Mensagens",
-    "📜 Histórico"
-])
-
-# =========================
-# CRIAR POST
-# =========================
-if aba == "🛍️ Criar Post":
-
-    st.title("🔥 Criador LuhVee")
-
-    produto = st.text_input("Produto")
-    preco = st.text_input("Preço")
-    parcelas = st.text_input("Parcelas")
-    mkt = st.selectbox("Plataforma", ["Shopee", "Mercado Livre"])
-    foto = st.file_uploader("Foto")
-
-    if st.button("🚀 GERAR"):
-
-        if produto and preco and foto:
-
-            img = criar_imagem(produto, preco, foto)
-            st.image(img)
-
+    if st.button("🔥 GERAR POST AGORA"):
+        if nome_prod and valor_prod and imagem_arq:
+            # Gerar Conteúdo
+            img_final = criar_post_visual(nome_prod, valor_prod, imagem_arq)
+            texto_copy = gerar_copy_agressiva(nome_prod, valor_prod, mkt_target)
+            
+            # Mostrar Resultado
+            st.image(img_final, caption="Preview do Post (Formato Story)", width=400)
+            st.text_area("Copy para Copiar:", texto_copy, height=250)
+            
+            # Botão de Download
             buf = io.BytesIO()
-            img.save(buf, format="PNG")
-            st.download_button("Baixar imagem", buf.getvalue())
+            img_final.save(buf, format="PNG")
+            st.download_button("📥 Baixar Imagem", buf.getvalue(), file_name="post_luhvee.png")
+            
+            # Salvar no Histórico
+            if "historico_v2" not in st.session_state:
+                st.session_state.historico_v2 = []
+            st.session_state.historico_v2.append(texto_copy)
+        else:
+            st.error("Preencha todos os campos e suba uma foto!")
 
-            copy = gerar_copy(produto, preco, parcelas, mkt)
-
-            st.text_area("Copy", copy, height=300)
-
-            st.session_state.historico.append(copy)
-
-# =========================
-# MINERADOR
-# =========================
-elif aba == "🔎 Minerador Viral":
-
-    st.title("💎 Produtos Virais")
-
-    nicho = st.selectbox("Escolha nicho", list(nichos.keys()))
-
-    if st.button("📡 MINERAR"):
-
-        produto = random.choice(nichos[nicho])
-        st.success(f"🔥 {produto}")
-
-# =========================
-# MENSAGENS
-# =========================
-elif aba == "💬 Mensagens":
-
-    st.title("💖 Mensagens LuhVee")
-
-    qtd = st.slider("Quantidade",1,100,10)
-
-    if st.button("✨ GERAR"):
-
-        msgs = gerar_mensagens(qtd)
-
-        st.text_area("Copiar", "\n\n---\n\n".join(msgs), height=400)
-
-# =========================
-# HISTÓRICO
-# =========================
-else:
-
-    st.title("📜 Histórico")
-
-    for h in reversed(st.session_state.historico):
-        st.text_area("Copy gerada", h, height=200)
+elif menu == "Histórico":
+    st.title("📜 Últimas Copys Geradas")
+    if "historico_v2" in st.session_state:
+        for c in reversed(st.session_state.historico_v2):
+            st.code(c)
+            st.write("---")
+    else:
+        st.info("Nenhuma postagem gerada ainda.")
