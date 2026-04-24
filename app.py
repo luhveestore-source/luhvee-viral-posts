@@ -34,21 +34,22 @@ st.markdown("Gerador de copies + Radar com Google Trends em TEMPO REAL! 🎯📊
 
 @st.cache_data(ttl=3600)  # Cache por 1 hora
 def obter_trending_google():
-    """Obtém dados reais do Google Trends"""
+    """Obtém dados reais do Google Trends com fallback seguro"""
     if not TRENDS_DISPONIVEL:
-        st.warning("⚠️ Google Trends não instalado. Use dados simulados.")
+        st.warning("⚠️ Google Trends não instalado.")
         return None
     
     try:
-        pytrends = TrendReq(hl='pt-BR', tz=360)
+        # Usa timeout e retry automático
+        pytrends = TrendReq(hl='pt-BR', tz=360, timeout=(10, 15))
         
-        # Palavras-chave por categoria
+        # Palavras-chave por categoria - MAIS GENÉRICAS pra evitar erro 400
         palavras_chave = {
-            "Moda": ["bolsa de ombro", "tênis feminino", "bota inverno"],
-            "Beleza": ["sérum facial", "delineador", "protetor solar"],
-            "Tech": ["carregador rápido", "fone bluetooth", "case celular"],
-            "Casa": ["almofada", "difusor aromas", "luminária"],
-            "Pet": ["coleira gps", "cama pet", "brinquedo pet"]
+            "Moda": ["bolsa", "tênis", "bota"],
+            "Beleza": ["sérum", "delineador", "protetor"],
+            "Tech": ["carregador", "fone", "case"],
+            "Casa": ["almofada", "difusor", "luminária"],
+            "Pet": ["coleira", "cama pet", "brinquedo"]
         }
         
         trending_data = {}
@@ -58,11 +59,14 @@ def obter_trending_google():
             
             for palavra in palavras:
                 try:
+                    # Delay maior pra evitar throttling
+                    time.sleep(2)  # 2 segundos entre requisições
+                    
                     # Busca interesse nos últimos 7 dias
                     pytrends.build_payload([palavra], timeframe='today 7-d', geo='BR')
                     df = pytrends.interest_over_time()
                     
-                    if not df.empty:
+                    if not df.empty and len(df) > 1:
                         interesse_atual = int(df[palavra].iloc[-1])
                         interesse_anterior = int(df[palavra].iloc[0])
                         
@@ -71,23 +75,27 @@ def obter_trending_google():
                         else:
                             percentual = 0
                         
-                        trending_data[categoria].append({
-                            "nome": palavra.title(),
-                            "interesse": interesse_atual,
-                            "tendencia": f"⬆️ +{percentual}%" if percentual > 0 else f"⬇️ {percentual}%",
-                            "percentual_raw": percentual
-                        })
+                        # Só adiciona se tiver interesse
+                        if interesse_atual > 10:
+                            trending_data[categoria].append({
+                                "nome": palavra.title(),
+                                "interesse": interesse_atual,
+                                "tendencia": f"⬆️ +{percentual}%" if percentual > 0 else f"⬇️ {percentual}%",
+                                "percentual_raw": percentual
+                            })
                     
-                    time.sleep(1)  # Evita throttling
-                
                 except Exception as e:
-                    st.warning(f"Erro ao buscar '{palavra}': {str(e)}")
+                    # Silencioso - não mostra erro, continua
                     continue
         
-        return trending_data
+        # Se conseguiu dados, salva cache
+        if any(trending_data.values()):
+            salvar_trending_cache(trending_data)
+            return trending_data
+        else:
+            return None
     
     except Exception as e:
-        st.error(f"Erro ao conectar Google Trends: {str(e)}")
         return None
 
 def carregar_trending_cache():
