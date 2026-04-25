@@ -4,6 +4,8 @@ import json
 import os
 from datetime import datetime
 import time
+import requests
+from bs4 import BeautifulSoup
 
 try:
     from pytrends.request import TrendReq
@@ -11,7 +13,7 @@ try:
 except ImportError:
     TRENDS_DISPONIVEL = False
 
-st.set_page_config(page_title="👑 LuhVee Vendas PRO - Google Trends", layout="wide")
+st.set_page_config(page_title="👑 LuhVee Vendas PRO - Com Busca de Produtos", layout="wide")
 
 LINK_HUB = "https://links-luhveestore.streamlit.app/"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
@@ -20,13 +22,94 @@ LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
 ARQUIVO_HISTORICO = "luhvee_posts_historico.json"
 CACHE_TRENDING = "trending_cache.json"
 
-st.title("👑 LuhVee Vendas PRO - Com Google Trends Real")
-st.markdown("Gerador de copies + Radar com Google Trends em TEMPO REAL! 🎯📊")
+st.title("👑 LuhVee Vendas PRO - Com Busca de Produtos")
+st.markdown("Gere copies inteligentes + Pesquise produtos por LINK! 🎯📊")
+
+# ===== FUNÇÕES DE WEB SCRAPING =====
+
+def extrair_mercado_livre(url):
+    """Extrai dados do produto do Mercado Livre"""
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Extrai nome do produto
+        titulo = soup.find('h1', class_='ui-pdp-title')
+        nome = titulo.text.strip() if titulo else "Produto"
+        
+        # Extrai preço atual
+        preco_atual = soup.find('span', class_='andes-money-amount__fraction')
+        preco_promo = preco_atual.text.strip() if preco_atual else ""
+        
+        # Extrai preço original (se houver desconto)
+        preco_original_tag = soup.find('s', class_='andes-money-amount')
+        preco_original = ""
+        if preco_original_tag:
+            preco_original = preco_original_tag.text.strip()
+        else:
+            preco_original = preco_promo
+        
+        return {
+            "sucesso": True,
+            "nome": nome[:50],  # Limita a 50 caracteres
+            "preco_original": preco_original.replace("R$", "").replace(",", ".").strip(),
+            "preco_promocional": preco_promo.replace("R$", "").replace(",", ".").strip(),
+            "plataforma": "Mercado Livre"
+        }
+    
+    except Exception as e:
+        return {"sucesso": False, "erro": str(e)}
+
+def extrair_shopee(url):
+    """Extrai dados do produto do Shopee"""
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Extrai nome
+        nome_tag = soup.find('span', class_='shopee-page-title')
+        nome = nome_tag.text.strip() if nome_tag else "Produto"
+        
+        # Extrai preço
+        preco_tag = soup.find('span', class_='shopee-price-display')
+        preco_promo = preco_tag.text.strip() if preco_tag else ""
+        
+        return {
+            "sucesso": True,
+            "nome": nome[:50],
+            "preco_original": preco_promo.replace("R$", "").replace(",", ".").strip(),
+            "preco_promocional": preco_promo.replace("R$", "").replace(",", ".").strip(),
+            "plataforma": "Shopee"
+        }
+    
+    except Exception as e:
+        return {"sucesso": False, "erro": str(e)}
+
+def buscar_produto_por_link(link):
+    """Identifica plataforma e extrai dados"""
+    if "mercadolivre" in link.lower() or "mercado-livre" in link.lower():
+        return extrair_mercado_livre(link)
+    elif "shopee" in link.lower():
+        return extrair_shopee(link)
+    else:
+        return {"sucesso": False, "erro": "Plataforma não suportada. Use Mercado Livre ou Shopee."}
+
+# ===== RESTO DO CÓDIGO (IGUAL AO ANTERIOR) =====
 
 @st.cache_data(ttl=3600)
 def obter_trending_google():
     if not TRENDS_DISPONIVEL:
-        st.warning("⚠️ Google Trends não instalado. Execute: pip install pytrends")
+        st.warning("⚠️ Google Trends não instalado.")
         return None
     
     try:
@@ -80,15 +163,6 @@ def obter_trending_google():
     
     except Exception as e:
         return None
-
-def carregar_trending_cache():
-    if os.path.exists(CACHE_TRENDING):
-        try:
-            with open(CACHE_TRENDING, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except:
-            return None
-    return None
 
 def salvar_trending_cache(dados):
     try:
@@ -170,15 +244,45 @@ def gerar_copies(produto, preco_promo, preco_original, estrategia, plataforma, l
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["📝 Gerar Copies", "🌐 Google Trends", "📊 Histórico", "📥 Importar", "ℹ️ Info"])
 
 with tab1:
+    st.subheader("🔍 OPÇÃO 1: Buscar por LINK")
+    
+    col_busca1, col_busca2 = st.columns([3, 1])
+    with col_busca1:
+        link_produto = st.text_input("Cole o LINK do produto (Mercado Livre ou Shopee)", 
+                                     placeholder="https://mercadolivre.com.br/... ou https://shopee.com.br/...")
+    with col_busca2:
+        if st.button("🔍 Buscar Produto", use_container_width=True):
+            if link_produto:
+                with st.spinner("Buscando dados do produto..."):
+                    resultado = buscar_produto_por_link(link_produto)
+                
+                if resultado["sucesso"]:
+                    st.success("✅ Produto encontrado!")
+                    st.session_state.nome_produto = resultado["nome"]
+                    st.session_state.preco_original = resultado["preco_original"]
+                    st.session_state.preco_promocional = resultado["preco_promocional"]
+                    st.info(f"📦 {resultado['nome']}\n\nDe R${resultado['preco_original']} por R${resultado['preco_promocional']}")
+                else:
+                    st.error(f"❌ Erro: {resultado.get('erro', 'Não consegui extrair os dados')}")
+    
+    st.divider()
+    st.subheader("✏️ OPÇÃO 2: Preencher Manualmente")
+    
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("⚙️ Dados do Produto")
-        nome_produto = st.text_input("Nome do Produto", placeholder="Ex: Bolsa De Ombro")
+        nome_produto = st.text_input("Nome do Produto", 
+                                     value=st.session_state.get("nome_produto", ""),
+                                     placeholder="Ex: Bolsa De Ombro")
         categoria = st.selectbox("Categoria", ["Casa", "Beleza", "Tech", "Pet", "Moda"])
     with col2:
         st.subheader("💰 Preços")
-        preco_promo = st.text_input("Preço Promocional", placeholder="89.90")
-        preco_original = st.text_input("Preço Original", placeholder="150.00")
+        preco_promo = st.text_input("Preço Promocional", 
+                                    value=st.session_state.get("preco_promocional", ""),
+                                    placeholder="89.90")
+        preco_original = st.text_input("Preço Original", 
+                                       value=st.session_state.get("preco_original", ""),
+                                       placeholder="150.00")
     
     col3, col4 = st.columns(2)
     with col3:
@@ -217,12 +321,12 @@ with tab1:
                     st.divider()
 
 with tab2:
-    st.subheader("🌐 Google Trends - Produtos em ALTA Agora")
+    st.subheader("🌐 Google Trends")
     if st.button("🔄 Buscar Tendências", use_container_width=True, type="primary"):
-        with st.spinner("Buscando tendências..."):
+        with st.spinner("Buscando..."):
             trending = obter_trending_google()
         if trending:
-            st.success("✅ Tendências atualizadas!")
+            st.success("✅ Atualizado!")
             for categoria, produtos in trending.items():
                 if produtos:
                     st.subheader(f"📊 {categoria}")
@@ -235,11 +339,9 @@ with tab2:
                         with col3:
                             st.markdown(f"**{p['tendencia']}**")
                         st.divider()
-        else:
-            st.warning("⚠️ Não consegui buscar. Instale: pip install pytrends")
 
 with tab3:
-    st.subheader("📊 Histórico de Posts")
+    st.subheader("📊 Histórico")
     historico = carregar_historico()
     if historico:
         col1, col2, col3 = st.columns(3)
@@ -257,17 +359,15 @@ with tab3:
                     historico.remove(post)
                     salvar_historico(historico)
                     st.rerun()
-    else:
-        st.warning("Nenhum post no histórico!")
 
 with tab4:
-    st.subheader("📥 Importar Posts")
+    st.subheader("📥 Importar")
     arquivo = st.file_uploader("Escolha um arquivo JSON", type=["json"])
     if arquivo:
         try:
             dados = json.load(arquivo)
             if isinstance(dados, list):
-                st.success(f"✅ {len(dados)} posts encontrados!")
+                st.success(f"✅ {len(dados)} posts!")
                 if st.button("➕ Adicionar", use_container_width=True, type="primary"):
                     hist = carregar_historico()
                     prox_id = max([p['id'] for p in hist], default=0) + 1
@@ -276,12 +376,19 @@ with tab4:
                         prox_id += 1
                     hist.extend(dados)
                     salvar_historico(hist)
-                    st.success(f"✅ {len(dados)} posts importados!")
+                    st.success(f"✅ {len(dados)} importados!")
         except:
-            st.error("Arquivo inválido!")
+            st.error("Inválido!")
 
 with tab5:
-    st.markdown("### 👑 LuhVee Vendas PRO\n✅ Google Trends\n✅ 6 Estratégias\n✅ Histórico\n✅ Multicanal")
+    st.markdown("""
+    ### 👑 LuhVee Vendas PRO
+    ✅ Busca por LINK (Mercado Livre + Shopee)
+    ✅ Google Trends
+    ✅ 6 Estratégias
+    ✅ Histórico
+    ✅ Multicanal
+    """)
 
 st.divider()
 st.caption("👑 LuhVee Vendas PRO | Luhvee Stores ❤️")
