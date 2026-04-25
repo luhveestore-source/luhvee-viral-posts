@@ -25,9 +25,8 @@ st.markdown("Gerador de copies + Radar com Google Trends em TEMPO REAL! 🎯📊
 
 @st.cache_data(ttl=3600)
 def obter_trending_google():
-    """Obtém dados reais do Google Trends com delays aumentados"""
     if not TRENDS_DISPONIVEL:
-        st.warning("⚠️ Google Trends não instalado.")
+        st.warning("⚠️ Google Trends não instalado. Execute: pip install pytrends")
         return None
     
     try:
@@ -126,28 +125,28 @@ def adicionar_ao_historico(produto, preco_promo, preco_original, estrategia, cop
     salvar_historico(historico)
     return novo_post
 
-urgencia_wa = ["🚨 PROMOÇÃO RELÂMPAGO! {produto} com DESCONTO ABSURDO!\n\nDe R${preco_original} por APENAS R${preco_promocional}\n\n⏰ *TÁ ACABANDO!*\n\n{link}\n\nLuhvee Stores ❤️"]
-urgencia_ig = ["🚨 ALERTA DE OFERTA URGENTE! 🚨\n\n{produto} QUEBRANDO PREÇO!\n\nDe R${preco_original} por APENAS R${preco_promocional}! 😱\n\n⏰ Tá saindo rápido!\n\n🛒 {link}\n\n#ofertas #promoção #shopeebrasil"]
-urgencia_fb = ["🚨 PROMOÇÃO FLASH AGORA! 🚨\n\n{produto} COM DESCONTO BRUTAL!\n\nDe R${preco_original} por APENAS R${preco_promocional}!\n\n⏰ ESTOQUE LIMITADO!\n\n{link}\n\nLuhvee Stores ❤️"]
+urgencia_wa = ["🚨 PROMOÇÃO RELÂMPAGO! {produto}\n\nDe R${preco_original} por APENAS R${preco_promocional}\n\n⏰ *TÁ ACABANDO!*\n\n{link}\n\nLuhvee Stores ❤️"]
+urgencia_ig = ["🚨 ALERTA DE OFERTA! {produto}\n\nDe R${preco_original} por R${preco_promocional}!\n\n⏰ Tá saindo rápido!\n\n{link}\n\n#ofertas #promoção"]
+urgencia_fb = ["🚨 PROMOÇÃO FLASH! {produto}\n\nDe R${preco_original} por APENAS R${preco_promocional}!\n\n{link}\n\nLuhvee Stores ❤️"]
 
 fomo_wa = ["😱 ENQUANTO VOCÊ LÊ, ALGUÉM JÁ PEGOU!\n\n{produto} está SUMINDO!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
-fomo_ig = ["👀 VIRA ESSA VOLTA!\n\n{produto} VIRALIZOU! 😱\n\nTodos estão falando!\n\n💰 R${preco_promocional}\n\n🔗 {link}\n\n#viral #trending #luhveestores"]
-fomo_fb = ["😱 OLHA SÓ! {produto} ESTÁ NA BOCA DE TODOS!\n\nTodos estão comprando!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
+fomo_ig = ["👀 {produto} VIRALIZOU!\n\nTodos estão falando!\n\nR${preco_promocional}\n\n{link}\n\n#viral #trending"]
+fomo_fb = ["😱 {produto} ESTÁ NA BOCA DE TODOS!\n\nTodos estão comprando!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
 
-desconto_wa = ["💰 ACHADO DEMAIS! {produto} em PROMOÇÃO!\n\nDe R${preco_original} por APENAS R${preco_promocional}! 🎉\n\n{link}\n\nLuhvee Stores ❤️"]
-desconto_ig = ["💰 ECONOMIZA PRA CARAMBA! {produto}\n\nR${preco_promocional} (ANTES R${preco_original}!) 😱\n\n✨ Qualidade + Preço!\n\n👉 {link}\n\n#desconto #promoção #luhvee"]
-desconto_fb = ["💰 ECONOMIZA DEMAIS! {produto}\n\nDe R${preco_original} por APENAS R${preco_promocional}!\n\n{link}\n\nLuhvee Stores ❤️"]
+desconto_wa = ["💰 ACHADO DEMAIS! {produto}\n\nDe R${preco_original} por APENAS R${preco_promocional}!\n\n{link}\n\nLuhvee Stores ❤️"]
+desconto_ig = ["💰 ECONOMIZA! {produto}\n\nR${preco_promocional} (ANTES R${preco_original}!)\n\n{link}\n\n#desconto"]
+desconto_fb = ["💰 DESCONTO DEMAIS!\n\n{produto}: De R${preco_original} por R${preco_promocional}!\n\n{link}\n\nLuhvee Stores ❤️"]
 
-social_wa = ["⭐ TODO MUNDO AMANDO! {produto} é QUERIDINHO!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
-social_ig = ["⭐ APROVADO POR TODOS! {produto}\n\n💯 Centenas de clientes satisfeitos!\n\n💰 R${preco_promocional}\n\n{link}\n\n#recomendação #luhveestores"]
-social_fb = ["⭐ APROVADO E RECOMENDADO! {produto}\n\n✅ Centenas SATISFEITOS!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
+social_wa = ["⭐ TODO MUNDO AMANDO! {produto}\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
+social_ig = ["⭐ APROVADO POR TODOS! {produto}\n\nR${preco_promocional}\n\n{link}\n\n#recomendado"]
+social_fb = ["⭐ APROVADO! {produto}\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
 
-exclusivo_wa = ["👑 ACESSO EXCLUSIVO! {produto}\n\nR${preco_promocional} só pra você!\n\n{link}\n\nLuhvee Stores ❤️"]
-exclusivo_ig = ["👑 EXCLUSIVO! {produto}\n\n✨ Pra quem tem bom gosto!\n\n💳 R${preco_promocional}\n\n{link}\n\n#exclusive #luhveestores"]
+exclusivo_wa = ["👑 ACESSO EXCLUSIVO! {produto}\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
+exclusivo_ig = ["👑 EXCLUSIVO! {produto}\n\nR${preco_promocional}\n\n{link}\n\n#exclusive"]
 exclusivo_fb = ["👑 SELEÇÃO ESPECIAL! {produto}\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
 
 curiosidade_wa = ["🤔 ADIVINHA O QUÊ? {produto} CHEGOU!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
-curiosidade_ig = ["🤔 ACHEI ALGO QUE VOCÊ VAI AMAR!\n\n{produto} é perfeito!\n\n💰 R${preco_promocional}\n\n{link}\n\n#achado #descoberta"]
+curiosidade_ig = ["🤔 ACHEI ALGO QUE VOCÊ VAI AMAR! {produto}\n\nR${preco_promocional}\n\n{link}\n\n#achado"]
 curiosidade_fb = ["🤔 OLHA O QUE EU ENCONTREI! {produto}\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"]
 
 ESTRATEGIAS = {
@@ -164,12 +163,7 @@ def gerar_copies(produto, preco_promo, preco_original, estrategia, plataforma, l
     random.shuffle(templates)
     copies_geradas = []
     for template in templates:
-        copy = template.format(
-            produto=produto,
-            preco_original=preco_original,
-            preco_promocional=preco_promo,
-            link=link
-        )
+        copy = template.format(produto=produto, preco_original=preco_original, preco_promocional=preco_promo, link=link)
         copies_geradas.append(copy)
     return copies_geradas
 
@@ -183,8 +177,8 @@ with tab1:
         categoria = st.selectbox("Categoria", ["Casa", "Beleza", "Tech", "Pet", "Moda"])
     with col2:
         st.subheader("💰 Preços")
-        preco_promo = st.text_input("Preço Promocional", placeholder="R$ XX,XX")
-        preco_original = st.text_input("Preço Original", placeholder="R$ XX,XX")
+        preco_promo = st.text_input("Preço Promocional", placeholder="89.90")
+        preco_original = st.text_input("Preço Original", placeholder="150.00")
     
     col3, col4 = st.columns(2)
     with col3:
@@ -203,226 +197,91 @@ with tab1:
             copies_fb = gerar_copies(nome_produto, preco_promo, preco_original, estrategia, "facebook", link_selecionado)
             
             novo_post = adicionar_ao_historico(nome_produto, preco_promo, preco_original, estrategia, {
-                "whatsapp": copies_wa,
-                "instagram": copies_ig,
-                "facebook": copies_fb
+                "whatsapp": copies_wa, "instagram": copies_ig, "facebook": copies_fb
             })
             
             st.success(f"✅ Post #{novo_post['id']} salvo!")
             
             tab_w, tab_i, tab_f = st.tabs(["📱 WhatsApp", "📸 Instagram", "👥 Facebook"])
             with tab_w:
-                st.subheader("Estilo para Grupos/Canais")
                 for i, copy in enumerate(copies_wa, 1):
                     st.code(copy, language="text")
-                    st.caption(f"Variação {i}")
                     st.divider()
             with tab_i:
-                st.subheader("Estilo para Feed/Stories")
                 for i, copy in enumerate(copies_ig, 1):
                     st.code(copy, language="text")
-                    st.caption(f"Variação {i}")
                     st.divider()
             with tab_f:
-                st.subheader("Estilo para Grupos/Timeline")
                 for i, copy in enumerate(copies_fb, 1):
                     st.code(copy, language="text")
-                    st.caption(f"Variação {i}")
                     st.divider()
 
 with tab2:
     st.subheader("🌐 Google Trends - Produtos em ALTA Agora")
-    st.info("Dados em TEMPO REAL do Google Trends Brasil! Atualiza a cada 1 hora.")
-    
-    if st.button("🔄 Buscar Tendências (Google Trends)", use_container_width=True, type="primary"):
-        with st.spinner("Buscando tendências no Google Trends... ⏳"):
-            trending_google = obter_trending_google()
-        
-        if trending_google:
+    if st.button("🔄 Buscar Tendências", use_container_width=True, type="primary"):
+        with st.spinner("Buscando tendências..."):
+            trending = obter_trending_google()
+        if trending:
             st.success("✅ Tendências atualizadas!")
-            
-            for categoria, produtos in trending_google.items():
+            for categoria, produtos in trending.items():
                 if produtos:
                     st.subheader(f"📊 {categoria}")
-                    
-                    produtos_ordenados = sorted(produtos, key=lambda x: x['percentual_raw'], reverse=True)
-                    
-                    for idx, produto in enumerate(produtos_ordenados, 1):
-                        col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
-                        
+                    for idx, p in enumerate(sorted(produtos, key=lambda x: x['percentual_raw'], reverse=True), 1):
+                        col1, col2, col3 = st.columns([2, 1, 1])
                         with col1:
-                            st.markdown(f"**{idx}. {produto['nome']}**")
-                        
+                            st.markdown(f"**{idx}. {p['nome']}**")
                         with col2:
-                            st.metric("Interesse", produto['interesse'])
-                        
+                            st.metric("Interesse", p['interesse'])
                         with col3:
-                            st.markdown(f"**{produto['tendencia']}**")
-                        
-                        with col4:
-                            if st.button(f"Usar", key=f"usar_trend_{categoria}_{produto['nome']}"):
-                                st.session_state.nome_produto = produto['nome']
-                                st.session_state.categoria = categoria
-                                st.success("✅ Produto carregado! Vá para 'Gerar Copies'")
-                        
+                            st.markdown(f"**{p['tendencia']}**")
                         st.divider()
-        
         else:
-            st.warning("⚠️ Não consegui buscar Google Trends. Tentando cache local...")
-            trending_cache = carregar_trending_cache()
-            
-            if trending_cache:
-                st.info("📦 Mostrando dados em cache")
-                for categoria, produtos in trending_cache.items():
-                    if produtos:
-                        st.subheader(f"📊 {categoria} (Cache)")
-                        for idx, produto in enumerate(produtos[:3], 1):
-                            st.markdown(f"**{idx}. {produto['nome']}** - Interesse: {produto['interesse']} {produto['tendencia']}")
-            else:
-                st.error("❌ Instale: pip install pytrends")
+            st.warning("⚠️ Não consegui buscar. Instale: pip install pytrends")
 
 with tab3:
     st.subheader("📊 Histórico de Posts")
-    
     historico = carregar_historico()
-    
     if historico:
-        col_stats1, col_stats2, col_stats3 = st.columns(3)
-        with col_stats1:
+        col1, col2, col3 = st.columns(3)
+        with col1:
             st.metric("Total de Posts", len(historico))
-        with col_stats2:
-            total_views = sum(p.get("views", 0) for p in historico)
-            st.metric("Total Views", total_views)
-        with col_stats3:
-            total_vendas = sum(p.get("vendas", 0) for p in historico)
-            st.metric("Total Vendas", total_vendas)
-        
-        st.divider()
+        with col2:
+            st.metric("Total Views", sum(p.get("views", 0) for p in historico))
+        with col3:
+            st.metric("Total Vendas", sum(p.get("vendas", 0) for p in historico))
         
         for post in reversed(historico):
-            with st.expander(f"#{post['id']} - {post['produto']} ({post['data']})"):
-                col_info1, col_info2, col_info3 = st.columns(3)
-                
-                with col_info1:
-                    st.metric("Preço", f"R$ {post['preco_promocional']}")
-                
-                with col_info2:
-                    st.metric("Estratégia", post['estrategia'])
-                
-                with col_info3:
-                    st.metric("Vendas", post.get('vendas', 0))
-                
-                st.markdown("**Copies Salvos:**")
-                tab_h_w, tab_h_i, tab_h_f = st.tabs(["📱 WhatsApp", "📸 Instagram", "👥 Facebook"])
-                
-                with tab_h_w:
-                    for copy in post['copies'].get('whatsapp', []):
-                        st.code(copy, language="text")
-                
-                with tab_h_i:
-                    for copy in post['copies'].get('instagram', []):
-                        st.code(copy, language="text")
-                
-                with tab_h_f:
-                    for copy in post['copies'].get('facebook', []):
-                        st.code(copy, language="text")
-                
-                col_op1, col_op2 = st.columns(2)
-                with col_op1:
-                    if st.button(f"📋 Copiar #{post['id']}", key=f"copiar_{post['id']}"):
-                        st.info("Copies copiadas! Cole onde precisa.")
-                
-                with col_op2:
-                    if st.button(f"🗑️ Deletar #{post['id']}", key=f"deletar_{post['id']}"):
-                        historico.remove(post)
-                        salvar_historico(historico)
-                        st.success("Post deletado!")
-                        st.rerun()
-        
-        st.divider()
-        
-        st.subheader("📥 Exportar Histórico")
-        json_str = json.dumps(historico, ensure_ascii=False, indent=2)
-        st.download_button(
-            label="📥 Baixar Histórico (JSON)",
-            data=json_str,
-            file_name=f"luhvee_posts_{datetime.now().strftime('%d_%m_%Y')}.json",
-            mime="application/json",
-            use_container_width=True
-        )
-    
+            with st.expander(f"#{post['id']} - {post['produto']}"):
+                st.metric("Preço", f"R$ {post['preco_promocional']}")
+                if st.button(f"🗑️ Deletar #{post['id']}", key=f"del_{post['id']}"):
+                    historico.remove(post)
+                    salvar_historico(historico)
+                    st.rerun()
     else:
-        st.warning("Ainda não há posts no histórico!")
+        st.warning("Nenhum post no histórico!")
 
 with tab4:
-    st.subheader("📥 Importar Posts Salvos")
-    
-    arquivo_upload = st.file_uploader("Escolha um arquivo JSON", type=["json"])
-    
-    if arquivo_upload:
+    st.subheader("📥 Importar Posts")
+    arquivo = st.file_uploader("Escolha um arquivo JSON", type=["json"])
+    if arquivo:
         try:
-            dados_importados = json.load(arquivo_upload)
-            
-            if isinstance(dados_importados, list):
-                st.success(f"✅ Arquivo válido! {len(dados_importados)} posts encontrados.")
-                
-                if st.button("➕ Adicionar ao Histórico Atual", use_container_width=True, type="primary"):
-                    historico_atual = carregar_historico()
-                    proximo_id = max([p['id'] for p in historico_atual], default=0) + 1
-                    for post in dados_importados:
-                        post['id'] = proximo_id
-                        proximo_id += 1
-                    
-                    historico_atual.extend(dados_importados)
-                    salvar_historico(historico_atual)
-                    
-                    st.success(f"✅ {len(dados_importados)} posts importados!")
-            else:
-                st.error("Formato de arquivo inválido!")
-        
-        except json.JSONDecodeError:
-            st.error("Arquivo JSON inválido!")
+            dados = json.load(arquivo)
+            if isinstance(dados, list):
+                st.success(f"✅ {len(dados)} posts encontrados!")
+                if st.button("➕ Adicionar", use_container_width=True, type="primary"):
+                    hist = carregar_historico()
+                    prox_id = max([p['id'] for p in hist], default=0) + 1
+                    for p in dados:
+                        p['id'] = prox_id
+                        prox_id += 1
+                    hist.extend(dados)
+                    salvar_historico(hist)
+                    st.success(f"✅ {len(dados)} posts importados!")
+        except:
+            st.error("Arquivo inválido!")
 
 with tab5:
-    st.subheader("ℹ️ Sobre LuhVee Vendas PRO")
-    
-    st.markdown("""
-    ### 🎯 Versão com Google Trends
-    
-    Esta versão usa **dados REAIS** do Google Trends Brasil para descobrir:
-    - ✅ O que tá viralizando AGORA
-    - ✅ % de crescimento de busca
-    - ✅ Tendências por categoria
-    - ✅ Produtos em alta demanda
-    
-    ### 🔧 Instalação
-    ```bash
-    pip install pytrends
-    ```
-    
-    ### 📊 Como Funciona
-    1. Busca **7 últimos dias** do Google
-    2. Calcula **% de crescimento**
-    3. Mostra **interesse atual**
-    4. **1-click** para usar no copy
-    
-    ### 💡 Dicas
-    - Refresh a cada 1 hora (cache)
-    - Produtos com +50% = SUPER trending
-    - Use produtos trending com Urgência/FOMO
-    - Sempre acompanhe as tendências!
-    
-    ### 🎁 Recursos
-    - ✅ 6 estratégias de venda
-    - ✅ Google Trends integrado
-    - ✅ Multicanal (3 plataformas)
-    - ✅ Histórico completo
-    - ✅ Backup em JSON
-    - ✅ Todos seus links
-    
-    ### 📞 Suporte
-    Leia a documentação completa em GitHub!
-    """)
+    st.markdown("### 👑 LuhVee Vendas PRO\n✅ Google Trends\n✅ 6 Estratégias\n✅ Histórico\n✅ Multicanal")
 
 st.divider()
-st.caption("👑 LuhVee Vendas PRO com Google Trends | Luhvee Stores ❤️")
+st.caption("👑 LuhVee Vendas PRO | Luhvee Stores ❤️")
