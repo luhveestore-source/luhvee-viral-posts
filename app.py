@@ -1,130 +1,114 @@
 import streamlit as st
 import random
-import json
-import os
+import requests
+from bs4 import BeautifulSoup
 import re
-from datetime import datetime
 
 # --- CONFIGURAÇÃO DE ELITE ---
-st.set_page_config(page_title="LuhVee AI Vendas ULTRA", layout="wide", page_icon="🚀")
+st.set_page_config(page_title="LuhVee AI ULTRA PRO", layout="wide", page_icon="🚀")
 
-# Estilização Customizada para Conversão
+# Estilização
 st.markdown("""
     <style>
-    .main { background-color: #0e1117; }
-    .stButton>button { width: 100%; border-radius: 10px; height: 3em; background-color: #ff4b4b; color: white; font-weight: bold; }
-    .copy-card { border: 1px solid #333; padding: 20px; border-radius: 10px; margin-bottom: 10px; background-color: #161b22; }
+    .stButton>button { width: 100%; border-radius: 10px; background-color: #ff4b4b; color: white; }
+    .copy-card { border: 1px solid #333; padding: 15px; border-radius: 10px; background-color: #161b22; color: #fff; margin-bottom: 10px;}
     </style>
     """, unsafe_allow_html=True)
 
-# --- BANCO DE DADOS DINÂMICO (MATRIZ DE PERSUASÃO) ---
-# Aqui a "IA" cria frases infinitas combinando partes diferentes
+# --- MATRIZ DE PERSUASÃO INFINITA ---
 COMPONENTES = {
-    "aberturas": [
-        "🚨 ALERTA DE OPORTUNIDADE! 🚨", "😱 VOCÊ NÃO VAI ACREDITAR NO QUE EU ACHEI!", 
-        "🔥 PARE TUDO O QUE ESTÁ FAZENDO!", "💎 ACHADINHO DE MILHÕES!", 
-        "🎁 PRESENTE PARA VOCÊ!", "👀 OLHA O QUE ACABOU DE BAIXAR!",
-        "✨ O QUERIDINHO DO TIKTOK CHEGOU!", "🏆 TOP 1 DE VENDAS VOLTOU!"
-    ],
-    "corpo": [
-        "O {produto} que você tanto queria está com um preço absurdo.",
-        "Sério, a qualidade desse {produto} é de outro nível e o preço nem se fala.",
-        "Quem conhece sabe: o {produto} é indispensável e hoje está quase de graça.",
-        "Encontrei o {produto} com o maior desconto da história da loja.",
-        "Desejo de consumo de muita gente, o {produto} finalmente entrou em oferta."
-    ],
-    "gatilhos": [
-        "Mas atenção: o estoque é limitado e já está no fim! ⏳",
-        "É sério, restam pouquíssimas unidades com esse valor. 🏃‍♂️",
-        "O último lote acabou em menos de 15 minutos, não bobeia!",
-        "Promoção válida apenas enquanto durarem as unidades reservadas. 🛑",
-        "De R${preco_orig} por APENAS R${preco_promo}. Economia real! 💸"
-    ],
-    "ctas": [
-        "👉 Garanta o seu antes que o preço suba: {link}",
-        "🛍️ Clique aqui e pegue o seu: {link}",
-        "👇 Não perde tempo, o link é esse: {link}",
-        "🚀 Voe para o site e aproveite: {link}",
-        "🔗 Link seguro aqui: {link}"
-    ]
+    "aberturas": ["🚨 OFERTA RELÂMPAGO! 🚨", "😱 OLHA O QUE EU ACHEI!", "🔥 PREÇO BAIXOU AGORA!", "💎 ACHADINHO EXCLUSIVO!", "✨ TREND DO MOMENTO!"],
+    "corpo": ["O {produto} está com um desconto bizarro hoje.", "Sério, esse {produto} é o que faltava no seu dia a dia.", "Encontrei o {produto} no menor preço dos últimos 30 dias!"],
+    "gatilhos": ["Restam poucas unidades nesse valor! ⏳", "O estoque está acabando rápido demais! 🏃‍♂️", "De R${preco_orig} por APENAS R${preco_promo}! 💸"],
+    "ctas": ["👉 Garanta o seu aqui: {link}", "🛍️ Link direto para o desconto: {link}", "🔗 Aproveite antes que suba: {link}"]
 }
 
-LINKS_BASE = {
-    "Shopee": "https://shopee.com.br/product/luhveestore/",
-    "Mercado Livre": "https://mercadolivre.com.br/p/",
-    "Hub": "https://links-luhveestore.streamlit.app/"
-}
+# --- FUNÇÃO REAL DE CAPTURA (WEB SCRAPING) ---
+def extrair_dados_url(url):
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+        response = requests.get(url, headers=headers, timeout=10)
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-# --- FUNÇÕES LÓGICAS ---
+        titulo = ""
+        preco = 0.0
 
-def buscar_produto_por_codigo(codigo):
-    """Simula a busca de produto via código ou link"""
-    # Em uma versão Pro, aqui entraria um Selenium ou API oficial
-    if "shope" in codigo.lower() or len(codigo) > 10:
-        return f"Produto Identificado (Ref: {codigo[:8]})", 150.00
-    return "Produto Desconhecido", 0.0
+        # Lógica para Mercado Livre
+        if "mercadolivre" in url or "meli.la" in url:
+            # Busca o título
+            titulo_tag = soup.find("h1", {"class": "ui-pdp-title"})
+            titulo = titulo_tag.get_text() if titulo_tag else "Produto Mercado Livre"
+            
+            # Busca o preço
+            preco_tag = soup.find("meta", {"itemprop": "price"})
+            if preco_tag:
+                preco = float(preco_tag['content'])
+            else:
+                # Tenta outra forma de achar o preço no ML
+                preco_span = soup.find("span", {"class": "andes-money-amount__fraction"})
+                if preco_span:
+                    preco = float(preco_span.get_text().replace('.', '').replace(',', '.'))
 
-def gerar_copy_insana(produto, preco_orig, preco_promo, link):
-    """Gera uma copy única combinando elementos aleatórios"""
-    abertura = random.choice(COMPONENTES["aberturas"])
-    corpo = random.choice(COMPONENTES["corpo"]).format(produto=produto.upper())
-    gatilho = random.choice(COMPONENTES["gatilhos"]).format(preco_orig=preco_orig, preco_promo=preco_promo)
-    cta = random.choice(COMPONENTES["ctas"]).format(link=link)
-    
-    return f"{abertura}\n\n{corpo}\n\n{gatilho}\n\n{cta}\n\n👑 LuhVee Stores"
+        # Lógica para Shopee (Shopee é mais difícil pois usa JavaScript, mas tentamos o básico)
+        elif "shopee" in url:
+            titulo = "Produto da Shopee (Confira no Link)"
+            # Shopee geralmente bloqueia scrapers simples, o ideal seria API oficial
+            # Mas vamos deixar o campo aberto para o usuário ajustar se falhar
+            
+        return titulo, preco
+    except Exception as e:
+        return None, None
 
 # --- INTERFACE ---
-
 st.title("👑 LuhVee AI: Sales Master Pro")
-st.markdown("### O Gerador de Vendas Automático mais Poderoso do Mercado")
 
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/1162/1162456.png", width=100)
-    st.header("🛒 Captura de Produto")
-    metodo = st.radio("Como quer adicionar?", ["Link/Código", "Manual"])
+    st.header("🛒 Captura Inteligente")
+    url_input = st.text_input("Cole o Link (Mercado Livre, Shopee, etc)")
     
-    if metodo == "Link/Código":
-        codigo_input = st.text_input("Cole o Link ou Código do Produto")
-        if st.button("🔍 Puxar Dados"):
-            nome_prod, preco_sugerido = buscar_produto_por_codigo(codigo_input)
-            st.session_state['nome_prod'] = nome_prod
-            st.session_state['preco_orig'] = preco_sugerido
-            st.success("Dados capturados!")
-    
+    if st.button("🔍 EXTRAIR DADOS AGORA"):
+        if url_input:
+            with st.spinner("Acessando plataforma..."):
+                nome_extraido, preco_extraido = extrair_dados_url(url_input)
+                if nome_extraido:
+                    st.session_state['nome_prod'] = nome_extraido
+                    st.session_state['preco_orig'] = preco_extraido
+                    st.success("Dados capturados com sucesso!")
+                else:
+                    st.error("Não consegui ler o site automaticamente. Digite abaixo:")
+        else:
+            st.warning("Cole um link válido!")
+
     st.divider()
-    nome_p = st.text_input("Nome do Produto", value=st.session_state.get('nome_prod', ""))
-    p_orig = st.number_input("Preço Original (R$)", value=st.session_state.get('preco_orig', 0.0))
-    p_promo = st.number_input("Preço Promo (R$)", value=p_orig * 0.7 if p_orig > 0 else 0.0)
-    plataforma = st.selectbox("Plataforma", list(LINKS_BASE.keys()))
+    # Campos que recebem os dados capturados
+    nome_final = st.text_input("Nome do Produto", value=st.session_state.get('nome_prod', ""))
+    p_orig = st.number_input("Preço Original (R$)", value=float(st.session_state.get('preco_orig', 0.0)))
+    p_promo = st.number_input("Preço com Desconto (R$)", value=p_orig * 0.8)
+    link_venda = st.text_input("Seu Link de Afiliado", value=url_input)
 
-st.subheader("💎 Suas Mensagens de Alta Conversão")
-col1, col2 = st.columns([1, 1])
+# --- GERAÇÃO DE COPIES ---
+if st.button("🔥 GERAR VARIAÇÕES INFINITAS PARA VENDER"):
+    if nome_final and link_venda:
+        cols = st.columns(2)
+        for i in range(4): # Gera 4 variações
+            canal = "WhatsApp" if i < 2 else "Instagram"
+            with cols[0 if i < 2 else 1]:
+                abertura = random.choice(COMPONENTES["aberturas"])
+                corpo = random.choice(COMPONENTES["corpo"]).format(produto=nome_final)
+                gatilho = random.choice(COMPONENTES["gatilhos"]).format(preco_orig=p_orig, preco_promo=p_promo)
+                cta = random.choice(COMPONENTES["ctas"]).format(link=link_venda)
+                
+                texto_final = f"{abertura}\n\n{corpo}\n\n{gatilho}\n\n{cta}"
+                st.markdown(f"**Variação {i+1} ({canal})**")
+                st.code(texto_final, language="text")
+    else:
+        st.error("Preencha o nome do produto e o link!")
 
-if st.button("🔥 GERAR VARIAÇÕES INFINITAS"):
-    link_final = LINKS_BASE[plataforma]
-    
-    with col1:
-        st.markdown("#### 📱 WhatsApp / Grupos")
-        for i in range(3):
-            copy = gerar_copy_insana(nome_p, p_orig, p_promo, link_final)
-            st.markdown(f"<div class='copy-card'>{copy}</div>", unsafe_allow_html=True)
-            st.button(f"Copiar Variação {i+1}", key=f"w_{i}")
-
-    with col2:
-        st.markdown("#### 📸 Instagram / Facebook")
-        for i in range(3):
-            copy = gerar_copy_insana(nome_p, p_orig, p_promo, link_final)
-            # Adiciona hashtags no final para redes sociais
-            copy += "\n\n#achadinhos #oferta #shopee #promocao #luhvee"
-            st.markdown(f"<div class='copy-card'>{copy}</div>", unsafe_allow_html=True)
-            st.button(f"Copiar Variação {i+1}", key=f"s_{i}")
-
-# --- DASHBOARD DE VENDAS ---
+# Dashboard fake para valorizar o software
 st.divider()
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("Cliques Estimados", f"{random.randint(100, 500)}")
-c2.metric("Conversão", "4.8%")
-c3.metric("Posts Gerados", "1.2k")
-c4.metric("ROI", "12x")
-
-st.info("💡 Dica: Varie as mensagens entre os grupos para evitar o bloqueio do WhatsApp (Shadowban).")
+c1, c2, c3 = st.columns(3)
+c1.metric("Poder de Conversão", "Alta", "98%")
+c2.metric("Variações Disponíveis", "Infinitas")
+c3.metric("Status da IA", "Online", "Turbo")
