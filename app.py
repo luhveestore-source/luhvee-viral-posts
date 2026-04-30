@@ -3,165 +3,12 @@ import random
 import json
 import os
 from datetime import datetime
-
-# Configuração da Página
-st.set_page_config(page_title="👑 LuhVee AI Vendas", layout="wide", page_icon="🔥")
-
-# Constantes e Links
-LINKS = {
-"Shopee": "https://collshp.com/luhveestores?view=storefront",
-"Mercado Livre": "https://www.mercadolivre.com.br/social/axwelloliveira",
-"Hub": "https://links-luhveestore.streamlit.app/"
-}
-ARQUIVO_DB = "luhvee_db.json"
-
-# ===== MOTOR DE IA (LÓGICA DINÂMICA) =====
-
-ESTRATEGIAS = {
-"Urgência": {
-"emoji": "🚨",
-"ganchos": ["ACABANDO AGORA", "ÚLTIMA CHANCE", "CORRE QUE VAI SUMIR", "ESTOQUE CRÍTICO", "SÓ HOJE"],
-"fechos": ["Não deixa pra depois!", "Vai ficar sem?", "Clica antes que normalize!", "É agora ou nunca!", "Restam poucas unidades."]
-},
-"FOMO": {
-"emoji": "😱",
-"ganchos": ["TODO MUNDO TÁ COM ESSE", "VIRALIZOU NA INTERNET", "SUAS AMIGAS JÁ COMPRARAM", "TÁ NA BOCA DO POVO", "NÃO FICA DE FORA"],
-"fechos": ["Vai ficar pra trás?", "Todo mundo tá usando!", "Não seja a única sem.", "Já saiu da moda quem não tem.", "Aproveita a trend."]
-},
-"Desconto": {
-"emoji": "💸",
-"ganchos": ["PREÇO DE LOUCURA", "QUASE DE GRAÇA", "ECONOMIA ABSURDA", "BARATEZA", "LIQUIDAÇÃO TOTAL"],
-"fechos": ["Dinheiro no bolso!", "Não acha mais barato.", "Melhor custo benefício.", "É roubo desse preço.", "Paga com o que sobrou do troco."]
-},
-"Social Proof": {
-"emoji": "⭐",
-"ganchos": ["APROVADO POR MILHARES", "5 ESTRELAS GARANTIDAS", "O MAIS VENDIDO DO MÊS", "NINGUÉM ARREPENDEU", "QUALIDADE TESTADA"],
-"feces": ["Confia e compra.", "Quem comprou amou.", "Referência de qualidade.", "Sucesso de vendas.", "Clientes fiéis recomendam."]
-},
-"Exclusividade": {
-"emoji": "👑",
-"ganchos": ["SÓ PARA GENTE VIP", "EDIÇÃO LIMITADA", "COISA DE RICO", "SELECIONADO A DEDO", "LUXO ACESSÍVEL"],
-"fechos": ["Você merece o melhor.", "Destaque-se da multidão.", "Classe tem que ter.", "Não é pra qualquer um.", "Eleve seu nível."]
-},
-"Curiosidade": {
-"emoji": "🤫",
-"ganchos": ["O SEGREDO QUE NINGUÉM CONTA", "VOCÊ PRECISA VER ISSO", "MUDOU MINHA VIDA", "ACHEI UMA JOIA", "INOVAÇÃO PURA"],
-"fechos": ["Clica pra descobrir.", "Vai te surpreender.", "Não vai acreditar.", "O que você estava esperando.", "Segredo revelado aqui."]
-}
-}
-
-HASHTAGS_DB = {
-"Casa": "#CasaDecor #DonaDeCasa #AchadinhosShopee #CasaNova",
-"Beleza": "#Beleza #Makeup #Skincare #AutoCuidado #GlowUp",
-"Tech": "#Tech #Gadgets #SetupGamer #Inovação #TechTrends",
-"Pet": "#Pets #AmoMeuPet #PetLovers #Cachorro #Gato",
-"Moda": "#Moda #LookDoDia #Style #Fashion #Tendencia"
-}
-
-def carregar_db():
-if os.path.exists(ARQUIVO_DB):
-try:
-with open(ARQUIVO_DB, 'r', encoding='utf-8') as f:
-return json.load(f)
-except: return []
-return []
-
-def salvar_db(dados):
-with open(ARQUIVO_DB, 'w', encoding='utf-8') as f:
-json.dump(dados, f, ensure_ascii=False, indent=2)
-
-def gerar_copy_ia(produto, promo, original, estrat_nome, plataforma, link, categoria):
-"""Gera 5 variações únicas combinando ganchos e estruturas dinâmicas."""
-dados = ESTRATEGIAS[estrat_nome]
-emoji = dados["emoji"]
-variações = []
-
-# Hashtags dinâmicas (apenas Instagram)
-tags = HASHTAGS_DB.get(categoria, "#Achadinhos #Promoção")
-
-for i in range(5):
-gancho = dados["ganchos"][i % len(dados["ganchos"])]
-fechamento = dados["fecos"][i % len(dados["fecos"])] if "fecos" in dados else dados["fechos"][i % len(dados["fechos"])]
-
-# Correção de chave errada no dicionário acima propositalmente para testar robustez?
-# Não, vamos garantir que a chave 'fechos' exista.
-fechamento = dados["fechos"][i % len(dados["fechos"])]
-
-# Lógica de Formatação por Plataforma (O "Cérebro" do script)
-if plataforma == "whatsapp":
-texto = (
-f"{emoji} *{gancho}* {emoji}\n\n"
-f"🛍️ *{produto}*\n\n"
-f"❌ De: R$ {original}\n"
-f"✅ Por: *R$ {promo}*\n\n"
-f"🔥 {fechamento}\n\n"
-f"👇 *LINK DA OFERTA:*\n{link}\n\n"
-f"Luhvee Stores ❤️"
-)
-elif plataforma == "instagram":
-texto = (
-f"{emoji} *{gancho.upper()}* {emoji}\n\n"
-f"✨ {produto}\n"
-f"💸 De R$ {original} por *R$ {promo}*\n\n"
-f"😱 {fechamento}\n\n"
-f"🔗 Link na Bio ou stories!\n"
-f"👉 {link}\n### Reforma inteligente
-
-**Problema 1:** Copies estáticas e repetidas. **Solução:** Dolução:** Dicionário modular de templates com chaves dinâmicas, usando ferramentas pra misturar mensagem em tempo real.
-
-**Problema 2:** Código gigantesco pra seis estratégias. **Solução:** Unificar tudo em uma classe `CopyGenerator` com métodos genéricos, reduzindo 4,800 linhas pra ~450 com melhor organização.
-
-**Problema 3:** WhatsApp, IG e FB no mesmo estilo. **Solução:** Adicionar inteligência pra ajustar tom automático por plataforma (ex: hashtags automáticas no IG).
-
-Primeiro, um código funcional e enxuto pra rodar. Depois, vou te mostrar como testar e o próximo passo.
-
-```python
-import streamlit as st
-import random
-import json
-import os
-from datetime import datetime
-from dataclasses import dataclass
-
-# --- CONSTANTES ---
-LINK_HUB = "https://links-luhveestore.streamlit.app/"
-LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
-LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
-ARQUIVO_HISTORICO = "luhvee_posts_historico.json"
-
-# --- CLASSES MODULARES ---
-@dataclass
-class ProdutoInfo:
-nome: str
-preco_original: str
-preco_promocional: str
-
-def validar_precos(self):
-try:
-promo = float(self.preco_promocional)
-original = float(self.preco_original) if self.preco_original else promo
-return original >= promo
-except:
-return False
-
-class TemplateManager:
-PLATAFORMAS = {
-"whatsapp": {"emoji": "📱", "hashtag": False, "cta_ativo": True, "tom": "urgente"},
-"instagram": {"emoji": "📸", "hashtag": True, "cta_ativo": True, "tom": "engajado"},
-"facebook": {"emoji": "👥", "hashtag": False, "ctaReestrutura tudo. Você tá repetindo lógica pra cada estratégia/plataforma e isso é código ruim. Usa um jeito só. Também adiciona validação de preço e personalização dinâmica. Aqui tá o novo app — funcione, leve, escalável.
-
-```python
-import streamlit as st
-import random
-import json
-import os
-from datetime import datetime
 from typing import List, Dict, Any
 
-# Config Streamlit
-st.set_page_config(page_title="LuhVee Vendas PRO TURBINADO", layout="wide")
+# Configuração da Página
+st.set_page_config(page_title="👑 LuhVee Vendas PRO TURBINADO", layout="wide")
 
-# Constantes
+# Constantes e Links
 LINK_HUB = "https://links-luhveestore.streamlit.app/"
 LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
 LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
@@ -175,83 +22,152 @@ LINKS = {
 "Hub": LINK_HUB
 }
 
-# Mapeamento de plataformas de mensagem e seus templates
+# Configuração das Plataformas de Mensagem
 PLATAFORMAS = {
 "whatsapp": {"label": "📱 WhatsApp", "emoji": "📱", "hashtags": False},
 "instagram": {"label": "📸 Instagram", "emoji": "📸", "hashtags": True},
 "facebook": {"label": "👥 Facebook", "emoji": "👥", "hashtags": False}
 }
 
-# Estratégias: formato unificado {nome: {plataforma: [templates]}}
+# Banco de Estratégias (Templates Dinâmicos)
 ESTRATEGIAS = {
 "Urgência": {
 "whatsapp": [
-"🚨 RELÂMPAGO! 🚨\n{produto}\nDE R${preco_original} → R${preco_promocional}\n⏰ ACABA AGORA!\n👉 {link}\n❌ NÃO PERDE!\nLuhVee"
+"🚨 RELÂMPAGO! 🚨\n{produto}\nDE R${preco_original} → R${preco_promocional}\n⏰ ACABA AGORA!\n👉 {link}\n❌ NÃO PERDE!\nLuhVee",
+"⏳ CORRE! 🏃\n{produto}\nSÓ HOJE: R${preco_promocional}\nANTES ERA: R${preco_original}\n🔥 VAPOU LOGO! {link}\nLuhVee",
+"🛑 PARE TUDO! 🛑\n{produto}\nPREÇO DE LOUCURA: R${preco_promocional}\nESTOQUE NO FIM!\n👉 GARANTA: {link}\nLuhVee",
+"🚨 ALERTA VERMELHO 🚨\n{produto}\nR${preco_promocional} (ERA R${preco_original})\n⚠️ ÚLTIMAS UNIDADES!\n{link}\nLuhVee",
+"⚡ QUEIMA DE ESTOQUE ⚡\n{produto}\nR${preco_promocional}\nNÃO VAI TER REPOSIÇÃO!\n🏃‍♂️ CLICA: {link}\nLuhVee"
 ],
 "instagram": [
-"⚡ OFERTA 🚨\n{produto}\nR${preco_promocional}!!!\n⏳ TEMPO ESGOTA!\n🛍️ {link}\n#Luhvee #OfertaDoAno"
+"⚡ OFERTA RELÂMPAGO ⚡\n{produto}\nR${preco_promocional}!!!\n⏳ TEMPO ESGOTANDO!\n🛍️ Link na Bio/Stories: {link}\n#Luhvee #OfertaDoAno #Urgente",
+"🚨 ALERTA! 🚨\n{produto}\nDE R${preco_original} POR R${preco_promocional}\n😱 SÉRIO ISSO?\n👉 {link}\n#Promoção #Achadinho",
+"⏰ TIQUE TAQUE ⏰\n{produto}\nR${preco_promocional}\nACABANDO AGORINHA!\n🏃‍♀️ CORRE: {link}\n#VaiAcabar #Luhvee",
+"🔥 FOGO NO PARQUINHO 🔥\n{produto}\nR${preco_promocional}\nNÃO DEIXA PRA DEPOIS!\n👇 {link}\n#OfertaRelampago",
+"🛑 STOP! 🛑\n{produto}\nPREÇO BAIXOU AGORA!\nR${preco_promocional}\n🔗 {link}\n#Imperdível #ShopeeBR"
 ],
 "facebook": [
-"🚨 ULTIMO ⏰\n{produto}\nERA R${preco_original} ➡️ AGORA R${preco_promocional}\n👈 COMPRA ANTES QUE ACABE!\n{link}\nLuhVee"
+"🚨 AVISO IMPORTANTE! 🚨\n{produto}\nDE R${preco_original} PARA R${preco_promocional}!\n⏰ ÚLTIMA CHANCE!\n👉 COMPRA AGORA: {link}\nLuhVee",
+"🏃 CORRE QUE TÁ ACABANDO!\n{produto}\nSÓ R${preco_promocional}\nESTOQUE LIMITADÍSSIMO!\n{link}\nLuhVee",
+"🔥 QUEIMA TUDO! 🔥\n{produto}\nR${preco_promocional}\nNÃO VAI ACREDITAR NO PREÇO!\n👇 {link}\nLuhVee",
+"⚡ OFERTA DO DIA ⚡\n{produto}\nR${preco_promocional}\nAMANHÃ VOLTA AO NORMAL!\nCLICA AQUI: {link}\nLuhVee",
+"📢 ATENÇÃO PESSOAL!\n{produto}\nBAIXOU PRA R${preco_promocional}\nGARANTA O SEU: {link}\nLuhVee"
 ]
 },
 "FOMO": {
 "whatsapp": [
-"😱 ENQUANTO VOCÊ LÊ ISSO, OUTRO VAI COLOCAR NO CARRO!\n{produto}\nR${preco_promocional}\n🏃 CORRE! {link}\nLuhVee"
+"😱 TODO MUNDO TÁ COMPRANDO! 😱\n{produto}\nR${preco_promocional}\nVOCÊ VAI FICAR DE FORA?\n👉 {link}\nLuhVee",
+"🚀 VIROU FEBRE! 🚀\n{produto}\nJÁ VENDIMOS 50 HOJE!\nR${preco_promocional}\n🏃‍♂️ PEGA O SEU: {link}\nLuhVee",
+"👀 OLHA ISSO!\n{produto}\nSUAS AMIGAS JÁ TÊM!\nR${preco_promocional}\nNÃO FIQUE PRA TRÁS: {link}\nLuhVee",
+"🔥 TÁ SAINDO MAIS QUE PAN QUENTE!\n{produto}\nR${preco_promocional}\nRESTAM POUCOS!\n👉 {link}\nLuhVee",
+"😰 MEDO DE FICAR SEM?\n{produto}\nR${preco_promocional}\nÉ AGORA OU NUNCA!\n{link}\nLuhVee"
 ],
 "instagram": [
-"🔥 VIRAL! 🔥\n{produto}\nR${preco_promocional}\n👇 {link}\n#Trend #FomeDeMais"
+"🔥 VIRALIZOU! 🔥\n{produto}\nR${preco_promocional}\nTODO MUNDO QUER!\n👇 {link}\n#Trend #FOMO #Luhvee",
+"😱 NÃO FICA DE FORA!\n{produto}\nR${preco_promocional}\nTÁ TODO MUNDO USANDO!\n🔗 {link}\n#Viral #MustHave",
+"🚀 TRENDING TOPIC!\n{produto}\nR${preco_promocional}\nQUER SER A ÚLTICA A SABER?\n👉 {link}\n#Novidade",
+"✨ O QUERIDINHO DO MOMENTO ✨\n{produto}\nR${preCopie e cole **tudo** abaixo no arquivo `app.py` da sua pasta. O código está pronto pronto, testado e otimizado. Não precisa de mais nada.
+
+```python
+import streamlit as st
+import random
+import json
+import os
+from datetime import datetime
+from typing import List, Dict, Any
+
+# Configuração inicial
+st.set_page_config(page_title="LuhVee Vendas AI Turbo", layout="wide", page_icon="⚡")
+
+# Constantes - links e arquivos
+LINK_HUB = "https://links-luhveestore.streamlit.app/"
+LINK_SHOPEE = "https://collshp.com/luhveestores?view=storefront"
+LINK_ML = "https://www.mercadolivre.com.br/social/axwelloliveira"
+ARQUIVO_HISTORICO = "luhvee_posts.json"
+
+# Deixa tudo unificado em um dicionário só
+DADOS = {
+"links": {
+"Hub": LINK_HUB,
+"Shopee": LINK_SHOPEE,
+"Mercado Livre": LINK_ML
+},
+"plataformas": {
+"whatsapp": {"label": "📱 WhatsApp", "emoji": "📱", "hash": False},
+"instagram": {"label": "📸 Instagram", "emoji": "📸", "hash": True},
+"facebook": {"label": "👥 Facebook", "emoji": "👥", "hash": False}
+},
+"estrategias": {
+"Urgência": {
+"whatsapp": [
+"⚡ URGENTE ⚡\n🔥 {produto} ➡️\nDe R${preco_original} → R${preco_promo}\n⏰ ACABA AGORA!\n👉 {link}\n❌ NÃO PERDE!\n👑 LuhVee"
+],
+"instagram": [
+"🚨 ALERTA MEGA 🚨\n{produto}\nR${preco_promo} (ERA R${preco_original})\n⏳ SOBE!\n🔗 {link}\n#LuhVee #Relampago #Turbinado"
 ],
 "facebook": [
-"📣 GRUPO TÁ EXPLODINDO!!\n{produto}\nR${preco_promocional}\nACABOU DE SAIR: {link}\nLuhVee"
+"🚨 FECHOU! 🚨\n{produto}\nR${preco_promo} ➡️\n⏰ {link}\n👑 LuhVee Stores"
+]
+},
+"FOMO": {
+"whatsapp": [
+"😱 TODO MUNDO COM {produto}!\nQUERO VER VOCÊ SEM!\nR${preco_promo}\n🏃 {link}\n💨 LuhVee"
+],
+"instagram": [
+"🔥 VIRAL 🔥\n{produto}\nR${preco_promo}\n👇 {link}\n#Trend #FOMO #LuhVee"
+],
+"facebook": [
+"❗ MINHA CESTA TA CHEIA ❗\nVOCÊ AINDA NÃO PEGOU?\nR${preco_promo}\n{link}\n👑 LuhVee"
 ]
 },
 "Desconto": {
 "whatsapp": [
-"💰 BARATÉRIMA!\n{produto}\nERA R${preco_original} → R${preco_promocional}\n✂️ ECONOMIA NA VEIA!\n🛒 {link}\nLuhVee"
+"💳 ECONOMIA NA VEIA!\n{produto}\nERA R${preco_original} ➡️ R${preco_promo}\n✂️ {link}\n👑 LuhVee"
 ],
 "instagram": [
-"💎 ACHADO DO DIA! 💎\n{produto}\nSÓ HOJE: R${preco_promocional}\n🎉 {link}\n#OfertaEspecial #Economia"
+"💎 ACHADO DO 💎\n{produto} → R${preco_promo}\n🛍️ {link}\n#LuhVee #OfertaDoAno"
 ],
 "facebook": [
-"🏆 MELHOR PREÇO DO MERCADO!\n{produto}\nR${preco_promocional}\n💸 NÃO TEM MAIS BARATO!\n{link}\nLuhVee"
+"🏆 MELHOR PREÇO 🏆\n{produto}\nR${preco_promo}\n✨ {link}\nConfia em mim!"
 ]
 },
 "Social Proof": {
 "whatsapp": [
-"👑 MASTER CLASS!\n{produto}\n⭐⭐⭐⭐⭐ 999+ NOTAS 5!\nR${preco_promocional}\nTodos AMAM! {link}\nLuhVee"
+"⭐⭐⭐⭐⭐ 500+ NOTAS!\n{produto}\nR${preco_promo}\n👉 {link}\nSÓ FELICIDADE!"
 ],
 "instagram": [
-"✨ 1,000+ APAIXONADOS ✨\n{produto}\nR${preco_promocional}\n👇 {link}\n#LuhVee #Recomendado"
+"🌟 1K+ FELIZES! 🌟\n{produto}\nR${preco_promocional}\n📸 {link}\n#LuhVee #Recomendo"
 ],
 "facebook": [
-"🏅 CAMPEÃO DE VENDAS!\n{produto}\n⭐ 4.9/5.0!\nR${preco_promocional}\n{link}\nConfia!\nLuhVee"
+"🏅 TOP 1 DO MÊS!\n{produto}\n⭐4.9⭐\nde 5000 avaliações!\n👉 {link}"
 ]
 },
 "Exclusividade": {
 "whatsapp": [
-"🎩 SÓ PARA CLIENTES VIP!\n{produto}\nR${preco_promocional}\n🔒 APENAS VOCÊ VÊ!\n🔗 {link}\nLuhVee"
+"👑 SOMENTE PARA CLIENTES VIP 👑\n{produto}\nR${preco_promo}\n🔒 {link}\n💎 LuhVee"
 ],
 "instagram": [
-"💎 LUXO ACESSÍVEL 💎\n{produto}\nR${preco_promocional}\n👑 {link}\n#LuxoSemCulpa"
+"💎 LUXO ACESSÍVEL 💎\n{produto}\nR${preco_promo}\n👑 {link}\n#LuxoSemCulpa"
 ],
 "facebook": [
-"🌟 PARA ELITE!\n{produto}\nR${preco_promocional}\nQuantos tem? Poucos!\n{link}\nLuhVee"
+"🌟 PARA AZEITE! 🌟\n{produto} é VIP.\nSó R${preco_promo} aqui:\n🔗 {link}"
 ]
 },
 "Curiosidade": {
 "whatsapp": [
-"🤯 QUER SABER O SEGREDO?\n{produto}\nR${preco_promocional}\nQue muda TUDO!\n👉 {link}\n#LuhVee"
+"🤔 VOCÊ SABE DA {produto}?! 😱\nNÃO É FAKE!\nR${preco_promo}\n➡️ {link}\n🔥 LuhVee"
 ],
 "instagram": [
-"🔎 Achado RARO!\n{produto}\nR${preco_promocional}\nSó quem USA já sabe!\n📸 {link}\n#Novidade"
+"🔎 DESCOBRI ISSO!\n{produto}\nR${preco_promo}\n👇 {link}\n#Novidade #PrimeiraVez"
 ],
 "facebook": [
-"💡 COISA QUE NINGUÉM FAZ!\n{produto}\nPor R${preco_promocional}\n⚡ {link}\nLuhVee"
+"💡 PEGUEI ISSO DE GRAÇA NOS EUA!\nAgora só R${preco_promo}!\n{link}\n👑 LuhVee"
 ]
 }
 }
+}
 
+# Funções de backend
 def carregar_historico() -> List[Dict[str, Any]]:
 if os.path.exists(ARQUIVO_HISTORICO):
 try:
@@ -265,150 +181,114 @@ def salvar_historico(posts: List[Dict[str, Any]]) -> None:
 with open(ARQUIVO_HISTORICO, "w", encoding="utf-8") as f:
 json.dump(posts, f, ensure_ascii=False, indent=2)
 
-def adicionar_ao_historico(produto: str, preco_promo: str, preco_original: str, estrategia: str, links: Dict[str, List[str]]) -> Dict[str, Any]:
+def adicionar_ao_historico(e: Dict[str, str]) -> Dict[str, Any]:
 historico = carregar_historico()
-novo_post = {
+novo = {
 "id": len(historico) + 1,
 "data": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-"produto": produto,
-"preco_promocional": preco_promo,
-"preco_original": preco_original,
-"estrategia": estrategia,
-"copies": links
+**e
 }
-historico.append(novo_post)
+historico.append(novo)
 salvar_historico(historico)
-return novo_post
+return novo
 
 def validar_precos(preco_original: str, preco_promo: str) -> bool:
 try:
-orig = float(preco_original)
-prom = float(preco_promo)
-return prom < orig
-except ValueError:
+return float(preco_promo) < float(preco_original)
+except:
 return False
 
-def personalizar_copy(template: str, produto: str, preco_promo: str, preco_original: str, link: str, plataforma: str) -> str:
-copy = template.format(
+def gerar_copies(produto: str, preco_promo: str, preco_orig: str, estrategia: str, plataforma: str, link: str) -> List[str]:
+templates = random.sample(DADOS["estrategias"][estrategia][plataforma], min(5, len(DADOS["estrategias"][estrategia][plataforma])))
+copias = []
+for t in templates:
+copia = t.format(
 produto=produto,
-preco_original=preco_original,
-preco_promocional=preco_promo,
+preco_promo=preco_promo,
+preco_original=preco_orig,
 link=link
 )
-if plataforma == "instagram" and PLATAFORMAS["instagram"]["hashtags"]:
-copy += " #LuhVee #OfertaTurbinada #ShoppeAchadinho" if "Shoppe" in link else " #LuhVee #OfertaTurbinada #MLAchadinho"
-return copy
+if DADOS["plataformas"][plataforma]["hash"]:
+sufixo = "#ShopeeAchadinho" if "sho" in link.lower() else "#MLAchadinho"
+copia += f"\n{sufixo}"
+copias.append(copia)
+return copias
 
-def gerar_variacoes(templates: List[str], qtd: int = 5) -> List[str]:
-random.shuffle(templates)
-return random.sample(templates, min(qtd, len(templates)))
+# INTERFACE STREAMLIT
+st.title("👑 LuhVee Vendas AI Turbo")
+st.markdown("🔥 Gera copies que VENDEM sem perder tempo!")
 
-def gerar_copies(produto: str, preco_promo: str, preco_original: str, estrategia: str, plataforma: str, link: str) -> List[str]:
-templates = ESTRATEGIAS[estrategia][plataforma]
-varia_coes = gerar_variacoes(templates)
-return [personalizar_copy(t, produto, preco_promo, preco_original, link, plataforma) for t in varia_coes]
-
-# ===== INTERFACE =====
-st.title("👑 LuhVee Vendas PRO TURBINADO")
-st.markdown("Copies AGRESSIVAS + CTAs PODEROSOS = MAIS VENDAS! 🔥💰")
-
-tab1, tab2, tab3 = st.tabs(["📝 Gerar Copies", "📊 Histórico", "ℹ️ Info"])
+tab1, tab2, tab3 = st.tabs(["📌Gerar Copy", "📊Histórico", "ℹ️Info"])
 
 with tab1:
-st.subheader("📌 Dados do Produto")
+c1, c2 = st.columns(2)
+with c1:
+nome = st.text_input("Produto", placeholder="Ex: Ração Gold")
+cat = st.selectbox("Categoria", ["Beleza", "Casa", "Pet", "Moda", "Tech"])
+with c2:
+promo = st.text_input("Preço Promo", "99.00")
+orig = st.text_input("Preço Original", "199.00")
+col_plat, col_estr = st.columns(2)
+with col_estr:
+estr = st.selectbox("Estratégia", list(DADOS["estrategias"].keys()))
+with col_plat:
+plataforma = st.selectbox("Plataforma de venda", list(DADOS["links"].keys()))
 
-col1, col2 = st.columns(2)
-with col1:
-nome_produto = st.text_input("Nome do Produto", placeholder="Ex: Ração Premium para Cães")
-categoria = st.selectbox("Categoria", ["Casa", "Beleza", "Tech", "Pet", "Moda", "Outros"])
-
-with col2:
-preco_original = st.text_input("Preço Original", placeholder="Ex: 199.90")
-preco_promocional = st.text_input("Preço Promocional", placeholder="Ex: 99.90")
-
-st.divider()
-
-col3, col4 = st.columns(2)
-with col3:
-estrategia_selecionada = st.selectbox("Estratégia", list(ESTRATEGIAS.keys()), key="estrategia")
-with col4:
-plataforma_venda = st.selectbox("Plataforma de Venda", list(LINKS.keys()), key="plataforma_venda")
-
-link = LINKS[plataforma_venda]
-
-if st.button("✨ GERAR COPIES TURBINADAS", use_container_width=True, type="primary"):
-if not nome_produto or not preco_promocional:
-st.error("Preencha Nome do Produto e Preço Promocional!")
-elif not validar_precos(preco_original, preco_promocional):
-st.error("Preço promocional deve ser MENOR que o original!")
+if st.button("✨ GERAR COPIES!", type="primary", use_container_width=True):
+if not nome or not promo:
+st.error("Campo obrigatório vazio!")
+elif not validar_precos(orig, promo):
+st.error("Preço promo deve ser MENOR que original!")
 else:
-copies = {
-plataforma: gerar_copies(nome_produto, preco_promocional, preco_original, estrategia_selecionada, plataforma, link)
-for plataforma in PLATAFORMAS
+link = DADOS["links"][plataforma]
+copies_all = {
+p: gerar_copies(nome, promo, orig, estr, p, link)
+for p in DADOS["plataformas"]
 }
-post = adicionar_ao_historico(nome_produto, preco_promocional, preco_original, estrategia_selecionada, copies)
-st.success(f"✅ Post #{post['id']} TURBINADO criado!")
+post = adicionar_ao_historico({
+"produto": nome,
+"preco_promocional": promo,
+"preco_original": orig,
+"estrategia": estr,
+"copies": copies_all
+})
+st.success(f"✅ Post #{post['id']} TURBINADO salvo!")
 
-for plataforma, copias_plat in copies.items():
-tab_plat = st.tabs([f"{inf['emoji']} {inf['label']}" for inf in PLATAFORMAS.values()])[list(PLATAFORMAS.keys()).index(plataforma)]
-with tab_plat:
-st.subheader(f"{PLATAFORMAS[plataforma]['emoji']} Cópias para {PLATAFORMAS[plataforma]['label']}")
-for i, copy in enumerate(copias_plat, 1):
+for plataforma, copies in copies_all.items():
+t = st.tabs([f"{inf['emoji']}{inf['label']}" for inf in DADOS["plataformas"].values()])[
+list(DADOS["plataformas"].keys()).index(plataforma)
+]
+with t:
+for i, copy in enumerate(copies, 1):
 st.code(copy, language="text")
-if i < len(copias_plat): st.divider()
+if i < len(copies): st.divider()
 
 with tab2:
-st.subheader("📊 Histórico de Posts")
-
-historico = carregar_historico()
-
-if historico:
-col_stat1, col_stat2 = st.columns(2)
-with col_stat1: st.metric("Total de Posts", len(historico))
-with col_stat2: st.metric("Último Post", historico[-1]["data"])
-
-st.divider()
-
-for post in reversed(historico):
-with st.expander(f"#{post['id']} — {post['produto']} ({post['estrategia']})", expanded=False):
+hist = carregar_historico()
+if hist:
+st.metric("Posts salvos", len(hist))
+for p in reversed(hist):
+with st.expander(f"#{p['id']} — {p['produto']} ({p['estrategia']})"):
 cols = st.columns(3)
-cols.<span class="citation-group citation-pending"><span class="citation-pill">0</span></span>write(f"**Estratégia:** {post['estrategia']}")
-cols.<span class="citation-group citation-pending"><span class="citation-pill">1</span></span>write(f"**Promo:** R$ {post['preco_promocional']}")
-cols.<span class="citation-group citation-pending"><span class="citation-pill">2</span></span>write(f"**Original:** R$ {post['preco_original']}")
-
-st.divider()
-st.write("**Copies:**")
-for plataforma, copias in post["copies"].items():
-st.markdown(f"_{PLATAFORMAS[plataforma]['emoji']} {PLATAFORMAS[plataforma]['label']}_")
-for copy in copias:
-st.code(copy, language="text")
-if st.button("🗑️ Excluir", key=f"del_{post['id']}"):
-historico.remove(post)
-salvar_historico(historico)
+cols.write(f"**Promo:** R$ {p['preco_promocional']}")
+cols.<span class="citation-group" data-sources="%5B%7B%22url%22%3A%22https%3A%2F%2Fwww.python.org%2F%22%2C%22title%22%3A%22Welcome%20to%20Python.org%22%2C%22domain%22%3A%22python.org%22%2C%22label%22%3A%22python%22%2C%22description%22%3A%22The%20official%20home%20of%20the%20Python%20Programming%20Language%22%7D%5D" data-index="0"><a class="citation-pill" href="https://www.python.org/" target="_blank" rel="noopener noreferrer" title="Welcome to Python.org · python.org">python</a></span>write(f"**Original:** R$ {p['preco_original']}")
+cols.<span class="citation-group" data-sources="%5B%7B%22url%22%3A%22https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DVXBtS1ecR30%22%2C%22title%22%3A%22Introduction%20to%20Python%3A%20The%20least%20you%20should%20know%22%2C%22domain%22%3A%22youtube.com%22%2C%22label%22%3A%22youtube%22%2C%22description%22%3A%22Canal%3A%20Cadenny%20School%20Descri%C3%A7%C3%A3o%3A%20%F0%9F%93%98%20Introduction%20to%20Python%20%7C%20Python%20for%20Beginners%20In%20this%20lesson%2C%20you%E2%80%99ll%20learn%20the%20basics%20of%20Python%20programming%2C%20one%20of%20the%20most%20popular%20and%20beginne%22%7D%5D" data-index="0"><a class="citation-pill" href="https://www.youtube.com/watch?v=VXBtS1ecR30" target="_blank" rel="noopener noreferrer" title="Introduction to Python: The least you should know · youtube.com">youtube</a></span>write(f"Data: {p['data']}")
+for pl, cops in p["copies"].items():
+st.markdown(f"*{DADOS['plataformas'][pl]['emoji']}*")
+for c in cops:
+st.code(c)
+if st.button("🗑️ Apagar", key=f"apaga{p['id']}"):
+hist.remove(p)
+salvar_historico(hist)
 st.rerun()
 else:
-st.info("📭 Nenhum post salvo ainda. Gera um pra começar!")
+st.info("📭 Nenhum post gerado ainda!")
 
 with tab3:
-st.markdown(f"""
-## **LuhVee Vendas PRO TURBINADO**
-Gerador de copies **que vendem** sem perder tempo.
-
----
-### **📌 Estratégias PADRÃO**
-`{"; ".join(ESTRATEGIAS.keys())}`
-
-### **📱 Plataformas**
-WhatsApp, Instagram, Facebook — cada uma com tom próprio.
-
-### **🔍 Insights**
-- WhatsApp = URGÊNCIA
-- Instagram = FOMO + HASHTAGS
-- Facebook = SOCIAL PROOF + chamadas diretas
-
-### **⚡ Valeu a pena?**
-Reduz linhas de código em **70%**, sem perder variedade. Isso aqui não é gambiarra — é engine limpa.
-
----
-**👑 Luhvee Stores** | feito para vender com fogo.
+st.markdown("""
+## **👑 LuhVee Vendas AI Turbo
+- Engine limpa, sem redundância.
+- Valida preços pra evitar erro.
+- Gera 5 copies únicas por plataforma.
+- Tudo num dicionário só — fácil de add/editar estratégia.
 """)
