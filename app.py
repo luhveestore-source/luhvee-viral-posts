@@ -2,136 +2,132 @@ import streamlit as st
 import random
 import requests
 from bs4 import BeautifulSoup
-import time
+import json
+import os
+from datetime import datetime
 
-# --- CONFIGURAÇÃO VISUAL ---
-st.set_page_config(page_title="LuhVee AI Vendas PRO", layout="wide")
+# --- CONFIGURAÇÃO DE ELITE ---
+st.set_page_config(page_title="LuhVee AI ULTRA PRO", layout="wide", page_icon="👑")
 
-# CSS para deixar o App com cara de software caro
-st.markdown("""
-    <style>
-    .stApp { background-color: #050505; color: #ffffff; }
-    .stButton>button { background: linear-gradient(90deg, #ff4b2b 0%, #ff416c 100%); color: white; border: none; font-weight: bold; height: 50px; font-size: 18px; }
-    .copy-box { background-color: #1a1a1a; padding: 20px; border-left: 5px solid #ff4b2b; border-radius: 10px; margin-bottom: 20px; }
-    </style>
-""", unsafe_allow_html=True)
+ARQUIVO_HISTORICO = "historico_vendas_luhvee.json"
 
-# --- ENGINE DE COPYWRITING (O CORAÇÃO DO NEGÓCIO) ---
-# Aqui colocamos gatilhos mentais reais
-ESTRUTURA = {
-    "aberturas": [
-        "🔥 PARE TUDO! Acabei de encontrar uma brecha no preço do {produto}!",
-        "🚨 ALERTA DE OPORTUNIDADE: O {produto} baixou para o menor valor do ano!",
-        "😱 Você não vai acreditar no que eu achei... O {produto} está quase de graça!",
-        "💎 ACHADINHO VIP: Se você estava esperando o {produto}, a hora é AGORA!",
-        "✨ O queridinho do momento {produto} entrou em queima de estoque!"
-    ],
-    "desenvolvimento": [
-        "Sério, a qualidade disso aqui é outro nível e o preço está bizarro de baixo.",
-        "Quem me segue sabe que eu só posto o que vale a pena, e esse {produto} superou tudo.",
-        "É aquele item que todo mundo quer, mas poucos pegam com esse desconto exclusivo.",
-        "Não é sorte, é oportunidade! O {produto} com desconto real direto da loja."
-    ],
-    "urgencia": [
-        "⚠️ O estoque está voando, restam pouquíssimas unidades com esse valor!",
-        "⏳ A última vez que postei, esgotou em 10 minutos. Corre!",
-        "🛑 De R${p_orig} por APENAS R${p_promo}. Não tem como ignorar!",
-        "💸 Economia real de verdade. O valor original era R${p_orig}!"
-    ],
-    "fechamento": [
-        "🛍️ Garanta o seu antes que o link expire: {link}",
-        "👉 Clique aqui e seja rápido(a): {link}",
-        "🔗 O link seguro para compra é esse: {link}",
-        "🚀 Voe para o site e aproveite: {link}"
-    ]
+# Seus Links Oficiais
+LINKS_VITRINE = {
+    "Shopee": "https://collshp.com/luhveestores?view=storefront",
+    "Mercado Livre": "https://www.mercadolivre.com.br/social/axwelloliveira",
+    "Hub de Links": "https://links-luhveestore.streamlit.app/"
 }
 
-# --- SCRAPER AVANÇADO (TENTA BURLAR O BLOQUEIO) ---
-def buscar_dados_v3(url):
-    # Simulando um navegador real muito específico
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
-        "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Referer": "https://www.google.com/"
-    }
-    try:
-        res = requests.get(url, headers=headers, timeout=15, allow_redirects=True)
-        soup = BeautifulSoup(res.text, 'html.parser')
-        
-        # Busca agressiva de título
-        titulo = "Produto Selecionado"
-        t_tags = [soup.find("h1"), soup.find("meta", property="og:title"), soup.find("title")]
-        for tag in t_tags:
-            if tag:
-                content = tag.get("content") if tag.name == "meta" else tag.get_text()
-                if content and len(content) > 5:
-                    titulo = content.strip().split('|')[0].split('-')[0]
-                    break
-        
-        # Busca agressiva de preço
-        preco = 0.0
-        p_tag = soup.find("meta", property="product:price:amount")
-        if p_tag:
-            preco = float(p_tag["content"])
-        else:
-            # Tenta encontrar números com R$ no texto
-            precos_no_texto = re.findall(r"R\$\s?(\d+[\d.,]*)", res.text)
-            if precos_no_texto:
-                preco = float(precos_no_texto[0].replace('.', '').replace(',', '.'))
+# --- FUNÇÕES DE HISTÓRICO ---
+def carregar_historico():
+    if os.path.exists(ARQUIVO_HISTORICO):
+        try:
+            with open(ARQUIVO_HISTORICO, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except: return []
+    return []
 
-        return titulo[:50], preco # Corta o título para não ficar gigante
+def salvar_no_historico(produto, preco_promo, plataforma, link_final):
+    hist = carregar_historico()
+    novo_item = {
+        "data": datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "produto": produto,
+        "preco": f"R$ {preco_promo:.2f}",
+        "plataforma": plataforma,
+        "link": link_final
+    }
+    hist.append(novo_item)
+    with open(ARQUIVO_HISTORICO, "w", encoding="utf-8") as f:
+        json.dump(hist, f, ensure_ascii=False, indent=4)
+
+# --- ENGINE DE COPYWRITING ---
+ESTRUTURA = {
+    "aberturas": ["🚨 OFERTA RELÂMPAGO! 🚨", "😱 OLHA O QUE EU ACHEI!", "🔥 PREÇO BAIXOU AGORA!", "💎 ACHADINHO VIP!", "✨ TREND DO MOMENTO!"],
+    "corpo": ["O {produto} está com um desconto bizarro hoje.", "Sério, esse {produto} é o que faltava no seu dia a dia.", "Encontrei o {produto} no menor preço dos últimos tempos!"],
+    "urgencia": ["Restam poucas unidades nesse valor! ⏳", "O estoque está acabando rápido demais! 🏃‍♂️", "De R${p_orig} por APENAS R${p_promo}! 💸"],
+    "fechamento": ["👉 Garanta o seu aqui: {link}", "🛍️ Link direto para o desconto: {link}", "🔗 Aproveite antes que suba: {link}", "🚀 Voe para o site: {link}"]
+}
+
+# --- SCRAPER ---
+def buscar_dados_v3(url):
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    try:
+        res = requests.get(url, headers=headers, timeout=10)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        # Tenta pegar título de várias formas
+        titulo = "Produto Selecionado"
+        if soup.find("h1"):
+            titulo = soup.find("h1").get_text().strip()
+        elif soup.find("title"):
+            titulo = soup.find("title").get_text().strip()
+        return titulo[:50], 0.0
     except:
         return None, None
 
-import re # Necessário para a busca de preços no texto
-
 # --- INTERFACE ---
 st.title("👑 LuhVee AI: Sales Master Pro 3.0")
-st.markdown("#### Gere vendas automáticas com links da Shopee e Mercado Livre")
 
-col_link, col_btn = st.columns([3, 1])
-with col_link:
-    url_input = st.text_input("Cole o Link do Produto aqui:", placeholder="https://mercadolivre.com.br/...")
-with col_btn:
-    st.write("") # Alinhamento
-    btn_puxar = st.button("🔍 PUXAR DADOS")
+aba_gerador, aba_historico = st.tabs(["🚀 Gerador de Vendas", "📊 Histórico de Posts"])
 
-# Inicializa estados
-if 'p_nome' not in st.session_state: st.session_state.p_nome = ""
-if 'p_valor' not in st.session_state: st.session_state.p_valor = 0.0
+with aba_gerador:
+    col_link, col_btn = st.columns([3, 1])
+    with col_link:
+        url_produto_real = st.text_input("1. Cole o Link do Produto (para a IA ler):", placeholder="https://...")
+    with col_btn:
+        st.write("")
+        btn_puxar = st.button("🔍 PUXAR DADOS")
 
-if btn_puxar:
-    with st.spinner("IA hackeando as informações do produto..."):
-        nome, valor = buscar_dados_v3(url_input)
-        if nome:
-            st.session_state.p_nome = nome
-            st.session_state.p_valor = valor
-            st.success("Dados Capturados com Sucesso!")
-        else:
-            st.error("O site bloqueou a leitura automática. Mas não pare! Digite o nome abaixo:")
+    if btn_puxar and url_produto_real:
+        with st.spinner("IA Lendo Produto..."):
+            nome, valor = buscar_dados_v3(url_produto_real)
+            if nome:
+                st.session_state.p_nome = nome
+                st.success("Dados Capturados!")
 
-# --- AJUSTE MANUAL ---
-st.divider()
-c1, c2, c3 = st.columns(3)
-nome_prod = c1.text_input("Confirme o Nome:", value=st.session_state.p_nome)
-v_orig = c2.number_input("Preço Original (R$):", value=float(st.session_state.p_valor))
-v_promo = c3.number_input("Preço com Desconto (R$):", value=v_orig * 0.8)
+    st.divider()
+    
+    # Seleção de Plataforma de Destino
+    c_plat, c_nome = st.columns([1, 2])
+    with c_plat:
+        plataforma_sel = st.selectbox("2. Plataforma de Venda:", list(LINKS_VITRINE.keys()))
+    with c_nome:
+        nome_prod = st.text_input("3. Nome do Produto:", value=st.session_state.get('p_nome', ""))
 
-# --- GERAÇÃO DE MENSAGENS ---
-if st.button("🚀 GERAR VARIAÇÕES DE ALTA CONVERSÃO"):
-    if nome_prod and url_input:
-        st.subheader("📌 Suas Copies Prontas para Lucrar:")
-        
-        for i in range(3):
-            # Lógica de montagem aleatória
-            txt = f"{random.choice(ESTRUTURA['aberturas']).format(produto=nome_prod.upper())}\n\n" \
-                  f"{random.choice(ESTRUTURA['desenvolvimento']).format(produto=nome_prod)}\n\n" \
-                  f"{random.choice(ESTRUTURA['urgencia']).format(p_orig=f'{v_orig:.2f}', p_promo=f'{v_promo:.2f}')}\n\n" \
-                  f"{random.choice(ESTRUTURA['fechamento']).format(link=url_input)}"
+    c1, c2 = st.columns(2)
+    v_orig = c1.number_input("Preço Original (R$):", value=0.0)
+    v_promo = c2.number_input("Preço com Desconto (R$):", value=0.0)
+
+    if st.button("🔥 GERAR COPIES E SALVAR"):
+        if nome_prod:
+            # O link que vai na mensagem é o da sua vitrine
+            link_final = LINKS_VITRINE[plataforma_sel]
             
-            st.markdown(f"<div class='copy-box'>{txt.replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
-            st.code(txt, language="text") # Facilita copiar no celular
-    else:
-        st.warning("Preencha o link e o nome do produto!")
+            # Salva no Histórico
+            salvar_no_historico(nome_prod, v_promo, plataforma_sel, link_final)
+            
+            st.subheader(f"✅ Copies Geradas para {plataforma_sel}:")
+            cols = st.columns(2)
+            for i in range(4):
+                with cols[i % 2]:
+                    txt = f"{random.choice(ESTRUTURA['aberturas'])}\n\n" \
+                          f"{random.choice(ESTRUTURA['corpo']).format(produto=nome_prod.upper())}\n\n" \
+                          f"{random.choice(ESTRUTURA['urgencia']).format(p_orig=v_orig, p_promo=v_promo)}\n\n" \
+                          f"{random.choice(ESTRUTURA['fechamento']).format(link=link_final)}"
+                    
+                    st.markdown(f"**Variação {i+1}**")
+                    st.code(txt, language="text")
+        else:
+            st.error("Por favor, identifique o produto primeiro!")
 
-st.info("💡 Dica de Expert: Para vender esse app, diga que ele usa 'Matriz de Copywriting Dinâmica' que evita o bloqueio de links no WhatsApp.")
+with aba_historico:
+    st.header("📋 Histórico de Divulgação")
+    dados_hist = carregar_historico()
+    
+    if dados_hist:
+        st.table(dados_hist[::-1])
+        if st.button("🗑️ Limpar Tudo"):
+            if os.path.exists(ARQUIVO_HISTORICO):
+                os.remove(ARQUIVO_HISTORICO)
+                st.rerun()
+    else:
+        st.info("Ainda não há nada no histórico.")
