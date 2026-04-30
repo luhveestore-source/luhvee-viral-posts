@@ -68,13 +68,23 @@ urgencia_ig = [
     
     "⚡ MEGA OFERTA ⚡\n\n{produto}\n\nESTÁ SAINDO POR ESSA MIXARIA!\n\nR${preco_promocional}!!! 💰\n\n👉 NÃO DEIXA PASSAR\n\n🎯 {link}\n\n#PromoAmaldiçoada #VaiAcabar #ShopeeBrasil",
     
-    "🔥 IMPERDÍVEL 🔥\n\n{produto}\n\nDESCONTO QUE DURA POUCO!\n\nR${preco_promocional} 🎉\n\n⏳ CLICA AGORA!\n\n👆 {link}\n\n#OfertaMaluca #NãoDeixa #Luhvee"
+    "🔥 IMPERDÍVEL 🔥\n\n{produto}\n\nDESCONTO QUE DURA POUCO!\n\nR${preco_promocional} 🎉\n\n⏳ CLICA AGORA!\n\n👆 {link}\n\n#OfertaMaluca #NãoDeixa #Luhvee",
+    
+    "💥 CHEGOU! 💥\n\n{produto}\n\nPREÇO QUE NÃO DURA!\n\nR${preco_promocional}\n\n👇 CORRE: {link}\n\n#Urgente #ShopeeBrasil #Luhvee",
+    
+    "⏰ TIQUE TAQUE ⏰\n\n{produto}\n\nTEMPO ESGOTANDO!\n\nR${preco_promocional}!!\n\n{link}\n\n#TimeIsRunning #VaiAcabar #Luhvee"
 ]
 
 urgencia_fb = [
     "🚨 AVISO IMPORTANTE! 🚨\n\n{produto}\n\nDE R${preco_original} PARA APENAS R${preco_promocional}!!!\n\n⏰ ÚLTIMA CHANCE! ⏰\n\nNÃO DEIXE FALTAR!\n\n👉 COMPRA AGORA: {link}\n\n🔥 ESTOQUE LIMITADÍSSIMO! 🔥\n\nLuhvee Stores ❤️",
     
-    "BOMBA 💣 DE DESCONTO!\n\n{produto}\n\nR${preco_promocional}!!!\n\nNÃO É FAKE!\n\n⚡ CLICA ANTES QUE ACABE ⚡\n\n{link}\n\nLuhvee Stores ❤️"
+    "BOMBA 💣 DE DESCONTO!\n\n{produto}\n\nR${preco_promocional}!!!\n\nNÃO É FAKE!\n\n⚡ CLICA ANTES QUE ACABE ⚡\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "⏳ RELÓGIO MARCANDO!\n\n{produto}\n\nSÓ HOJE: R${preco_promocional}\n\nAMANHÃ VAI NORMALIZAR!\n\n👉 {link}\n\nLuhvee Stores ❤️",
+    
+    "🆘 PEDIDO DE DESCULPAS 🆘\n\nPOR ESTE PREÇO ABSURDO:\n\n{produto}\n\nR${preco_promocional}\n\nNÓS MESMOS NÃO ACREDITAMOS!\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "⚠️ AVISO DE SISTEMA ⚠️\n\n{produto}\n\nESTOQUE CRÍTICO!\n\nR${preco_promocional}\n\n👉 PAGUE AGORA: {link}\n\nLuhvee Stores ❤️"
 ]
 
 # 2️⃣ FOMO - Fear of Missing Out (5 variações)
@@ -95,13 +105,23 @@ fomo_ig = [
     
     "🔴 BREAKING NEWS 🔴\n\n{produto}\n\nVIRALIZOU MESMO!\n\nTODAS COMPRANDO!\n\n💰 R${preco_promocional}\n\n👇 {link}\n\n#Trending #VaiAcabar #Luhvee",
     
-    "⚡ HOT ALERT ⚡\n\n{produto}\n\nESTE MOMENTO TEM GENTE COMPRANDO!\n\nVocê quer ficar de fora?\n\n👉 {link}\n\n#NãoFicaParaTrás #Luhvee"
+    "⚡ HOT ALERT ⚡\n\n{produto}\n\nESTE MOMENTO TEM GENTE COMPRANDO!\n\nVocê quer ficar de fora?\n\n👉 {link}\n\n#NãoFicaParaTrás #Luhvee",
+    
+    "📱 EVERYONE'S TALKING 📱\n\n{produto}\n\nSU CRUSH JÁ PEGOU\nSUA MÃE JÁ PEDIU\n\nE VOCÊ?\n\nR${preco_promocional} → {link}\n\n#FOMO #Luhvee",
+    
+    "🔥 VIRAL ALERT 🔥\n\n{produto}\n\nSAIU DO ESTOQUE 3 VEZES!\n\nTANTA PROCURA!\n\nR${preco_promocional}\n\n{link}\n\n#VaiAcabar #Trending"
 ]
 
 fomo_fb = [
     "😱 CUIDADO!! 😱\n\n{produto}\n\nSUA MÃESINHA JÁ PEDIU!\n\nSUA MELHOR AMIGA JÁ COMPROU!\n\nVOCÊ VAI SER A ÚLTIMA?\n\nR${preco_promocional} AQUI: {link}\n\n⚠️ ACORDAAAA! ⚠️\n\nLuhvee Stores ❤️",
     
-    "👀 OLHA ISSO 👀\n\n{produto}\n\nJÁ SAIU DO ESTOQUE 3 VEZES!\n\nTANTA PROCURA!\n\nNÃO FICA DE FORA!\n\n👉 {link}\n\nR${preco_promocional}\n\nLuhvee Stores ❤️"
+    "👀 OLHA ISSO 👀\n\n{produto}\n\nJÁ SAIU DO ESTOQUE 3 VEZES!\n\nTANTA PROCURA!\n\nNÃO FICA DE FORA!\n\n👉 {link}\n\nR${preco_promocional}\n\nLuhvee Stores ❤️",
+    
+    "📲 GRUPO TÁ FALANDO! 📲\n\n{produto}\n\nMEIA NOITE CHEGOU\nPRIMEIRA HORA VENDEU!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🚨 MAIS UM SUMIU! 🚨\n\n{produto}\n\nJÁ TEM 47 VENDIDOS HOJE!\n\nVAI ACABAR RÁPIDO!\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "⏰ RELÓGIO MARCANDO ⏰\n\n{produto}\n\nTodos estão comprando\nE você quer ficar pra trás?\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"
 ]
 
 # 3️⃣ DESCONTO - Foco em Economia (5 variações)
@@ -122,13 +142,23 @@ desconto_ig = [
     
     "🤑 PREÇO INSANO 🤑\n\n{produto}\n\nNÃO ACREDITA NOS OLHOS!\n\nR${preco_promocional}!!\n\n👉 {link}\n\n#MelhorPreço #ShopeeBrasil",
     
-    "💎 ACHADO DOOOOO DIA 💎\n\n{produto}\n\nR${preco_promocional}\n\nNÃO É BRINCADEIRA!\n\n🎉 {link}\n\n#Descontaço #Luhvee"
+    "💎 ACHADO DOOOOO DIA 💎\n\n{produto}\n\nR${preco_promocional}\n\nNÃO É BRINCADEIRA!\n\n🎉 {link}\n\n#Descontaço #Luhvee",
+    
+    "💰 POR ESSA MIGALHA 💰\n\n{produto}\n\nNÃO PODE SER REAL!\n\nR${preco_promocional}\n\n{link}\n\n#OfertaBomba #ShopeeBrasil",
+    
+    "🎁 PRESENTE PARA SI 🎁\n\n{produto}\n\nMERESCE GASTAR POUCO!\n\nR${preco_promocional}\n\n{link}\n\n#AutoCuidado #Luhvee"
 ]
 
 desconto_fb = [
     "💰 SOBRA GRANA! 💰\n\n{produto}\n\nDE R${preco_original} POR R${preco_promocional}!\n\nQUASE BRINDE!\n\n👉 APROVEITA: {link}\n\n🎁 PRESENTE PARA SI MESMA!\n\nLuhvee Stores ❤️",
     
-    "💸 ACHADO RARO! 💸\n\n{produto}\n\nESSE PREÇO TÁ INSANO!\n\nR${preco_promocional} É ROUBO!\n\n{link}\n\nLuhvee Stores ❤️"
+    "💸 ACHADO RARO! 💸\n\n{produto}\n\nESSE PREÇO TÁ INSANO!\n\nR${preco_promocional} É ROUBO!\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🏷️ CLEARANCE PRICE! 🏷️\n\n{produto}\n\nMARCHÃ LOUCA!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "💎 TESOURO ACHADO! 💎\n\n{produto}\n\nVALE CADA CENTAVO!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🎯 SUPER DEAL! 🎯\n\n{produto}\n\nPREÇO QUE NÃO VOLTA!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"
 ]
 
 # 4️⃣ SOCIAL PROOF - Aprovação Social (5 variações)
@@ -149,13 +179,23 @@ social_ig = [
     
     "💯 PROVA VIVA 💯\n\n{produto}\n\nMIL PESSOAS FELIZES!\n\nZERO ARREPENDIDA!\n\n👉 {link}\n\n#Qualidade #Recomendo",
     
-    "🏆 #1 MAIS PEDIDO 🏆\n\n{produto}\n\nTODO MUNDO QUERENDO!\n\n⭐⭐⭐⭐⭐\n\n{link}\n\n#Luhvee #TopVendas"
+    "🏆 #1 MAIS PEDIDO 🏆\n\n{produto}\n\nTODO MUNDO QUERENDO!\n\n⭐⭐⭐⭐⭐\n\n{link}\n\n#Luhvee #TopVendas",
+    
+    "🎉 CLIENTES FELIZES 🎉\n\n{produto}\n\nVOLTAM A COMPRAR!\n\nPROMOVEM PARA AMIGAS!\n\n{link}\n\n#Satisfeito #Luhvee",
+    
+    "📸 CUSTOMERS CHOICE 📸\n\n{produto}\n\nMIL REVIEWS 5⭐\n\nMELHOR CUSTO-BENEFÍCIO\n\n{link}\n\n#Aprovado #ShopeeBrasil"
 ]
 
 social_fb = [
     "👨‍👩‍👧‍👦 FAMÍLIA TODO PEDINDO! 👨‍👩‍👧‍👦\n\n{produto}\n\nATÉ A MÃE QUER!\n\nTODO MUNDO INDICA!\n\n⭐⭐⭐⭐⭐ NOTA 10!\n\nR${preco_promocional}\n\n👉 CONFIA: {link}\n\nLuhvee Stores ❤️",
     
-    "✨ QUERIDINHO DEMAIS ✨\n\n{produto}\n\nTODOS AMAM MESMO!\n\nMIL APROVAÇÕES!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"
+    "✨ QUERIDINHO DEMAIS ✨\n\n{produto}\n\nTODOS AMAM MESMO!\n\nMIL APROVAÇÕES!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🌈 FELICIDADE GARANTIDA 🌈\n\n{produto}\n\nVERDADE QUE FAZ DIFERENÇA!\n\nTODOS VOLTAM A COMPRAR!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🏅 GANHADOR DO MÊS 🏅\n\n{produto}\n\nMAIS VENDIDO!\nMAIS AMADO!\nMAIS PEDIDO!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "💪 CONFIANÇA TOTAL 💪\n\n{produto}\n\nTESTADO POR MILHARES!\n\nAPROVADO POR TODOS!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"
 ]
 
 # 5️⃣ EXCLUSIVIDADE - Ser Especial (5 variações)
@@ -176,13 +216,23 @@ exclusivo_ig = [
     
     "✨ BELEZA PURA ✨\n\n{produto}\n\nSÓ AS MELHORES USAM!\n\n👑 R${preco_promocional}\n\n{link}\n\n#Exclusividade #Luhvee",
     
-    "🌟 DESTAQUE GARANTIDO 🌟\n\n{produto}\n\nSER NOTADA COM ESSE!\n\nR${preco_promocional}\n\n👇 {link}\n\n#Classe #Sofisticação"
+    "🌟 DESTAQUE GARANTIDO 🌟\n\n{produto}\n\nSER NOTADA COM ESSE!\n\nR${preco_promocional}\n\n👇 {link}\n\n#Classe #Sofisticação",
+    
+    "💎 RARIDADE PURA 💎\n\n{produto}\n\nLIMITADO E SELETO!\n\nR${preco_promocional}\n\n{link}\n\n#Exclusividade #Premium",
+    
+    "🎁 LUXO ACESSÍVEL 🎁\n\n{produto}\n\nTERÊNCIA SEM CULPA!\n\nR${preco_promocional}\n\n{link}\n\n#Luhvee #VIP"
 ]
 
 exclusivo_fb = [
     "💎 COISA DE RICO! 💎\n\n{produto}\n\nPESSOAS COM BOM GOSTO AMAM!\n\nTIRAZU DIFERENTE!\n\nR${preco_promocional}\n\n👑 SER VIP: {link}\n\nLuhvee Stores ❤️",
     
-    "🌟 VOCÊ MERECE! 🌟\n\n{produto}\n\nSÓ O MELHOR PRO MELHOR!\n\nR${preco_promocional}\n\n✨ {link}\n\nLuhvee Stores ❤️"
+    "🌟 VOCÊ MERECE! 🌟\n\n{produto}\n\nSÓ O MELHOR PRO MELHOR!\n\nR${preco_promocional}\n\n✨ {link}\n\nLuhvee Stores ❤️",
+    
+    "👑 LUXÚRIA PURA 👑\n\n{produto}\n\nQUANDO A QUALIDADE FALA!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "✨ JÓIA RARA ✨\n\n{produto}\n\nVALIA CADA CENTAVO!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🏆 PREMIUM MESMO 🏆\n\n{produto}\n\nSÓ O LUXO!\nSÓ O MELHOR!\nSÓ PARA VOCÊ!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"
 ]
 
 # 6️⃣ CURIOSIDADE - Gera Interesse (5 variações)
@@ -203,13 +253,23 @@ curiosidade_ig = [
     
     "✨ ACHADO ESPECIAL ✨\n\n{produto}\n\nQUE NÃO SABES QUE PRECISAVAS!\n\nR${preco_promocional}\n\n🎁 {link}\n\n#Achado #Luhvee",
     
-    "🤔 SÉRIO? 🤔\n\n{produto}\n\nISTO É NOVO NÍVEL!\n\nR${preco_promocional}\n\n👇 {link}\n\n#Trending #Descoberta"
+    "🤔 SÉRIO? 🤔\n\n{produto}\n\nISTO É NOVO NÍVEL!\n\nR${preco_promocional}\n\n👇 {link}\n\n#Trending #Descoberta",
+    
+    "💡 GAMBIARRA CRIATIVA 💡\n\n{produto}\n\nPARA QUEM PENSA FORA DA CAIXA!\n\nR${preco_promocional}\n\n{link}\n\n#Inovação #Luhvee",
+    
+    "🔥 TREND ALERT 🔥\n\n{produto}\n\nNINGUÉM ESPERAVA ISTO!\n\nR${preco_promocional}\n\n{link}\n\n#Viral #Luhvee"
 ]
 
 curiosidade_fb = [
     "🔍 DESCOBRI ISTO! 🔍\n\n{produto}\n\nE NÃO CONSIGO PARAR DE FALAR!\n\nTODOS TÃO QUERENDO!\n\nR${preco_promocional}\n\n👉 VIRA TU TAMBÉM: {link}\n\nLuhvee Stores ❤️",
     
-    "💡 NOVA DESCOBERTA! 💡\n\n{produto}\n\nQUE TÁ FAZENDO SUCESSO!\n\nR${preco_promocional}\n\n👇 {link}\n\nLuhvee Stores ❤️"
+    "💡 NOVA DESCOBERTA! 💡\n\n{produto}\n\nQUE TÁ FAZENDO SUCESSO!\n\nR${preco_promocional}\n\n👇 {link}\n\nLuhvee Stores ❤️",
+    
+    "🌠 ACHADO DO SÉCULO! 🌠\n\n{produto}\n\nQUE NINGUÉM ESPERAVA!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🎯 INSIGHT VALIOSO! 🎯\n\n{produto}\n\nPARA QUEM MANJA!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️",
+    
+    "🚀 REVELAÇÃO! 🚀\n\n{produto}\n\nQUE VAI MUDAR TUA ROTINA!\n\nR${preco_promocional}\n\n{link}\n\nLuhvee Stores ❤️"
 ]
 
 ESTRATEGIAS = {
@@ -447,42 +507,73 @@ with tab2:
 
 with tab3:
     st.markdown("""
-    ### 👑 LuhVee Vendas PRO TURBINADO
+    ## 👑 LuhVee Vendas PRO TURBINADO
     
-    **O QUE MUDOU:**
-    - 🔥 Copies 10x MAIS AGRESSIVAS
-    - 💪 CTAs PODEROSOS em cada copy
-    - 📊 5 variações por estratégia (NÃO IGUAIS)
-    - 💰 Foco em CONVERSÃO e VENDAS
-    - ⚡ Linguagem que VENDE
+    ### 🚀 Gera Copies Virais Automaticamente
     
-    **6 ESTRATÉGIAS TURBINADAS:**
+    Este app foi criado para **VENDER MUITO** com mensagens que **CONVERTEM**!
     
-    1. 🚨 **Urgência** - COMPRA AGORA! ÚLTIMO ESTOQUE!
-    2. 😱 **FOMO** - TODO MUNDO TEM! VOCÊ VAI FICAR PARA TRÁS?
-    3. 💰 **Desconto** - ECONOMIZA MUITO! ESSE PREÇO NÃO VOLTA!
-    4. ⭐ **Social Proof** - MIL PESSOAS APROVARAM! CENTENAS AMANDO!
-    5. 👑 **Exclusividade** - PARA GENTE VIP! SÓ AS MELHORES!
-    6. 🤔 **Curiosidade** - DESCOBRI ISTO! NÃO CONSIGO PARAR!
+    ---
     
-    **DICAS PRA TURBINAR AINDA MAIS:**
+    ### 📊 6 ESTRATÉGIAS PODEROSAS
     
-    - Use emojis estratégicos (aumenta CTR)
-    - Repita o CTA (CLICA AGORA, COMPRA JÁ)
-    - Use CAPS para urgência
-    - Coloca números (R$, %)
-    - Cria escassez (ÚLTIMO, ESTOQUE LIMITADO)
-    - Aproveita social proof (MIL PESSOAS)
+    ✅ **🚨 Urgência** - AGORA! TÁ ACABANDO!
+    ✅ **😱 FOMO** - TODO MUNDO TEM!
+    ✅ **💰 Desconto** - ECONOMIZA!
+    ✅ **⭐ Social Proof** - APROVADO!
+    ✅ **👑 Exclusividade** - SÓ VIP!
+    ✅ **🤔 Curiosidade** - DESCOBRE!
     
-    **MELHOR ESTRATÉGIA POR CANAL:**
-    - WhatsApp → Urgência (CTAs diretos)
-    - Instagram → FOMO (Vira viral)
-    - Facebook → Social Proof (Grupos comentam)
+    ---
+    
+    ### 📱 3 PLATAFORMAS OTIMIZADAS
+    
+    🔥 **WhatsApp** - Tom urgente e direto
+    💎 **Instagram** - Com hashtags e emojis
+    👥 **Facebook** - Chamada forte e clara
+    
+    ---
+    
+    ### 🎯 COMO USAR
+    
+    1. Preencha o **Nome do Produto**
+    2. Digite o **Preço Original** e **Preço Promo**
+    3. Escolha uma **Estratégia**
+    4. Selecione a **Plataforma** de venda
+    5. Clique em **GERAR COPIES TURBINADAS**
+    6. Copie e cole nos seus grupos/stories!
+    
+    ---
+    
+    ### 💡 DICA PRO
+    
+    Teste **diferentes estratégias** para o **mesmo produto**! 
+    
+    - WhatsApp = URGÊNCIA (melhor conversão)
+    - Instagram = FOMO (mais engajamento)
+    - Facebook = SOCIAL PROOF (mais confiança)
+    
+    ---
+    
+    ### 🔥 EXEMPLO
+    
+    **Produto:** Bolsa De Ombro
+    **Preço Original:** R$ 150
+    **Preço Promo:** R$ 89.90
+    **Estratégia:** Urgência
+    **Resultado:** 5 cópias diferentes para WhatsApp!
+    
+    ---
+    
+    ### 📈 RESULTADO ESPERADO
+    
+    ✨ **Mais cliques**
+    ✨ **Mais conversões**
+    ✨ **Mais vendas**
     
     ---
     
     **Luhvee Stores ❤️**
+    
+    *Feito com 🔥 para vender!*
     """)
-
-st.divider()
-st.caption("👑 LuhVee Vendas PRO TURBINADO - Com Agressividade e CTAs Poderosos | Luhvee Stores ❤️")
