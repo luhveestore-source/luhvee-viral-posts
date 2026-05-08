@@ -1,142 +1,108 @@
 import streamlit as st
-import random
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import json
-import os
-import re
 from datetime import datetime
 
-# --- CONFIGURAÇÃO DE ALTA PERFORMANCE ---
-st.set_page_config(page_title="LuhVee AI ULTRA PRO", layout="wide", page_icon="👑")
+# 1. CONFIGURAÇÃO DA PÁGINA
+st.set_page_config(page_title="Radar Viral Pro 2026", page_icon="🚀", layout="wide")
 
-ARQUIVO_HISTORICO = "historico_vendas_luhvee.json"
+# 2. LÓGICA DE CATEGORIZAÇÃO (O "Cérebro" do App)
+def identificar_nicho(produto):
+    produto = produto.lower()
+    if any(k in produto for k in ['rosto', 'pele', 'maquiagem', 'creme', 'serum', 'cabelo']):
+        return "Beleza & Skincare"
+    elif any(k in produto for k in ['fone', 'celular', 'tech', 'gamer', 'teclado', 'mouse', 'smartwatch']):
+        return "Tecnologia & Gadgets"
+    elif any(k in produto for k in ['casa', 'cozinha', 'decoração', 'limpeza', 'organizador']):
+        return "Casa & Organização"
+    elif any(k in produto for k in ['roupa', 'tênis', 'moda', 'acessório', 'bolsa']):
+        return "Moda & Estilo"
+    else:
+        return "Geral / Tendências"
 
-# Seus Links Oficiais
-LINKS_VITRINE = {
-    "Shopee": "https://collshp.com/luhveestores?view=storefront",
-    "Mercado Livre": "https://www.mercadolivre.com.br/social/axwelloliveira",
-    "Hub de Links": "https://links-luhveestore.streamlit.app/"
-}
-
-# --- BANCO DE COPYWRITING AGRESSIVO (CONVERSÃO PESADA) ---
-MATRIZ_COPY = {
-    "whatsapp": [
-        "🚨 *ALERTA DE OPORTUNIDADE ÚNICA!* 🚨\n\nEu não acreditei quando vi o preço do *{produto}* hoje! 🔥\n\n📉 De: ~~R$ {p_orig}~~ \n💰 *Por apenas: R$ {p_promo}*\n\n⚠️ O estoque está voando e esse valor não dura até amanhã. É a sua chance de garantir o melhor com um desconto bizarro!\n\n🛍️ *PEGUE O SEU ANTES QUE ACABE:* \n👉 {link}\n\n👑 LuhVee Store - Qualidade que você confia!",
-        "😱 *PARE TUDO O QUE ESTÁ FAZENDO!*\n\nO queridinho voltou! O *{produto}* está com uma queima de estoque exclusiva. \n\n💸 Valor de hoje: *R$ {p_promo}* (Economia real!)\n\n🏃‍♂️ Quem avisar primeiro no grupo ganha? Não! Quem clicar primeiro no link leva!\n\n🔗 *LINK SEGURO:* {link}\n\nLuhVee ✨"
-    ],
-    "instagram": [
-        "🔥 ACHADINHO VIP! 🔥\n\nVocês sempre pedem e eu encontrei o melhor preço do Brasil para o {produto}! 😱\n\n✨ De R$ {p_orig} por APENAS R$ {p_promo}!\n\n❌ Sem pegadinhas, é desconto real de queima de estoque. \n\n⚠️ RESTAM POUCAS UNIDADES! \n\n🛒 Link nos Stories ou na Bio:\n👉 {link}\n\n#achadinhos #oferta #shopee #mercadolivre #luhvee #promocao",
-        "💎 O QUE É ISSO?! 💎\n\nO {produto} que viralizou no TikTok acabou de entrar em promoção relâmpago! ⚡️\n\n💰 Só hoje: R$ {p_promo}\n⏳ O link vai expirar assim que o lote acabar.\n\n👇 GARANTA O SEU AGORA:\n🔗 {link}\n\n#luhveestore #oportunidade #desconto #compras"
-    ]
-}
-
-# --- FUNÇÕES DE SISTEMA ---
-def carregar_historico():
-    if os.path.exists(ARQUIVO_HISTORICO):
-        try:
-            with open(ARQUIVO_HISTORICO, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except: return []
-    return []
-
-def salvar_no_historico(produto, preco_promo, plataforma, link_final):
-    hist = carregar_historico()
-    novo_item = {
-        "data": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "produto": produto,
-        "preco": f"R$ {preco_promo}",
-        "plataforma": plataforma,
-        "link": link_final
-    }
-    hist.append(novo_item)
-    with open(ARQUIVO_HISTORICO, "w", encoding="utf-8") as f:
-        json.dump(hist, f, ensure_ascii=False, indent=4)
-
-def extrair_dados_v4(url):
-    # Cabeçalho ultra-robusto para evitar bloqueios
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-        "Accept-Language": "pt-BR,pt;q=0.9"
-    }
+# 3. MINERAÇÃO DE DADOS REAL
+def minerar_vendas(termo):
+    # Busca notícias recentes sobre o produto + termos de venda
+    query = f"{termo} tendência lançamento brasil 2026"
+    url = f"https://news.google.com/rss/search?q={query}&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+    
     try:
-        res = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(res.text, 'html.parser')
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, 'xml')
+        itens = soup.find_all('item', limit=5)
         
-        # Tenta pegar o título no ML e Shopee
-        titulo = "Produto Selecionado"
-        t_tags = [soup.find("h1"), soup.find("title"), soup.find("meta", property="og:title")]
-        for t in t_tags:
-            if t:
-                content = t.get("content") if t.name == "meta" else t.get_text()
-                if content:
-                    titulo = content.strip().split('|')[0].split('-')[0]
-                    break
-                    
-        # Tenta pegar preço via Regex (mais agressivo)
-        precos = re.findall(r"R\$\s?(\d+[\d.,]*)", res.text)
-        preco_val = float(precos[0].replace('.', '').replace(',', '.')) if precos else 0.0
-        
-        return titulo[:60], preco_val
+        resultados = []
+        for item in itens:
+            resultados.append({
+                "Notícia/Tendência": item.title.text,
+                "Data": item.pubDate.text[:16],
+                "Link": item.link.text
+            })
+        return pd.DataFrame(resultados)
     except:
-        return None, None
+        return pd.DataFrame({"Aviso": ["Sem dados recentes para este termo."]})
+
+# 4. GERADOR DE ESTRATÉGIA ASSERTIVA
+def gerar_estrategia(nicho, hora):
+    if nicho == "Beleza & Skincare":
+        publico, rede, gatilho = "Mulheres 18-45", "TikTok/Instagram", "Autoestima e Prova Social"
+    elif nicho == "Tecnologia & Gadgets":
+        publico, rede, gatilho = "Homens/Jovens 18-35", "YouTube/Twitter", "Performance e Exclusividade"
+    elif nicho == "Casa & Organização":
+        publico, rede, gatilho = "Público 25-55", "Pinterest/Facebook", "Praticidade e Conforto"
+    else:
+        publico, rede, gatilho = "Público Amplo", "Instagram/Google", "Curiosidade"
+
+    return publico, rede, gatilho
 
 # --- INTERFACE ---
-st.title("👑 LuhVee AI: Sales Master Pro 4.0")
+st.title("🔥 Radar Viral Pro: Inteligência de Vendas")
+st.markdown(f"**Análise Ativa:** {datetime.now().strftime('%d/%m/%Y %H:%M')} | Foco: Conversão Assertiva")
 
-aba_gerador, aba_historico = st.tabs(["🚀 Gerador de Vendas", "📊 Histórico"])
+# Sidebar
+st.sidebar.header("⏰ Painel de Horário")
+hora_atual = datetime.now().hour
+if 6 <= hora_atual < 12:
+    st.sidebar.info("🌅 **Manhã:** Foco em Conteúdo Educativo.")
+elif 12 <= hora_atual < 18:
+    st.sidebar.warning("☀️ **Tarde:** Foco em Ofertas e Escassez.")
+else:
+    st.sidebar.success("🌙 **Noite:** Foco em Entretenimento e Desejo.")
 
-with aba_gerador:
-    col1, col2 = st.columns([3, 1])
+# Entrada do Utilizador
+produto_input = st.text_input("Qual produto você quer analisar hoje?", placeholder="Ex: Smartwatch, Base Facial, Organizador de Geladeira...")
+
+if produto_input:
+    nicho_detectado = identificar_nicho(produto_input)
+    publico, rede, gatilho = gerar_estrategia(nicho_detectado, hora_atual)
+    
+    col1, col2 = st.columns([2, 1])
+    
     with col1:
-        url_input = st.text_input("🔗 Cole o Link do Produto (ML ou Shopee):")
-    with col2:
-        st.write("")
-        btn_puxar = st.button("✨ EXTRAIR DADOS")
-
-    if btn_puxar and url_input:
-        with st.spinner("IA hackeando os preços..."):
-            nome, valor = extrair_dados_v4(url_input)
-            if nome:
-                st.session_state.p_nome = nome
-                st.session_state.p_valor = valor
-                st.success("Dados capturados com sucesso!")
+        st.subheader(f"🌐 Tendências para: {produto_input}")
+        with st.spinner('Minerando notícias e mercado...'):
+            df_vendas = minerar_vendas(produto_input)
+            if not df_vendas.empty:
+                st.dataframe(df_vendas, use_container_width=True)
             else:
-                st.error("Site bloqueou a leitura automática. Digite o nome abaixo!")
+                st.write("Nenhuma notícia de tendência encontrada para este termo específico.")
+
+    with col2:
+        st.subheader("🎯 Perfil Certeiro")
+        st.metric("Nicho Identificado", nicho_detectado)
+        st.write(f"**Público-Alvo:** {publico}")
+        st.write(f"**Melhor Canal:** {rede}")
+        st.write(f"**Gatilho Mental:** {gatilho}")
 
     st.divider()
     
-    c_plat, c_nome = st.columns([1, 2])
-    with c_plat:
-        plat_sel = st.selectbox("Plataforma de Venda:", list(LINKS_VITRINE.keys()))
-    with c_nome:
-        nome_final = st.text_input("Nome do Produto:", value=st.session_state.get('p_nome', ""))
-
-    p1, p2 = st.columns(2)
-    v_orig = p1.number_input("Preço Original (R$):", value=float(st.session_state.get('p_valor', 0.0)))
-    v_promo = p2.number_input("Preço de Venda (R$):", value=v_orig * 0.85 if v_orig > 0 else 0.0)
-
-    if st.button("🚀 GERAR VARIAÇÕES AGRESSIVAS"):
-        if nome_final and url_input:
-            link_final = LINKS_VITRINE[plat_sel]
-            salvar_no_historico(nome_final, v_promo, plat_sel, link_final)
-            
-            st.subheader("📱 PARA WHATSAPP (Foco em Grupos)")
-            for copy in MATRIZ_COPY["whatsapp"]:
-                txt = copy.format(produto=nome_final, p_orig=v_orig, p_promo=v_promo, link=link_final)
-                st.code(txt, language="text")
-                
-            st.subheader("📸 PARA INSTAGRAM (Foco em Stories/Bio)")
-            for copy in MATRIZ_COPY["instagram"]:
-                txt = copy.format(produto=nome_final, p_orig=v_orig, p_promo=v_promo, link=link_final)
-                st.code(txt, language="text")
-        else:
-            st.error("Preencha todos os campos!")
-
-with aba_historico:
-    st.header("📊 Seus Posts Recentes")
-    hist = carregar_historico()
-    if hist:
-        st.table(hist[::-1])
+    # Gerador de Postagem
+    st.subheader("💡 Sugestão de Copy (Legenda)")
+    if 12 <= hora_atual < 18:
+        legenda = f"🔥 ALERTA DE TENDÊNCIA: O {produto_input} está dominando o mercado! Se você busca {gatilho.lower()}, precisa conhecer isso antes que o estoque acabe. Link na Bio! 🏃‍♂️"
     else:
-        st.info("Nenhum post gerado ainda.")
+        legenda = f"Você já viu isso? ✨ O {produto_input} é o segredo para quem quer {gatilho.lower()}. Perfeito para sua rotina! Dê um upgrade no seu dia a dia. Comenta 'EU QUERO' 👇"
+    
+    st.code(legenda, language="text")
+    st.caption("Copy gerada automaticamente com base no nicho e horário de pico.")
