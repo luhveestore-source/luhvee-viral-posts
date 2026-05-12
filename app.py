@@ -2,118 +2,93 @@ import streamlit as st
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+import google.generativeai as genai
 
-# 1. CONFIGURAÇÃO DA PÁGINA
-st.set_page_config(page_title="Radar Viral Pro 2026", page_icon="🔥", layout="wide")
+# --- 1. CONFIGURAÇÃO VISUAL (Estilo Luhvee Stores) ---
+st.set_page_config(page_title="Radar Viral Luhvees 2026", layout="wide")
 
-# Estilo personalizado para ficar mais profissional no telemóvel
 st.markdown("""
     <style>
-    .main { background-color: #0e1117; }
-    .stMetric { background-color: #1e2130; padding: 15px; border-radius: 10px; border: 1px solid #ff4b4b; }
+    .stApp { background-color: #000000; color: #ffffff; }
+    .stMetric { background-color: #1a1a1a; border-left: 5px solid #ff69b4; padding: 15px; border-radius: 10px; }
+    h1, h2, h3 { color: #da70d6 !important; }
+    .stButton>button { background: linear-gradient(45deg, #ff69b4, #da70d6); color: white; border: none; }
     </style>
     """, unsafe_allow_html=True)
 
-# 2. INTELIGÊNCIA DE NICHO MELHORADA
-def analisar_mercado_profundo(produto):
+# --- 2. CONFIGURAÇÃO DA IA (Segurança via Secrets) ---
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+    genai.configure(api_key=api_key)
+    # Busca o modelo disponível para evitar Erro 404
+    models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+    model = genai.GenerativeModel('models/gemini-1.5-flash' if 'models/gemini-1.5-flash' in models else models[0])
+except Exception as e:
+    st.error("Erro: Verifique a GEMINI_API_KEY nos Secrets do Streamlit.")
+
+# --- 3. BANCO DE LINKS INEGOCIÁVEIS (Seus contatos fixos) ---
+CONTATOS = {
+    "WhatsApp": "https://wa.me/5511948021428",
+    "Instagram": "https://instagram.com/luhveestore",
+    "Grupo VIP": "https://chat.whatsapp.com/IBneTrHJemMLla4wzU8Wbj"
+}
+
+LINKS_VENDA = {
+    "Mercado Livre": "https://www.mercadolivre.com.br/social/axwelloliveira",
+    "Shopee": "https://collshp.com/luhveestores?view=storefront",
+    "Shein": "https://onelink.shein.com/5/5ohwd5nol825",
+    "Luhvee Shoes": "https://www.shopintegra.com.br/catalogo/luhvee-stores-shoes"
+}
+
+# --- 4. FUNÇÕES DE INTELIGÊNCIA ---
+def analisar_nicho(produto):
     p = produto.lower()
-    # Base de dados de inteligência local
-    if any(k in p for k in ['rosto', 'pele', 'maquiagem', 'creme', 'serum', 'cabelo']):
-        return "Beleza & Skincare", "Mulheres 20-45", "Autoestima/Beleza", "TikTok/Reels"
-    elif any(k in p for k in ['fone', 'celular', 'tech', 'gamer', 'teclado', 'mouse', 'smartwatch']):
-        return "Tecnologia & Gadgets", "Homens/Jovens 16-35", "Inovação/Status", "YouTube/Twitter"
-    elif any(k in p for k in ['casa', 'cozinha', 'decoração', 'limpeza', 'organizador', 'roupa']):
-        return "Moda & Lar", "Público Adulto 25-50", "Praticidade/Conforto", "Instagram/Pinterest"
-    else:
-        return "Nicho Geral", "Público Amplo", "Curiosidade", "Instagram/Facebook"
+    if any(k in p for k in ['sapato', 'tenis', 'salto', 'bota', 'sandalia']):
+        return "Calçados Femininos", "Elegância e Conforto"
+    return "Achadinhos Gerais", "Praticidade e Estilo"
 
-# 3. MINERAÇÃO COM FILTROS DE VENDA
-def minerar_tendencias_reais(termo):
-    # Adicionamos termos que indicam que algo está a ser vendido ou é tendência
-    query = f"{termo} (tendência OR viral OR shopee OR lançamento) brasil 2026"
-    url = f"https://news.google.com/rss/search?q={query}&hl=pt-BR&gl=BR&ceid=BR:pt-419"
-    
+def minerar_tendencia(termo):
     try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers)
+        url = f"https://news.google.com/rss/search?q={termo}+brasil+2026&hl=pt-BR"
+        response = requests.get(url, timeout=10)
         soup = BeautifulSoup(response.content, 'xml')
-        itens = soup.find_all('item', limit=8)
-        
-        resultados = []
-        for item in itens:
-            # Limpar o título para ficar mais curto
-            titulo = item.title.text.split(" - ")[0]
-            resultados.append({
-                "🔥 Oportunidade/Notícia": titulo,
-                "Fonte": item.source.text,
-                "Link": item.link.text
-            })
-        return pd.DataFrame(resultados)
+        return [item.title.text.split(" - ")[0] for item in soup.find_all('item', limit=3)]
     except:
-        return pd.DataFrame()
+        return []
 
-# --- INTERFACE ---
-st.title("🔥 Radar Viral: Inteligência de Vendas")
+# --- 5. INTERFACE ---
+st.title("🛍️ Radar Viral & Gerador de Afiliados")
+produto = st.text_input("Qual o produto do momento?", placeholder="Ex: Sandália Lilás")
 
-# Entrada do Produto
-produto_input = st.text_input("O que pretendes vender hoje?", placeholder="Ex: Vestido de Verão, Smartwatch, etc.")
-
-if produto_input:
-    nicho, persona, gatilho, canal = analisar_mercado_profundo(produto_input)
+if produto:
+    nicho, gatilho = analisar_nicho(produto)
     
-    # Métricas Principais
-    col_a, col_b, col_c = st.columns(3)
+    col_a, col_b = st.columns(2)
     with col_a:
-        st.metric("Nicho", nicho)
+        st.metric("Nicho Identificado", nicho)
     with col_b:
-        st.metric("Público", persona)
-    with col_c:
-        st.metric("Canal Forte", canal)
+        st.write("**O que está em alta:**")
+        noticias = minerar_tendencia(produto)
+        for n in noticias: st.write(f"✅ {n}")
 
     st.markdown("---")
     
-    col1, col2 = st.columns([2, 1])
+    st.write("### 🔗 Selecione os Links de Afiliada")
+    selecionados = []
+    c1, c2, c3, c4 = st.columns(4)
+    if c1.checkbox("Shopee"): selecionados.append(f"🔸 Shopee: {LINKS_VENDA['Shopee']}")
+    if c2.checkbox("Mercado Livre"): selecionados.append(f"🔹 ML: {LINKS_VENDA['Mercado Livre']}")
+    if c3.checkbox("Shein"): selecionados.append(f"👠 Shein: {LINKS_VENDA['Shein']}")
+    if c4.checkbox("Shoes"): selecionados.append(f"👟 Shoes: {LINKS_VENDA['Luhvee Shoes']}")
 
-    with col1:
-        st.subheader("🌐 Tendências Encontradas")
-        with st.spinner('A analisar o mercado...'):
-            df_vendas = minerar_tendencias_reais(produto_input)
-            if not df_vendas.empty:
-                # Mostrar como uma lista de links mais amigável
-                for i, row in df_vendas.iterrows():
-                    st.markdown(f"📍 **{row['🔥 Oportunidade/Notícia']}**")
-                    st.caption(f"Fonte: {row['Fonte']} | [Abrir Notícia]({row['Link']})")
-            else:
-                st.warning("Não foram encontradas notícias específicas. Tenta um termo mais focado (ex: em vez de 'Roupas', usa 'Moda Feminina').")
-
-    with col2:
-        st.subheader("🎯 Estratégia de Venda")
-        st.info(f"**Gatilho:** {gatilho}")
-        
-        st.write("**Sugestão de Criativo:**")
-        if "TikTok" in canal:
-            st.write("🎥 Vídeo rápido (15s) mostrando o 'Antes e Depois' ou o unboxing.")
-        else:
-            st.write("📸 Foto Lifestyle (uso no dia a dia) com cores vibrantes.")
-
-    st.divider()
-    
-    # Gerador de Legenda Pro
-    st.subheader("💡 Sugestão de Copy (Legenda)")
-    copy = f"""🔥 ESTÁ TODO MUNDO FALANDO DISSO! 
-
-Se você busca {gatilho.lower()}, o novo {produto_input} é exatamente o que você precisa. 🚀
-
-✅ Tendência confirmada para 2026
-✅ Qualidade premium
-✅ Estoque limitado!
-
-Não fique de fora da tendência que está dominando o {canal.split('/')[0]}. 
-
-👉 Clique no link da bio e garanta o seu agora! #vendas #tendencia #{nicho.replace(' ', '')}"""
-    
-    st.code(copy, language="text")
-
-else:
-    st.info("Insere um produto acima para começar a mineração de dados.")
+    if st.button("🚀 GERAR POST COMPLETO"):
+        with st.spinner("Criando sua copy matadora..."):
+            prompt = f"Crie uma legenda curta e viral para vender {produto}. Use gatilhos de {gatilho}. Foco em 2026."
+            response = model.generate_content(prompt)
+            
+            # Montagem Final
+            texto_venda = "\n".join(selecionados)
+            rodape = f"\n\n---\n🔥 Grupo VIP: {CONTATOS['Grupo VIP']}\n📱 Whats: {CONTATOS['WhatsApp']}\n📸 Insta: {CONTATOS['Instagram']}"
+            
+            st.success("Tudo pronto para postar!")
+            st.text_area("Resultado:", response.text + "\n\n📌 ADQUIRA AQUI:\n" + texto_venda + rodape, height=400)
