@@ -16,19 +16,19 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. INTELIGÊNCIA E IA (Segurança via Secrets) ---
+# --- 2. CONFIGURAÇÃO DA IA (Segurança via Secrets) ---
 try:
-    # Busca a chave configurada no painel do Streamlit
+    # O código busca a chave salva no painel do Streamlit
     api_key = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=api_key)
     
-    # Método educativo: lista modelos para garantir que o app não quebre (evita Erro 404)
+    # Busca automática do modelo disponível (evita Erro 404)
     models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
     model = genai.GenerativeModel('models/gemini-1.5-flash' if 'models/gemini-1.5-flash' in models else models[0])
 except Exception as e:
-    st.error("Erro: Verifique a GEMINI_API_KEY nos Secrets do Streamlit.")
+    st.error("Erro: A GEMINI_API_KEY não foi encontrada nos Secrets do Streamlit.")
 
-# --- 3. LINKS INEGOCIÁVEIS (Contatos e Afiliados) ---
+# --- 3. LINKS INEGOCIÁVEIS (Luhvee Stores) ---
 CONTATOS = {
     "WhatsApp": "https://wa.me/5511948021428",
     "Instagram": "https://instagram.com/luhveestore",
@@ -42,51 +42,33 @@ LINKS_VENDA = {
     "Luhvee Shoes": "https://www.shopintegra.com.br/catalogo/luhvee-stores-shoes"
 }
 
-# --- 4. FUNÇÕES DE MINERAÇÃO ---
-def buscar_tendencias(termo):
-    try:
-        url = f"https://news.google.com/rss/search?q={termo}+2026+tendencia&hl=pt-BR"
-        response = requests.get(url, timeout=10)
-        soup = BeautifulSoup(response.content, 'xml')
-        # Retorna os 3 títulos mais relevantes
-        return [item.title.text.split(" - ")[0] for item in soup.find_all('item', limit=3)]
-    except:
-        return ["Tendência em alta para 2026 confirmada!"]
+# --- 4. INTERFACE ---
+st.title("🛍️ Radar Viral Luhvee Stores")
+produto = st.text_input("O que vamos minerar hoje?", placeholder="Ex: Sandália Lilás")
 
-# --- 5. INTERFACE DO RADAR ---
-st.title("🔥 Radar Viral Luhvee Stores")
-produto_input = st.text_input("O que vamos minerar hoje?", placeholder="Ex: Sandália de Salto, Sérum Facial...")
-
-if produto_input:
-    # Mineração e Análise
+if produto:
     st.markdown("---")
-    col_a, col_b = st.columns(2)
+    col_links = st.columns(3)
+    selecionados = []
     
-    with col_a:
-        st.subheader("🌐 Radar de Tendências")
-        tendencias = buscar_tendencias(produto_input)
-        for t in tendencias:
-            st.write(f"✅ {t}")
-
-    with col_b:
-        st.subheader("🔗 Gerador de Links de Afiliada")
-        selecionados = []
+    with col_links[0]:
         if st.checkbox("Shopee"): selecionados.append(f"🔸 Shopee: {LINKS_VENDA['Shopee']}")
+    with col_links[1]:
         if st.checkbox("Mercado Livre"): selecionados.append(f"🔹 ML: {LINKS_VENDA['Mercado Livre']}")
+    with col_links[2]:
         if st.checkbox("Shein"): selecionados.append(f"👠 Shein: {LINKS_VENDA['Shein']}")
-        if st.checkbox("Luhvee Shoes"): selecionados.append(f"👟 Shoes: {LINKS_VENDA['Luhvee Shoes']}")
 
-    # --- 6. GERAÇÃO DA COPY FINAL ---
     if st.button("🚀 GERAR POST COMPLETO"):
         with st.spinner("IA processando a melhor estratégia..."):
-            prompt = f"Atue como expert em marketing. Crie uma legenda curta e viral para vender {produto_input}. Foco em urgência e no ano de 2026."
-            response = model.generate_content(prompt)
-            
-            # Montagem Final
-            bloco_links = "\n".join(selecionados)
-            rodape = f"\n\n---\n🔥 Grupo VIP: {CONTATOS['Grupo VIP']}\n📱 WhatsApp: {CONTATOS['WhatsApp']}\n📸 Instagram: {CONTATOS['Instagram']}"
-            
-            st.success("Tudo pronto para postar!")
-            st.text_area("Copy Final:", response.text + "\n\n📌 ADQUIRA AQUI:\n" + bloco_links + rodape, height=400)
-else:
-    st.info("Digite um produto acima para começar a inteligência de mercado.")
+            try:
+                prompt = f"Crie uma legenda curta e viral para vender {produto}. Use gatilhos de urgência."
+                response = model.generate_content(prompt)
+                
+                # Montagem Final
+                bloco_links = "\n".join(selecionados)
+                rodape = f"\n\n---\n🔥 Grupo VIP: {CONTATOS['Grupo VIP']}\n📱 WhatsApp: {CONTATOS['WhatsApp']}\n📸 Instagram: {CONTATOS['Instagram']}"
+                
+                st.success("Tudo pronto!")
+                st.text_area("Resultado:", response.text + "\n\n📌 ADQUIRA AQUI:\n" + bloco_links + rodape, height=400)
+            except Exception as e:
+                st.error(f"Erro na IA: {e}")
