@@ -1,94 +1,77 @@
 import streamlit as st
-import google.generativeai as genai
 
-# --- 1. CONFIGURAÇÃO E IDENTIDADE (Luhvees) ---
-st.set_page_config(page_title="Gerador Luhvee Stores Pro", layout="wide")
+# --- 1. CONFIGURAÇÃO VISUAL (Estilo Luhvee Stores) ---
+st.set_page_config(page_title="Luhvee Shoes - Gerador de Post", layout="centered")
 
 st.markdown("""
     <style>
     .stApp { background-color: #000000; color: #ffffff; }
-    .stMetric { background-color: #1a1a1a; border-left: 5px solid #ff69b4; padding: 15px; }
-    h1, h2, h3 { color: #da70d6 !important; }
+    h1, h2 { color: #da70d6 !important; }
     .stButton>button { background: linear-gradient(45deg, #ff69b4, #da70d6); color: white; width: 100%; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. CONEXÃO COM A IA (Segurança Secrets) ---
-try:
-    api_key = st.secrets["GEMINI_API_KEY"]
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('models/gemini-1.5-flash')
-except Exception as e:
-    st.error("Erro na Chave: Verifique os Secrets do Streamlit.")
-    st.stop()
+# --- 2. LINKS E INFORMAÇÕES FIXAS ---
+CATALOGO_SHOES = "https://www.shopintegra.com.br/catalogo/luhvee-stores-shoes"
+WHATSAPP = "https://wa.me/5511948021428"
+INSTAGRAM = "@luhveestore"
 
-# --- 3. BANCO DE LINKS (Os 3 Pilares) ---
-LINKS = {
-    "Achadinhos": {
-        "Shopee": "https://collshp.com/luhveestores?view=storefront",
-        "Mercado Livre": "https://www.mercadolivre.com.br/social/axwelloliveira",
-        "Choice": "https://s.click.aliexpress.com/e/_DkazL" # Exemplo Choice
-    },
-    "Shoes": "https://www.shopintegra.com.br/catalogo/luhvee-stores-shoes",
-    "Minha Loja": "https://luhveestores.com.br" # Seu novo domínio de amanhã
-}
+# --- 3. INTERFACE DE ENTRADA ---
+st.title("👟 Gerador de Copy: Luhvee Shoes")
+st.write("Preencha os detalhes técnicos do calçado abaixo:")
 
-# --- 4. INTERFACE DE USUÁRIO ---
-st.title("🛍️ Central de Copy - Luhvee Stores")
+col1, col2 = st.columns(2)
+with col1:
+    nome_ref = st.text_input("Nome do Calçado | REF.", placeholder="Ex: BOTA COTURNO SOLA TRATORADA COURO | REF.: 36A")
+    preco = st.text_input("Valor (R$)", placeholder="Ex: 189.90")
+    material = st.text_input("Material", placeholder="Ex: Couro Preto")
 
-col_input, col_config = st.columns([2, 1])
+with col2:
+    enfeites = st.text_input("Enfeites", placeholder="Ex: Elástico na Cor Preto")
+    palmilha = st.text_input("Palmilha", placeholder="Ex: 8 mm de Espessura, EVA")
+    forro = st.text_input("Forro", placeholder="Ex: Cacharrel espumado")
+    solado = st.text_input("Solado", placeholder="Ex: Tratorado Preto")
 
-with col_input:
-    nome_prod = st.text_input("Nome do Produto", placeholder="Ex: Blusa de Frio Ultra Quente")
-    preco_prod = st.text_input("Preço do Produto", placeholder="Ex: R$ 89,90")
-    desc_prod = st.text_area("Descrição/Destaque", placeholder="Ex: A blusa mais quentinha do Brasil, interior peluciado...")
+# --- 4. LÓGICA DE MONTAGEM DA MENSAGEM ---
+if st.button("🚀 GERAR MENSAGEM PARA CALÇADOS"):
+    if nome_ref and preco:
+        # Template exato conforme solicitado pelo usuário
+        copy_final = f"""😤 CANSADO DE PROCURAR?
 
-with col_config:
-    st.write("### 🎯 Destino da Oferta")
-    pilar = st.radio("Escolha o Pilar:", ["Achadinhos", "Luhvee Shoes", "Minha Loja"])
-    
-    opcoes_links = []
-    if pilar == "Achadinhos":
-        if st.checkbox("Incluir Shopee"): opcoes_links.append(f"🔸 Shopee: {LINKS['Achadinhos']['Shopee']}")
-        if st.checkbox("Incluir Mercado Livre"): opcoes_links.append(f"🔹 ML: {LINKS['Achadinhos']['Mercado Livre']}")
-        if st.checkbox("Incluir Choice"): opcoes_links.append(f"📦 Choice: {LINKS['Achadinhos']['Choice']}")
-    elif pilar == "Luhvee Shoes":
-        opcoes_links.append(f"👟 Shoes: {LINKS['Shoes']}")
+{nome_ref.upper()} ORIGINAL está AQUI! 👈
+
+Sem fake, sem enganação! ✅
+
+🔥 Material: {material};
+
+Enfeites: {enfeites};
+
+Palmilha: {palmilha};
+
+Forro: {forro};
+
+Solado {solado}.
+
+💰 R$ {preco}
+
+Fim da busca! 🎉
+
+🛒 COMPRE AGORA:
+🏪 Catálogo: {CATALOGO_SHOES}
+
+💬 WhatsApp: {WHATSAPP}
+
+💳 Formas de Pagamento:
+✅ Cartão de Crédito
+✅ Link de Pagamento
+✅ PIX
+
+📲 Instagram: {INSTAGRAM}
+
+📲 {INSTAGRAM}"""
+
+        st.divider()
+        st.subheader("📋 Mensagem Pronta (Clique para copiar)")
+        st.text_area("Copie e cole no WhatsApp/Instagram:", copy_final, height=500)
     else:
-        opcoes_links.append(f"🏠 Minha Loja: {LINKS['Minha Loja']}")
-
-# --- 5. GERAÇÃO E EXIBIÇÃO ---
-if st.button("🚀 GERAR MENSAGENS PARA INSTAGRAM E WHATSAPP"):
-    if nome_prod and preco_prod:
-        with st.spinner("IA criando as melhores ofertas..."):
-            # Prompt Pedagógico: Instruímos a IA a separar as redes
-            prompt = f"""
-            Atue como especialista em marketing para a marca Luhvee Stores. 
-            Crie duas mensagens de venda para o produto: {nome_prod}.
-            Preço: {preco_prod}. Detalhes: {desc_prod}.
-            
-            1. Versão Instagram: Use emojis, gatilhos de desejo e hashtags. Seja envolvente.
-            2. Versão WhatsApp: Seja direta, use escassez (Estoque limitado) e chame para o clique.
-            """
-            
-            response = model.generate_content(prompt)
-            texto_gerado = response.text
-            
-            links_formatados = "\n".join(opcoes_links)
-            rodape = "\n\n---\n📱 WhatsApp: https://wa.me/5511948021428\n📸 Insta: @luhveestore"
-
-            st.divider()
-            
-            aba_insta, aba_whats = st.tabs(["📸 Versão Instagram", "💬 Versão WhatsApp"])
-            
-            with aba_insta:
-                st.subheader("Copy para Instagram")
-                st.text_area("Copie aqui:", f"{texto_gerado.split('2.')[0]}\n\n📌 ADQUIRA AQUI:\n{links_formatados}{rodape}", height=300)
-                
-            with aba_whats:
-                st.subheader("Copy para WhatsApp")
-                # Pegamos a segunda parte do texto gerado
-                parte_whats = texto_gerado.split('2.')[1] if '2.' in texto_gerado else texto_gerado
-                st.text_area("Copie aqui (WhatsApp):", f"{parte_whats}\n\n📌 COMPRE AGORA:\n{links_formatados}{rodape}", height=300)
-    else:
-        st.warning("Por favor, preencha o Nome e o Preço do produto!")
+        st.warning("Por favor, preencha pelo menos o Nome/REF e o Preço.")
