@@ -34,7 +34,7 @@ LINKS = {
     "Instagram": "@luhveestore"
 }
 
-# --- 4. NAVEGAÇÃO LATERAL (Apenas as 3 abas oficiais) ---
+# --- 4. NAVEGAÇÃO LATERAL ---
 aba = st.sidebar.radio("Selecione o que postar:", ["👠 Calçados (Shoes)", "🎁 Achadinhos", "💬 Mensagens de Grupo"])
 
 # --- PILAR 1: CALÇADOS ---
@@ -51,27 +51,55 @@ if aba == "👠 Calçados (Shoes)":
         else:
             st.warning("Preencha o Nome e o Valor.")
 
-# --- PILAR 2: ACHADINHOS (Perfeito com Mercado Livre e Assinatura da Luh) ---
+# --- PILAR 2: ACHADINHOS (Mensagem Única Universal) ---
 elif aba == "🎁 Achadinhos":
-    st.subheader("🎁 Gerador de Achadinhos Sem Rodeios")
-    prod_achado = st.text_input("Nome do Produto")
-    preco_achado = st.text_input("Preço")
-    loja = st.selectbox("Escolha a Loja Principal:", ["Shopee", "Shein"])
+    st.subheader("🎁 Gerador de Achadinhos - Mensagem Única Universal")
+    prod_achado = st.text_input("Nome do Produto", placeholder="Ex: Tapete Higiênico Pet Petz")
+    preco_achado = st.text_input("Preço (R$)", placeholder="57,89")
+    caracteristicas = st.text_area("Principais benefícios / detalhes do produto (Coloque um por linha):", placeholder="Tapete Gigante 80x60: Sem vazamentos, 100% seguro!\nPack 30 Unidades: Tranquilidade para o mês inteiro!\nAdeus Sujeira: Casa sempre impecável.")
+    loja_principal = st.selectbox("Escolha a Loja Principal do Link:", ["Shopee", "Shein"])
 
     if st.button("🚀 GERAR MENSAGENS"):
         if prod_achado and preco_achado:
-            with st.spinner("IA aplicando gatilhos de venda..."):
-                prompt = f"Atue como copywriter especialista em Neuromarketing. Crie textos EXTREMAMENTE CURTOS, DIRETOS E EM FORMATO DE LISTA COM EMOJIS para {prod_achado} por R$ {preco_achado}. Use os marcadores ✔ ou ✨. Divida em blocos claros para INSTAGRAM, WHATSAPP e STORIES."
+            with st.spinner("IA criando a copy ideal..."):
+                # A IA vai focar em transformar os detalhes em tópicos bonitos alternando ✨ e ✔
+                prompt = f"""
+                Atue como copywriter especialista em Neuromarketing para e-commerce.
+                Crie um texto com gatilhos de urgência e oportunidade para o produto '{prod_achado}' por R$ {preco_achado}.
+                
+                Aqui estão os detalhes fornecidos para colocar no corpo do texto:
+                {caracteristicas}
+                
+                Regras obrigatórias de formatação:
+                1. Comece com um cabeçalho chamativo em caixa alta com emojis de alerta (ex: 🚨 OFERTA RELÂMPAGO! 🚨).
+                2. Crie uma linha de introdução curta focada no benefício ou quebra de objeção.
+                3. Organize os detalhes do produto exatamente em uma lista de tópicos limpa alternando entre os símbolos ✨ e ✔.
+                4. Coloque a linha do preço em destaque com 'APENAS R$ [Preço]! Poucas unidades!' usando o marcador ✔.
+                5. Adicione uma frase curta de encerramento divertida antes dos links (ex: 'Não perca essa! Seu pet e sua casa agradecem. 🐶🏡').
+                
+                Retorne APENAS o texto corrido e pronto para uso, sem introduções ou explicações.
+                """
                 response = model.generate_content(prompt)
                 
-                # Montagem exata do rodapé que você pediu
-                rodapie = f"\n\n🛒 **LINK PARA COMPRAR ({loja.upper()}):**\n🔗 {LINKS[loja]}\n\n🛍️ **COMPRAR NO MERCADO LIVRE:**\n🔗 {LINKS['Mercado Livre']}\n\n🌐 **VEJA TODOS OS ACHADINHOS:**\n👉 {LINKS['Hub']}\n\nBoas compras 🛍️ bjs da Luh ❤️"
+                # Montagem automática do rodapé perfeito igualzinho ao seu exemplo
+                texto_final = (
+                    f"{response.text.strip()}\n\n"
+                    f"👉 **Compre JÁ:** {LINKS[loja_principal]}\n\n"
+                    f"*Ainda não encontrou o que precisa, me chama que coloco na vitrine*\n\n"
+                    f"🛒 **LINK PARA COMPRAR ({loja_principal.upper()}):**\n"
+                    f"🔗 {LINKS[loja_principal]}\n\n"
+                    f"🛍️ **COMPRAR NO MERCADO LIVRE:**\n"
+                    f"🔗 {LINKS['Mercado Livre']}\n\n"
+                    f"🌐 **VEJA TODOS OS ACHADINHOS:**\n"
+                    f"👉 {LINKS['Hub']}\n\n"
+                    f"Boas compras 🛍️ bjs da Luh ❤️"
+                )
                 
-                st.text_area("Copies com Alta Conversão:", f"{response.text}{rodapie}", height=500)
+                st.text_area("Cópia Única para Todas as Redes:", texto_final, height=550)
         else:
-            st.warning("Preencha o produto e o preço.")
+            st.warning("Preencha pelo menos o Nome do Produto e o Preço.")
 
-# --- PILAR 3: MENSAGENS DE GRUPO (Sem erros e com visual incrível) ---
+# --- PILAR 3: MENSAGENS DE GRUPO ---
 elif aba == "💬 Mensagens de Grupo":
     st.subheader("💬 Máquina de Engajamento - Mensagens Premium")
     contexto_extra = st.text_input("Tema de Motivação do Dia:", placeholder="Ex: Sabadou, Foco nos objetivos, Dia de se mimar...")
