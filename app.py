@@ -51,37 +51,34 @@ if aba == "👠 Calçados (Shoes)":
         else:
             st.warning("Preencha o Nome e o Valor.")
 
-# --- PILAR 2: ACHADINHOS (Mensagem Única Universal) ---
+# --- PILAR 2: ACHADINHOS (Mensagem Única, Curta e Direta) ---
 elif aba == "🎁 Achadinhos":
-    st.subheader("🎁 Gerador de Achadinhos - Mensagem Única Universal")
-    prod_achado = st.text_input("Nome do Produto", placeholder="Ex: Tapete Higiênico Pet Petz")
-    preco_achado = st.text_input("Preço (R$)", placeholder="57,89")
-    caracteristicas = st.text_area("Principais benefícios / detalhes do produto (Coloque um por linha):", placeholder="Tapete Gigante 80x60: Sem vazamentos, 100% seguro!\nPack 30 Unidades: Tranquilidade para o mês inteiro!\nAdeus Sujeira: Casa sempre impecável.")
+    st.subheader("🎁 Gerador de Achadinhos - Rápido e Direto")
+    prod_achado = st.text_input("Nome do Produto", placeholder="Ex: Caixa de Areia Furba")
+    preco_achado = st.text_input("Preço (R$)", placeholder="39,90")
     loja_principal = st.selectbox("Escolha a Loja Principal do Link:", ["Shopee", "Shein"])
 
     if st.button("🚀 GERAR MENSAGENS"):
         if prod_achado and preco_achado:
-            with st.spinner("IA criando a copy ideal..."):
-                # A IA vai focar em transformar os detalhes em tópicos bonitos alternando ✨ e ✔
+            with st.spinner("IA criando uma copy rápida e matadora..."):
+                
+                # Forcei o prompt a exigir textos extremamente resumidos e sem enrolação
                 prompt = f"""
-                Atue como copywriter especialista em Neuromarketing para e-commerce.
-                Crie um texto com gatilhos de urgência e oportunidade para o produto '{prod_achado}' por R$ {preco_achado}.
+                Atue como copywriter especialista em e-commerce de resposta rápida.
+                Crie um texto de venda ULTRA CURTO e DIRETO ao ponto para o produto '{prod_achado}' por R$ {preco_achado}.
                 
-                Aqui estão os detalhes fornecidos para colocar no corpo do texto:
-                {caracteristicas}
+                Regras Obrigatórias (Seja o mais resumido possível):
+                1. Cabeçalho: Comece com '🚨 OFERTA IMPERDÍVEL! 🚨' ou similar em caixa alta.
+                2. Introdução: Apenas uma frase curta e impactante atiçando o desejo ou resolvendo um problema.
+                3. Lista: Crie APENAS 3 tópicos super curtos (máximo de 5 palavras por linha) destacando os maiores benefícios. Alterne os marcadores entre ✨ e ✔.
+                4. Preço: O último tópico deve ser rigorosamente: '✔ APENAS R$ {preco_achado}! Poucas unidades!'
+                5. Fechamento: Finalize com 'Não perca essa! Seu pet e sua casa agradecem. 🐾🏠' (ajuste os emojis se não for produto pet).
                 
-                Regras obrigatórias de formatação:
-                1. Comece com um cabeçalho chamativo em caixa alta com emojis de alerta (ex: 🚨 OFERTA RELÂMPAGO! 🚨).
-                2. Crie uma linha de introdução curta focada no benefício ou quebra de objeção.
-                3. Organize os detalhes do produto exatamente em uma lista de tópicos limpa alternando entre os símbolos ✨ e ✔.
-                4. Coloque a linha do preço em destaque com 'APENAS R$ [Preço]! Poucas unidades!' usando o marcador ✔.
-                5. Adicione uma frase curta de encerramento divertida antes dos links (ex: 'Não perca essa! Seu pet e sua casa agradecem. 🐶🏡').
-                
-                Retorne APENAS o texto corrido e pronto para uso, sem introduções ou explicações.
+                Não coloque explicações, dê apenas o texto pronto.
                 """
                 response = model.generate_content(prompt)
                 
-                # Montagem automática do rodapé perfeito igualzinho ao seu exemplo
+                # Rodapé do seu jeitinho com os links automáticos e sua assinatura
                 texto_final = (
                     f"{response.text.strip()}\n\n"
                     f"👉 **Compre JÁ:** {LINKS[loja_principal]}\n\n"
@@ -95,14 +92,14 @@ elif aba == "🎁 Achadinhos":
                     f"Boas compras 🛍️ bjs da Luh ❤️"
                 )
                 
-                st.text_area("Cópia Única para Todas as Redes:", texto_final, height=550)
+                st.text_area("Cópia Única para Todas as Redes:", texto_final, height=500)
         else:
-            st.warning("Preencha pelo menos o Nome do Produto e o Preço.")
+            st.warning("Preencha o Nome do Produto e o Preço.")
 
 # --- PILAR 3: MENSAGENS DE GRUPO ---
 elif aba == "💬 Mensagens de Grupo":
     st.subheader("💬 Máquina de Engajamento - Mensagens Premium")
-    contexto_extra = st.text_input("Tema de Motivação do Dia:", placeholder="Ex: Sabadou, Foco nos objetivos, Dia de se mimar...")
+    contexto_extra = st.text_input("Tema de Motivação do Dia:", placeholder="Ex: Sabadou, Foco nos objetivos...")
 
     if st.button("🚀 GERAR TODAS AS MENSAGENS"):
         with st.spinner("IA criando as mensagens..."):
