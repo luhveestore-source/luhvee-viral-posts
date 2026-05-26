@@ -12,7 +12,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. CONFIGURAÇÃO DA IA ---
+# --- 2. CONFIGURAÇÃO DA IA (Segurança via Secrets) ---
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=api_key)
@@ -34,7 +34,7 @@ LINKS = {
     "Instagram": "@luhveestore"
 }
 
-# --- 4. NAVEGAÇÃO LATERAL (Apenas as 3 abas desejadas) ---
+# --- 4. NAVEGAÇÃO LATERAL ---
 aba = st.sidebar.radio("Selecione o que postar:", ["👠 Calçados (Shoes)", "🎁 Achadinhos", "💬 Mensagens de Grupo"])
 
 # --- PILAR 1: CALÇADOS ---
@@ -74,96 +74,52 @@ Fim da busca! 🎉
         else:
             st.warning("Preencha o Nome e o Valor.")
 
-# --- PILAR 2: ACHADINHOS ---
+# --- PILAR 2: ACHADINHOS (Atualizado com seu novo padrão visual e links) ---
 elif aba == "🎁 Achadinhos":
     st.subheader("🎁 Gerador de Achadinhos Sem Rodeios")
-    prod_achado = st.text_input("Nome do Produto")
-    preco_achado = st.text_input("Preço")
-    loja = st.selectbox("Escolha a Loja:", ["Shopee", "Shein", "Mercado Livre"])
+    prod_achado = st.text_input("Nome do Produto", placeholder="Ex: Roupão Plush Ultra Macio")
+    preco_achado = st.text_input("Preço (R$)", placeholder="69,90")
+    loja_principal = st.selectbox("Escolha a Loja Principal do Link:", ["Shopee", "Shein"])
 
     if st.button("🚀 GERAR MENSAGENS"):
         if prod_achado and preco_achado:
             with st.spinner("IA aplicando gatilhos subconscientes de compra..."):
                 prompt = f"""
                 Atue como copywriter especialista em Neuromarketing e Neurocopy para e-commerce.
-                Crie textos EXTREMAMENTE CURTOS, DIRETOS E SEM ENROLAÇÃO para: {prod_achado} por R$ {preco_achado}.
+                Crie textos EXTREMAMENTE CURTOS, DIRETOS E SEM ENROLAÇÃO para o produto: '{prod_achado}' pelo valor de R$ {preco_achado}.
                 
                 Use gatilhos de:
-                - Curiosidade (fazer a pessoa querer clicar para ver)
-                - Ganho de oportunidade (preço exclusivo ou achado imperdível)
-                - Escassez implícita (agir rápido)
+                - Curiosidade e Desejo Visual
+                - Oportunidade e Urgência imperdível
                 
-                Forneça o texto final pronto estruturado assim:
+                Forneça o texto estruturado exatamente assim:
                 
                 📸 **INSTAGRAM:**
-                [Texto curto, focado no desejo visual e estético do produto + Emojis]
+                [Texto curto, focado no desejo estético do produto + Emojis]
                 
                 💬 **WHATSAPP / TELEGRAM:**
-                [Mensagem rápida de um clique, gerando urgência de estoque]
+                [Mensagem rápida de um clique, gerando urgência de estoque + Emojis]
                 
                 📱 **STATUS / STORIES:**
                 [Uma frase matadora de no máximo 2 linhas para gerar o clique por impulso]
                 """
                 response = model.generate_content(prompt)
                 
-                rodapie_links = f"\n\n🛒 **LINK PARA COMPRAR:**\n🔗 {LINKS[loja]}\n\n🌐 **VEJA TODOS OS ACHADINHOS:**\n👉 {LINKS['Hub']}\n\n🔥 **ENTRE NO GRUPO VIP:**\n📱 {LINKS['WhatsApp']}"
+                # Montagem do rodapé fixo exatamente com as alterações que você pediu
+                rodapie_personalizado = (
+                    f"\n\n🛒 **LINK PARA COMPRAR ({loja_principal.upper()}):**\n"
+                    f"🔗 {LINKS[loja_principal]}\n\n"
+                    f"🛍️ **COMPRAR NO MERCADO LIVRE:**\n"
+                    f"🔗 {LINKS['Mercado Livre']}\n\n"
+                    f"🌐 **VEJA TODOS OS ACHADINHOS:**\n"
+                    f"👉 {LINKS['Hub']}\n\n"
+                    f"Boas compras 🛍️ bjs da Luh ❤️"
+                )
                 
-                st.text_area("Copies com Alta Conversão:", f"{response.text}{rodapie_links}", height=500)
+                st.text_area("Copies com Alta Conversão:", f"{response.text}{rodapie_personalizado}", height=550)
         else:
             st.warning("Preencha o produto e o preço.")
 
-# --- PILAR 3: MENSAGENS DE GRUPO (Design Lindo em Tópicos) ---
+# --- PILAR 3: MENSAGENS DE GRUPO ---
 elif aba == "💬 Mensagens de Grupo":
-    st.subheader("💬 Máquina de Engajamento - Mensagens Premium")
-    
-    link_destino = st.selectbox("Escolha o link padrão dessa mensagem:", ["Shopee", "Shein", "Mercado Livre", "Hub", "Shopintegra"])
-    contexto_extra = st.text_input("Tema de Motivação do Dia:", placeholder="Ex: Foco no sucesso, Sabadou de conquistas, Superar limites...")
-
-    if st.button("🚀 GERAR COMBO DE MENSAGENS ESTILIZADAS"):
-        with st.spinner("IA aplicando design visual de alta conversão..."):
-            tema = contexto_extra if contexto_extra else "paz, conquistas e muito amor próprio"
-            link_selecionado = LINKS[link_destino]
-
-            prompt_grupo = f"""
-            Atue como copywriter especialista em Neuromarketing e Design de Mensagens para WhatsApp.
-            Crie 3 blocos de mensagens separados (MANHÃ, TARDE, NOITE). Elas devem ser curtas, altamente MOTIVACIONAIS baseadas no tema: '{tema}'.
-            
-            Regra Crucial de Formatação Visual (Deixe idêntico a um catálogo elegante de vendas):
-            - Use títulos principais em CAIXA ALTA acompanhados de emojis temáticos fortes.
-            - Apresente os benefícios motivacionais ou listas usando tópicos limpos com o marcador '✨' ou '✔️'.
-            - Deixe espaçamentos organizados (pule linhas entre blocos para não virar textão).
-            - Insira de forma muito natural a chamada de urgência/escassez no final do texto (ex: '🔥 Oportunidades exclusivas aguardando você!', '⚠️ Últimas unidades com desconto de hoje!').
-            - O marcador '@todos' deve ficar isolado e bem visível no final de cada período.
-            
-            Retorne EXATAMENTE esta estrutura organizada para cópia:
-            
-            🌞 **MENSAGEM DE BOM DIA (MANHÃ):**
-            [Título em Caixa Alta com Emoji]
-            [Mensagem motivacional curta sobre o tema]
-            ✨ Mensagem de inspiração 1
-            ✨ Mensagem de inspiração 2
-            🔥 Mimos imperdíveis prontos para você!
-            👉 Link para acessar: {link_selecionado}
-            @todos
-            
-            🌆 **MENSAGEM DE BOA TARDE (TARDE):**
-            [Título em Caixa Alta com Emoji]
-            [Incentivo rápido para a tarde render]
-            ✔️ Foco e energia renovada
-            ✔️ Dê uma espiadinha nas novidades de hoje
-            ⚡ Clique antes que acabe!
-            👉 Link oficial: {link_selecionado}
-            @todos
-            
-            🌙 **MENSAGEM DE BOA NOITE (NOITE):**
-            [Título em Caixa Alta com Emoji]
-            [Frase de gratidão e descanso]
-            ✨ O amanhã reserva coisas incríveis
-            🛌 Descanse com a certeza de dever cumprido
-            ❤️ Amanhã tem reposição especial!
-            👉 Veja tudo aqui: {link_selecionado}
-            @todos
-            """
-            response = model.generate_content(prompt_grupo)
-            
-            st.text_area("Copie o período desejado:", response.text, height=650)
+    st.subheader("💬 Máquina de Engajamento
