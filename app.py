@@ -12,7 +12,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. CONFIGURAÇÃO DA IA (Segurança via Secrets) ---
+# --- 2. CONFIGURAÇÃO DA IA ---
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=api_key)
@@ -112,12 +112,11 @@ elif aba == "🎁 Achadinhos":
         else:
             st.warning("Preencha o produto e o preço.")
 
-# --- PILAR 3: MENSAGENS DE GRUPO (Design Premium & Motivacional) ---
+# --- PILAR 3: MENSAGENS DE GRUPO (Design Lindo em Tópicos) ---
 elif aba == "💬 Mensagens de Grupo":
     st.subheader("💬 Máquina de Engajamento - Mensagens Premium")
     
-    # Nova função para você escolher qual link padrão vai querer embutido na mensagem
-    link_destino = st.selectbox("Escolha para onde mandar o cliente nessa mensagem:", ["Shopee", "Shein", "Mercado Livre", "Hub", "Shopintegra"])
+    link_destino = st.selectbox("Escolha o link padrão dessa mensagem:", ["Shopee", "Shein", "Mercado Livre", "Hub", "Shopintegra"])
     contexto_extra = st.text_input("Tema de Motivação do Dia:", placeholder="Ex: Foco no sucesso, Sabadou de conquistas, Superar limites...")
 
     if st.button("🚀 GERAR COMBO DE MENSAGENS ESTILIZADAS"):
@@ -133,10 +132,10 @@ elif aba == "💬 Mensagens de Grupo":
             - Use títulos principais em CAIXA ALTA acompanhados de emojis temáticos fortes.
             - Apresente os benefícios motivacionais ou listas usando tópicos limpos com o marcador '✨' ou '✔️'.
             - Deixe espaçamentos organizados (pule linhas entre blocos para não virar textão).
-            - Insira de forma muito natural a chamada de urgência/escassez no final do texto (ex: '🔥 Oportunidades exclusivas aguardando você!', '⚠️ Estoque atualizado por tempo limitado!').
+            - Insira de forma muito natural a chamada de urgência/escassez no final do texto (ex: '🔥 Oportunidades exclusivas aguardando você!', '⚠️ Últimas unidades com desconto de hoje!').
             - O marcador '@todos' deve ficar isolado e bem visível no final de cada período.
             
-            Retorne EXATAMENTE esta estrutura para que eu mostre na tela:
+            Retorne EXATAMENTE esta estrutura organizada para cópia:
             
             🌞 **MENSAGEM DE BOM DIA (MANHÃ):**
             [Título em Caixa Alta com Emoji]
